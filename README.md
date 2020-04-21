@@ -3,7 +3,7 @@
 ## Names:
 
 1. Sherisse Tan
-2. Chuan Hao
+2. Lim Chuan Hao
 
 ## Setup
 
