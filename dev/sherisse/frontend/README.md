@@ -12,7 +12,6 @@
 2. Basic/Advance Result viewer
     1. Input fields for computation parameters
 
-TEST
 
 ## Notes
 
