@@ -23,7 +23,7 @@
 
 ### Justification 2
 
-![Justification 2](justifications/Data_viewer_pagination.png)
+![Justification 2](justifications/Data_viewer_Pagination.png)
 
 #### Good Points
 
