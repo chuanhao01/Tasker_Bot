@@ -4,6 +4,8 @@ This document helps you identify the smaller tasks and helps you create a rough 
 
 ## Tasks
 
+For term 1:
+
 1. Basic problem
    1. Frontend
       1. Data Viewer (Basic table)
@@ -63,7 +65,9 @@ This document helps you identify the smaller tasks and helps you create a rough 
 
 > You can follow this template for the advance feature. You can plan it right at the start or you can plan it abit later.
 
-## Estimate Schedule
+## Estimate Schedule  
+
+Need to change below
 
 ### Member 1 - Chuan Hao
 
