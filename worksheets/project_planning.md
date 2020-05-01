@@ -4,39 +4,72 @@ This document helps you identify the smaller tasks and helps you create a rough 
 
 ## Tasks
 
-1. Basic
-    1. Frontend
-        1. Data Viewer
-            1. Wireframe
-            2. Implementation
-            3. Integration
-        2. Result Viewer
-            1. Wireframe
-            2. Implementation
-            3. Integration
-    2. Mobile
-        1. Data Viewer
-            1. Wireframe
-            2. Implementation
-            3. Integration
-        2. Result Viewer
-            1. Wireframe
-            2. Implementation
-            3. Integration
-    3. Backend
-        1. Insert API
-            1. Database Setup
-            2. Implementation
-        2. Result API
-            1. Implementation
+For term 1:
+
+1. Basic problem
+   1. Frontend
+      1. Data Viewer (Basic table)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      2. Data Viewer (With chartJS)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      3. Insert Data view (Not sure if it is with the data viewer)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      4. Result Viewer (Basic table)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      5. Result Viewer (With chartJS)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+   2. Backend
+      1. Insert API
+         1. API schema/documentation
+         2. Model Creation
+         3. Model test
+         4. API implemenation
+         5. API Test
+         6. Integration
+      2. Result API
+         1. API schema/documentation
+         2. Model Creation
+         3. Model test
+         4. API implemenation
+         5. API Test
+         6. Integration
+   3. Database
+      1. Database creation
+         1. Database Schema
+         2. Test
+         3. Integration
+      2. Database seed data
+         1. Write data
+         2. Test
+         3. Integration 
+      3. Integrate model test with API
+         1. Test
+         2. Integration
 
 > You can break these tasks into even smaller units or even combine some into bigger units if you think some tasks are trivial enough.
 
 > You can follow this template for the advance feature. You can plan it right at the start or you can plan it abit later.
 
-## Estimate Schedule
+## Estimate Schedule  
 
-### Member 1 - <ENTER NAME>
+Need to change below
+
+### Member 1 - Chuan Hao
 
 | Week | Level | Component | Feature       | Task           |
 | ---- | ----- | --------- | ------------- | -------------- |
