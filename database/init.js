@@ -48,10 +48,37 @@ CREATE TABLE IF NOT EXISTS PROJECTTASKSADVANCED(
 pool
 .query(init)
 .then(
+    function(){
+        return pool.query(`
+        SELECT n.nspname as "Schema",                                                                                                                                                                 
+        c.relname as "Name",                                                                                                                                                                        
+        CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 's' THEN 'special' WHEN 'f' THEN 'foreign ta
+        ble' WHEN 'p' THEN 'partitioned table' WHEN 'I' THEN 'partitioned index' END as "Type",                                                                                                       
+        pg_catalog.pg_get_userbyid(c.relowner) as "Owner"                                                                                                                                           
+        FROM pg_catalog.pg_class c
+            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        WHERE c.relkind IN ('r','p','')
+            AND n.nspname <> 'pg_catalog'
+            AND n.nspname <> 'information_schema'
+            AND n.nspname !~ '^pg_toast'
+        AND pg_catalog.pg_table_is_visible(c.oid)
+        ORDER BY 1,2;
+        `);
+    }
+)
+.then(
     function(data){
-        console.log(data);
+        console.log(data.rows);
     }
 );
+
+module.exports = { 
+    init(){
+        return pool.query(init);
+    },
+    pool: pool,
+};
+
 
 // async function setUpDB(){
 //     const client = await pool.connect()
