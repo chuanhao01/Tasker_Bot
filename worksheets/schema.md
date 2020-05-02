@@ -1,21 +1,51 @@
 # Schema
 
-This document will gives user a good idea of how your database's structure looks like.
+For our database schema, we are using 6 tables:
+- 3 tables for the basic problem
+- 3 tables for the advanced problem
 
-You may refer to the following link to learn more about postgresql schema:
+## Database creation and ERD
 
-1. [CREATE statements](https://www.postgresqltutorial.com/postgresql-create-table/)
-2. [Foreign Keys](https://www.postgresqltutorial.com/postgresql-foreign-key/)
-
-The following are examples of how you can create a table, replace the examples with your own create statements of all your table.
+The statement used to create our database.
 ```sql
-CREATE TABLE table_name(
-   id SERIAL PRIMARY KEY,
-   name VARCHAR UNIQUE NOT NULL,
+DROP TABLE IF EXISTS PROJECTTASKSBASIC, TASKSBASIC, PROJECTSBASIC, PROJECTTASKSADVANCED, TASKSADVANCED, PROJECTSADVANCED;
+
+CREATE TABLE IF NOT EXISTS PROJECTSBASIC(
+    projectID INT UNIQUE NOT NULL,
+    PRIMARY KEY(projectId)
 );
 
-CREATE TABLE table_name_2(
-   id SERIAL PRIMARY KEY,
-   table_name_id VARCHAR NOT NULL REFERENCES table_name(id)
+CREATE TABLE IF NOT EXISTS TASKSBASIC(
+    taskID INT UNIQUE NOT NULL,
+    dueDate DATE NOT NULL,
+    dueTime TIME NOT NULL,
+    duration INT NOT NULL,
+    PRIMARY KEY (taskID)
+);
+
+CREATE TABLE IF NOT EXISTS PROJECTTASKSBASIC(
+    projectID INT NOT NULL REFERENCES PROJECTSBASIC(projectID),
+    taskID INT NOT NULL REFERENCES TASKSBASIC(taskID),
+    PRIMARY KEY (projectID, taskID)
+);
+
+CREATE TABLE IF NOT EXISTS PROJECTSADVANCED(
+    projectID INT UNIQUE NOT NULL,
+    PRIMARY KEY(projectId)
+);
+
+CREATE TABLE IF NOT EXISTS TASKSADVANCED(
+    taskID INT UNIQUE NOT NULL,
+    duration INT NOT NULL,
+    PRIMARY KEY (taskID)
+);
+
+CREATE TABLE IF NOT EXISTS PROJECTTASKSADVANCED(
+    projectID INT NOT NULL REFERENCES PROJECTSADVANCED(projectID),
+    taskID INT NOT NULL REFERENCES TASKSADVANCED(taskID),
+    PRIMARY KEY (projectID, taskID)
 );
 ```
+
+The ERD of the database looks like this:  
+![Picture of the ERD](./assets/schema-ERD.png)
