@@ -104,10 +104,10 @@ GET /basic/data?id=1234567890
 
 ## Insert Data
 
-| attribute   | value       |
-| ----------- | ----------- |
-| HTTP Method | POST        |
-| Endpoint    | /basic/insert|
+| attribute   | value         |
+| ----------- | ------------- |
+| HTTP Method | POST          |
+| Endpoint    | /basic/insert |
 
 ### Parameters
 
@@ -116,26 +116,20 @@ GET /basic/data?id=1234567890
 | data        | Array of objects| {taskId, projectId, dueDate, dueTime, duration}  |
 
 Table for insert objects  
-|parameter|datatype|example|
-|---|---| --- |
-|taskId|10 digit number|0000000001|
-|projectId| 10 digit number| 0000000001 |
-|dueDate| a date in the format of yyyy-mm-dd| 1980-01-01|
-|dueTime| a time in 
+| parameter | datatype                           | example    |
+|-----------|------------------------------------|------------|
+| taskId    | 10 digit number                    | 0000000001 |
+| projectId | 10 digit number                    | 0000000001 |
+| dueDate   | a date in the format of yyyy-mm-dd | 1980-01-01 |
+| dueTime   | a 24H time in the format of HH:MM  | 22:11      |
+| duration  | an integer(maximum of 10 digits)   | 20         |
 
 
 ### Response Body
 
 ```json
 {
-    "result": [
-        {
-            "id": number,
-            "property1": number,
-            "property2": string,
-            ...
-        }
-    ]
+    "result": "success"
 }
 ```
 
@@ -151,21 +145,34 @@ Table for insert objects
 ### Sample Request
 
 ```http
-GET /basic/data?id=1234567890
+POST /basic/insert
+
+{
+    "data": [
+        {
+            "taskId": 1234567890,
+            "projectId": 1234567890,
+            "dueDate": "2020/01/13",
+            "dueTime": "2200",
+            "duration": 1,
+        },
+        {
+            "taskId": 1234567891,
+            "projectId": 1234567890,
+            "dueDate": "2020/01/13",
+            "dueTime": "2300",
+            "duration": 1,
+        }
+    ]
+}
+
 ```
 
 ### Sample Response
 
 ```json
 {
-    "result": [
-        {
-            "id": 1234567890,
-            "property1": 1234567890,
-            "property2": "haha",
-            ...
-        }
-    ]
+    "result": "success"
 }
 ```
 
