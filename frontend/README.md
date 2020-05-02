@@ -14,16 +14,12 @@
 
 ## Notes
 
--   Refer to individual problem statements for the filtering input and computation parameters.
--   You may choose to use reactjs/bootstrap/jquery to help with your development.
--   You should not be connecting to any persistent data storage unless for caching.
-
-## Sample wireframes
-
-![sample-wireframe-data-viewer](../assets/sample-wireframe-data-viewer-frontend.png)
+-   Problem: Task Allocation
 
 ###### Data Viewer
 
-![sample-wireframe-result-viewer](../assets/sample-wireframe-result-viewer-frontend.png)
+![Data-viewer-wireframe](../worksheets/wireframes/justifications/Data_viewer_wireframe_draft.png)
 
 ###### Result Viewer
+
+![Result-viewer-wireframe](../worksheets/wireframes/justifications/Result_viewer_wireframe_draft.png)
