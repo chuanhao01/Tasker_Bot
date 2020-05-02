@@ -28,9 +28,6 @@ Based on your chosen rules, give an example of a code that follows the code styl
 ```js
 ```
 
-## JSDoc style guide
-
-Forked from [JSDoc-Style-Guide](https://github.com/shri/JSDoc-Style-Guide)
 
 ## Table of Contents
 - [Code Style](#code-style)
@@ -38,8 +35,8 @@ Forked from [JSDoc-Style-Guide](https://github.com/shri/JSDoc-Style-Guide)
   - [Examples](#examples)
     - [Good Example](#good-example)
     - [Bad Example](#bad-example)
-  - [JSDoc style guide](#jsdoc-style-guide)
   - [Table of Contents](#table-of-contents)
+- [JSDoc style guide](#jsdoc-style-guide)
   - [Intro](#intro)
   - [Files](#files)
   - [Modules](#modules)
@@ -48,6 +45,10 @@ Forked from [JSDoc-Style-Guide](https://github.com/shri/JSDoc-Style-Guide)
   - [Variables and Constants](#variables-and-constants)
   - [Links](#links)
   - [Examples](#examples-1)
+
+# JSDoc style guide
+
+Forked from [JSDoc-Style-Guide](https://github.com/shri/JSDoc-Style-Guide)
 
 ## Intro
 
