@@ -55,30 +55,6 @@ describe('DB test', function(){
                     const expected_result = [
                     {
                         Schema: 'public',
-                        Name: 'projectsadvanced',
-                        Type: 'table',
-                        Owner: 'chuanhao01'
-                    },
-                    {
-                        Schema: 'public',
-                        Name: 'projectsbasic',
-                        Type: 'table',
-                        Owner: 'chuanhao01'
-                    },
-                    {
-                        Schema: 'public',
-                        Name: 'projecttasksadvanced',
-                        Type: 'table',
-                        Owner: 'chuanhao01'
-                    },
-                    {
-                        Schema: 'public',
-                        Name: 'projecttasksbasic',
-                        Type: 'table',
-                        Owner: 'chuanhao01'
-                    },
-                    {
-                        Schema: 'public',
                         Name: 'tasksadvanced',
                         Type: 'table',
                         Owner: 'chuanhao01'
