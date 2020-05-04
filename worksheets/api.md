@@ -116,13 +116,13 @@ GET /basic/data?id=1234567890
 | data        | Array of objects| {taskId, projectId, dueDate, dueTime, duration}  |
 
 Table for insert objects  
-| parameter | datatype                           | example    |
-|-----------|------------------------------------|------------|
-| taskId    | 10 digit number                    | 0000000001 |
-| projectId | 10 digit number                    | 0000000001 |
-| dueDate   | a date in the format of yyyy-mm-dd | 1980-01-01 |
-| dueTime   | a 24H time in the format of HH:MM  | 22:11      |
-| duration  | an integer(maximum of 10 digits)   | 20         |
+| parameter | datatype                                     | example    |
+|-----------|----------------------------------------------|------------|
+| taskId    | 10 digit number (int)                        | 0000000001 |
+| projectId | 10 digit number (int)                        | 0000000001 |
+| dueDate   | a date in the format oe yyyy/mm/dd (string)  | 1980/01/01 |
+| dueTime   | a 24H time in the format of HHMM (string)    | 2211       |
+| duration  | an integer(maximum of 10 digits) (int)       | 20         |
 
 
 ### Response Body
