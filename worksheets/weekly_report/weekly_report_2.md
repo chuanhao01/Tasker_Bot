@@ -4,10 +4,10 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
-Sherrise:  
+Sherisse:  
 -   Unit testing on the front end
 -   Basic data viewer design
--   Working on chartjs for better looking data viewer
+-   Working on chartjs for better looking result viewer and/or data viewer
 -   Working basic data viewer code
 -   Planning on basic result viewer and insert data view
 
