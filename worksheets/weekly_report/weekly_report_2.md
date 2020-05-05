@@ -4,18 +4,31 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:  
+-   Unit testing on the front end
+-   Basic data viewer design
+-   Working on chartjs for better looking result viewer and/or data viewer
+-   Working basic data viewer code
+-   Planning on basic result viewer and insert data view
+
+Chuan Hao:  
+- Settled the database schema + doc
+- Started work on database testing framework
+- unformal agreement of code docs + style
+- API schema docs for insert data
+- Started on the backend server
+
+Together:  
+- Set up github issues to track and set
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Thinking
 
 ## Additional Thoughts
 
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+Need to ask about,  
+- Database freedom, based on api schema given
+- How to best structure a get request with query params
+- error code for responses
+

@@ -1,21 +1,31 @@
 # Schema
 
-This document will gives user a good idea of how your database's structure looks like.
+For our database schema, we are using 2 tables:
+- 1 tables for the basic problem
+- 1 tables for the advanced problem
 
-You may refer to the following link to learn more about postgresql schema:
+## Database creation and ERD
 
-1. [CREATE statements](https://www.postgresqltutorial.com/postgresql-create-table/)
-2. [Foreign Keys](https://www.postgresqltutorial.com/postgresql-foreign-key/)
-
-The following are examples of how you can create a table, replace the examples with your own create statements of all your table.
+The statement used to create our database.
 ```sql
-CREATE TABLE table_name(
-   id SERIAL PRIMARY KEY,
-   name VARCHAR UNIQUE NOT NULL,
+DROP TABLE IF EXISTS TASKSBASIC, TASKSADVANCED;
+
+CREATE TABLE IF NOT EXISTS TASKSBASIC(
+    taskId INT UNIQUE NOT NULL,
+    dueDate DATE NOT NULL,
+    dueTime TIME NOT NULL,
+    duration INT NOT NULL,
+    projectId INT NOT NULL,
+    PRIMARY KEY (taskId)
 );
 
-CREATE TABLE table_name_2(
-   id SERIAL PRIMARY KEY,
-   table_name_id VARCHAR NOT NULL REFERENCES table_name(id)
+CREATE TABLE IF NOT EXISTS TASKSADVANCED(
+    taskId INT UNIQUE NOT NULL,
+    duration INT NOT NULL,
+    projectId INT NOT NULL,
+    PRIMARY KEY (taskId)
 );
 ```
+
+The ERD of the database looks like this:  
+![Picture of the ERD](./assets/schema-ERD.png)
