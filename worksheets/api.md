@@ -15,6 +15,26 @@ Each API should include
 
 > Errors and it's corresponding code can be defined by yourself. You need not follow HTTP errors.
 
+## Table of Contents
+- [API Documentation](#api-documentation)
+  - [Table of Contents](#table-of-contents)
+  - [Get Data](#get-data)
+    - [Parameters](#parameters)
+    - [Response Body](#response-body)
+    - [Error](#error)
+    - [Sample Request](#sample-request)
+    - [Sample Response](#sample-response)
+    - [Sample Error](#sample-error)
+  - [Insert Data](#insert-data)
+    - [Parameters](#parameters-1)
+    - [Response Body](#response-body-1)
+    - [Error](#error-1)
+    - [Sample Request](#sample-request-1)
+    - [Sample Response](#sample-response-1)
+    - [Sample Error](#sample-error-1)
+
+
+
 ## Get Data
 
 | attribute   | value       |
@@ -70,6 +90,89 @@ GET /basic/data?id=1234567890
             ...
         }
     ]
+}
+```
+
+### Sample Error
+
+```json
+{
+	"error": "Server Error",
+	"code": 500
+}
+```
+
+## Insert Data
+
+| attribute   | value         |
+| ----------- | ------------- |
+| HTTP Method | POST          |
+| Endpoint    | /basic/insert |
+
+### Parameters
+
+| parameter | datatype        | example   |
+| --------- | --------------- | --------- |
+| data        | Array of objects| {taskId, projectId, dueDate, dueTime, duration}  |
+
+Table for insert objects  
+| parameter | datatype                                     | example    |
+|-----------|----------------------------------------------|------------|
+| taskId    | 10 digit number (int)                        | 0000000001 |
+| projectId | 10 digit number (int)                        | 0000000001 |
+| dueDate   | a date in the format oe yyyy/mm/dd (string)  | 1980/01/01 |
+| dueTime   | a 24H time in the format of HHMM (string)    | 2211       |
+| duration  | an integer(maximum of 10 digits) (int)       | 20         |
+
+
+### Response Body
+
+```json
+{
+    "result": "success"
+}
+```
+
+### Error
+
+```json
+{
+	"error": string,
+	"code": number
+}
+```
+
+### Sample Request
+
+```http
+POST /basic/insert
+
+{
+    "data": [
+        {
+            "taskId": 1234567890,
+            "projectId": 1234567890,
+            "dueDate": "2020/01/13",
+            "dueTime": "2200",
+            "duration": 1,
+        },
+        {
+            "taskId": 1234567891,
+            "projectId": 1234567890,
+            "dueDate": "2020/01/13",
+            "dueTime": "2300",
+            "duration": 1,
+        }
+    ]
+}
+
+```
+
+### Sample Response
+
+```json
+{
+    "result": "success"
 }
 ```
 

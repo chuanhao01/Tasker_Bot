@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+    crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+    crossorigin="anonymous"></script>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- External Scripts -->
+    <script src="./functions.js"></script>
+    <script src="styles.css"></script>
+
+    <title>JiBaBoom Data Viewer</title>
+</head>
+<body>
+    <div class="jumbotron jumbotron fluid">
+        <h2 class="text-center">FSP Basic Data Viewer</h2>
+    </div>
+
+    <!-- Table containing data -->
+    <div class="container p-0">
+        <div class="row">
+            <div class="input-group p-2">
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
+                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#addNewTaskModal">+ Add new</button>
+                </div>
+
+                <div class="col-sm-0 col-md-3 col-lg-3"></div>
+
+                <div class="col-sm-3 col-md-3 col-lg-3 p-0">
+                    <select class="custom-select mb-0">
+                        <option selected></option>
+                        <option value="1">ProjectId</option>
+                        <option value="2">Duration</option>
+                    </select>
+                </div>
+    
+                <div class="col-sm-3 col-md-3 col-lg-3 p-0">
+                    <select class="custom-select mb-0">
+                        <option selected></option>
+                        <option value="1">ProjectId</option>
+                        <option value="2">Duration</option>
+                    </select>
+                </div>
+    
+                <div class="input-group-append col-sm-0 col-md-1 col-lg-1 p-0">
+                    <button class="btn btn-secondary" type="button">Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dataViewer">
+            <div class="row table-responsive">
+                <table class="table border mb-1 text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Task ID</th>
+                            <th>Project ID</th>
+                            <th>Due Date</th>
+                            <th>Due Time</th>
+                            <th>Duration (in Hrs)</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <th>1</th>
+                            <th>29/03/2020</th>
+                            <th>1300</th>
+                            <th>4</th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button">Edit</button>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                            </th>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">2</th>
+                            <th>2</th>
+                            <th>05/04/2020</th>
+                            <th>0000</th>
+                            <th>I'm not calculating this</th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button">Edit</button>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                            </th>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">3</th>
+                            <th>2</th>
+                            <th>30/03/2020</th>
+                            <th>1200</th>
+                            <th>I'm not calculating this</th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button">Edit</button>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                            </th>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">4</th>
+                            <th>1</th>
+                            <th>01/04/2020</th>
+                            <th>0000</th>
+                            <th>I'm not calculating this. Now how long can this table column go? Apparently its an auto column. Nice</th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button">Edit</button>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                            </th>
+                        </tr>   
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+    
+                        <li class="page-item">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+    
+                        <li class="page-item">
+                            <a class="page-link" href="#!" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+    
+                <div class="ml-auto p-2 col-lg-6 col-md-6 col-sm-6 text-right">
+                    <h6 class="lead">1 of 1 pages (4 items)</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
+    <
+</body>
+</html>
