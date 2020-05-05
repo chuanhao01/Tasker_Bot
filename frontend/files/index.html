@@ -33,7 +33,7 @@
     </div>
 
     <!-- Table containing data -->
-    <div class="container p-0">
+    <div class="mr-4 ml-5">
         <div class="row">
             <div class="input-group p-2">
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
@@ -42,7 +42,7 @@
 
                 <div class="col-sm-0 col-md-3 col-lg-3"></div>
 
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0">
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0">
                     <select class="custom-select mb-0">
                         <option selected></option>
                         <option value="1">ProjectId</option>
@@ -50,12 +50,17 @@
                     </select>
                 </div>
     
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0">
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0">
                     <select class="custom-select mb-0">
                         <option selected></option>
-                        <option value="1">ProjectId</option>
-                        <option value="2">Duration</option>
+                        <option value="1">Less than</option>
+                        <option value="2">Equal to</option>
+                        <option value="3">Greater than</option>
                     </select>
+                </div>
+
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0">
+                    <input type="text" class="form-control" placeholder="Enter value..">
                 </div>
     
                 <div class="input-group-append col-sm-0 col-md-1 col-lg-1 p-0">
@@ -69,11 +74,11 @@
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th>Task ID</th>
-                            <th>Project ID</th>
-                            <th>Due Date</th>
-                            <th>Due Time</th>
-                            <th>Duration (in Hrs)</th>
+                            <th id="sortBtn">Task ID &#9660</th>
+                            <th id="sortBtn">Project ID &#9660</th>
+                            <th id="sortBtn">Due Date &#9660</th>
+                            <th id="sortBtn">Due Time &#9660</th>
+                            <th id="sortBtn">Duration (in Hrs) &#9660</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -172,6 +177,10 @@
     </div>
 
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
-    <
+    
+
+    <script>
+        document.getElementById("sortBtn").addEventListener("click", sort)
+    </script>
 </body>
 </html>
