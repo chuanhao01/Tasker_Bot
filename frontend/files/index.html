@@ -23,6 +23,7 @@
 
     <!-- External Scripts -->
     <script src="./functions.js"></script>
+    <script src="styles.css"></script>
 
     <title>JiBaBoom Data Viewer</title>
 </head>
@@ -31,11 +32,12 @@
         <h2 class="text-center">FSP Basic Data Viewer</h2>
     </div>
 
+    <!-- Table containing data -->
     <div class="container p-0">
         <div class="row">
             <div class="input-group p-2">
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
-                    <button class="btn btn-primary btn-sm" type="button" onclick="addNewTask()">+ Add new</button>
+                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#addNewTaskModal">+ Add new</button>
                 </div>
 
                 <div class="col-sm-0 col-md-3 col-lg-3"></div>
@@ -168,5 +170,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
+    <
 </body>
 </html>

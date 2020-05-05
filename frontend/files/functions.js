@@ -1,3 +1,0 @@
-function addNewTask() {
-    console.log("")
-}
