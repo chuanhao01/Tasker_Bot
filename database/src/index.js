@@ -6,6 +6,8 @@
  * @author Lim Chuan Hao
  * 
  * @requires NPM:pg
+ * @requires ./basic.js
+ * @requires ./advanced.js
  * 
  */
 
@@ -18,13 +20,17 @@ const pool = new Pool({
     max: 5,
 });
 
+// Importing all the custom models for basic and advanced
+const basic_db = require('./basic');
+basic_db.init(pool);
+
 /**
  * @module model 
  * This will be the main object holding all the models used for the DB
  * 
  */
 const model = {
-
+    basic: basic_db
 };
 
 module.exports = model;
