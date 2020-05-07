@@ -7,6 +7,7 @@
  * 
  * @requires NPM:pg
  * @requires NPM:chai
+ * @requires ../src/index.js
  * 
  */
 
@@ -17,18 +18,22 @@ const should = require('chai').should();
 
 // Define global var for pool
 let pool;
+before(
+    function(){
+        // Generating the pool obj to connect to the database
+        pool = new Pool({
+            connectionString: process.env.PG_URL,
+            max: 5,
+        });
+    }
+);
+
+// Importing the custom model lib to test
+const db = require('../src/index');
+
 
 describe('DB test', function(){
     describe('Checking if the initialized of DB is done properly', function(){
-        before(
-            function(){
-                // Generating the pool obj to connect to the database
-                pool = new Pool({
-                    connectionString: process.env.PG_URL,
-                    max: 5,
-                });
-            }
-        );
         /**
          * @test  
          * This is a test to check if the db tables are initialized properly
@@ -76,6 +81,92 @@ describe('DB test', function(){
                     done(err);
                 }
             );
+        });
+    });
+    /**
+     * This set of test is to make sure the basic db model functions works as expected
+     * @tests 
+     * 
+     */
+    describe('Checking basic model functions', function(){
+        /**
+         * This test is to make sure the insert data basic db call is working
+         * @test
+         *  
+         */
+        it('Checking the insert model of the basic db', function(done){
+            const test_tasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
+            new Promise((resolve, reject) => {
+                resolve(
+                    db.basic.insertTask(test_tasks)
+                    .catch(
+                        function(err){
+                            done(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(res){
+                    return new Promise((resolve, reject) => {
+                        pool.query(`
+                        SELECT * FROM TASKSBASIC
+                        WHERE taskId IN (11, 21)
+                        `, function(err, res){
+                            if(err){
+                                reject(err);
+                            }
+                            resolve(res);
+                        });
+                    })
+                    .catch(
+                        function(err){
+                            done(err);
+                        }
+                    );
+                }
+            )
+            .then(
+                function(res){
+                    const expected_result = [
+                    {
+                        taskid: 11,
+                        duedate: '1998-01-31T16:00:00.000Z',
+                        duetime: '13:07:00',
+                        duration: 2,
+                        projectid: 11
+                    },
+                    {
+                        taskid: 21,
+                        duedate: '1998-02-01T16:00:00.000Z',
+                        duetime: '01:32:00',
+                        duration: 22,
+                        projectid: 11
+                    }
+                    ];
+                    // Checking if the result is as expected
+                    JSON.stringify(res.rows).should.be.equal(JSON.stringify(expected_result));
+                    done();
+                }
+            )
+            .catch(
+                function(err){
+                    done(err);
+                }
+            );
+        });
+        /**
+         * This is to make sure the mock data added is deleted after its done
+         */
+        after('Deleting the mocked data used for testing', function(){
+            new Promise((resolve) => {
+                pool.query(`
+                DELETE FROM TASKSBASIC
+                WHERE taskId IN (11, 21)
+                `, function(err, data){
+                    return;
+                });
+            });
         });
     });
 });
