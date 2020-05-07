@@ -9,13 +9,13 @@
 /**
  * The class/singleton/object/module to hold all the models for the basic problem
  * @class 
+ * @module
  * 
  * @property pool
  * This is initialized when the constructor is called
  * Note: You are not supposed to directly access this property or call it
  * 
  */
-
 const basic_db = {
     /**
      * Constructor  
@@ -35,7 +35,7 @@ const basic_db = {
      * @function
      * 
      * @param {Array} tasks an array of strings in '(taskId, projectId, dueDate, dueTime, duration)' checked and validated
-     * Example: '(11, 11, \'1998-02-01\', \'13:07:00\', 2)'
+     * Example: ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)']
      * 
      * @returns {Promise} a promise call to the db inserting the tasks
      * 

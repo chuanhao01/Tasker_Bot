@@ -31,7 +31,6 @@ before(
 // Importing the custom model lib to test
 const db = require('../src/index');
 
-
 describe('DB test', function(){
     describe('Checking if the initialized of DB is done properly', function(){
         /**
