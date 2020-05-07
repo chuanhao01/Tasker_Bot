@@ -35,6 +35,7 @@ const basic_db = {
      * @function
      * 
      * @param {Array} tasks an array of strings in '(taskId, projectId, dueDate, dueTime, duration)' checked and validated
+     * Example: '(11, 11, \'1998-02-01\', \'13:07:00\', 2)'
      * 
      * @returns {Promise} a promise call to the db inserting the tasks
      * 
@@ -44,7 +45,6 @@ const basic_db = {
     insertTask(tasks){
         return new Promise((resolve, reject) => {
             let query_params = tasks.join(',\n');
-            console.log(query_params);
             this.pool.query(`
             INSERT INTO TASKSBASIC
             (taskId, projectId, dueDate, dueTime, duration)
