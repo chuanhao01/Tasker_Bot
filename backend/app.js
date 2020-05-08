@@ -23,11 +23,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 // middlewares.init(app);
 
 // Setting up controllers
-// const controllers = require('./controllers/index');
-// controllers.init(app);
+const controllers = require('./controllers/index');
+controllers.init(app);
 
 // Setting up ports
 const PORT  = 3000;
 app.listen(PORT, function(){
     console.log(`Server listening at port ${PORT}`);
 });
+
+// Exporting the express app obj for testing purposes
+module.exports = app;
