@@ -7,9 +7,9 @@
  */
 
 /**
- * The class/singleton/object/module to hold all the models for the basic problem
  * @class 
  * @module
+ * The class/singleton/object/module to hold all the models for the basic problem
  * 
  * @property pool
  * This is initialized when the constructor is called
@@ -18,9 +18,9 @@
  */
 const basic_db = {
     /**
+     * @function
      * Constructor  
      * This is the constructor function to set up the basic model module
-     * @function
      * 
      * @param {pg_pool_object} pool The pg pool object that will be initialized 
      * 
@@ -31,8 +31,8 @@ const basic_db = {
 
     // Inserting data into the tables
     /**
-     * function desc
      * @function
+     * Bulk insert for tasks pertaining to the basic problem
      * 
      * @param {Array} tasks an array of strings in '(taskId, projectId, dueDate, dueTime, duration)' checked and validated
      * Example: ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)']
