@@ -14,19 +14,19 @@ describe("Load the page", () => {
 
         // Check that the pop-up form is automatically hidden
         cy.get('#insert_editModal').should('not.be.visible');
-    });
-});
 
-describe("Unit testing for frontend insert task", () => {
-    it("Tests whether the insertion of tasks works correctly, inserting the correct data", () => {
         // Click the add new btn to reveal the pop-up form
         cy.get('#addNewBtn').click();
 
         // Check that the pop-up form is now visible after clicking and that the close button works properly
         cy.get('#insert_editModal').should('be.visible');
-        cy.get('#insert_editModal').click()
+        cy.get('#addNewTask_closeBtn').click()
         cy.get('#insert_editModal').should('not.be.visible');
+    });
+});
 
+describe("Unit testing for frontend insert task", () => {
+    it("Tests whether the insertion of tasks works correctly, inserting the correct data", () => {
         // Fake data
         var ftaskID = "1";
         var fprojectID = "10";
@@ -35,14 +35,14 @@ describe("Unit testing for frontend insert task", () => {
         var fduration = "0";
 
         // Test whether the data submitted and being "inserted" is correct
-        var insertedData = functions.insertTask(ftaskID, fprojectID, fdueDate, fdueTime, fduration);
+        var newData = functions.edit_insertTask(ftaskID, fprojectID, fdueDate, fdueTime, fduration);
         var successfulInsert;
 
-        if (insertedData.taskID != ftaskID || 
-            insertedData.projectID != fprojectID ||
-            insertedData.dueDate != fdueDate ||
-            insertedData.dueTime != fdueTime ||
-            insertedData.duration != fduration) {
+        if (newData.taskID != ftaskID || 
+            newData.projectID != fprojectID ||
+            newData.dueDate != fdueDate ||
+            newData.dueTime != fdueTime ||
+            newData.duration != fduration) {
                 successfulInsert = false;
             }
         else {
