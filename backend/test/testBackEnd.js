@@ -150,6 +150,44 @@ describe('Backend Test', function(){
                     done();
                 });
             });
+            it('Duplicate taskId when doing bulk insert', function(done){
+                chai.request(app)
+                .post('/basic/insert')
+                .type('json')
+                .send({
+                    data: [
+                        {
+                            "taskId": 11,
+                            "projectId": 11,
+                            "dueDate": "1998/02/01",
+                            "dueTime": "1307",
+                            "duration": 2,
+                        },
+                        {
+                            "taskId": 11,
+                            "projectId": 11,
+                            "dueDate": "1998/02/02",
+                            "dueTime": "0132",
+                            "duration": 22,
+                        }
+                    ],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(409);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Duplicate entries');
+                    expect(res.body.code).to.equal(409);
+                    done();
+                });
+            });
         });
     });
 });
