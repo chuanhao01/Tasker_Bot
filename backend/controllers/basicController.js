@@ -13,16 +13,20 @@
 const {check, validationResult, checkSchema, body} = require('express-validator');
 const moment = require('moment');
 
+// Importing the custom libs
+const utils = require('../utils/index');
+const model = require('../db/index');
+
 /**
- * The module holding all the controllers and api endpoints for the basic problem
  * @module
+ * The module holding all the controllers and api endpoints for the basic problem
  * 
  */
 const basicController = {
     /**
+     * @function
      * Constructor  
      * This is the constructor function to set up all the controllers and api endpoints for the basic module
-     * @function
      * 
      * @param {express_app_obj} pool the express app object, kinda like the server obj
      * 
@@ -51,7 +55,46 @@ const basicController = {
                 });
                 return;
             }
-            res.send(req.body.data);
+            const parsed_tasks = utils.dbParser.basic.bulkInsert(req.body.data);
+            new Promise((resolve, reject) => {
+                resolve(
+                    model.basic.insertTask(parsed_tasks)
+                    .catch(
+                        function(err){
+                            // Handle custom errors
+                            if(err.code === '23505'){
+                                // Duplicate entry error code
+                                res.status(409).send({
+                                    'error': 'Duplicate entries',
+                                    'code': 409
+                                });
+                                throw(err);
+                            }
+                            // If the db has an error
+                            res.status(500).send({
+                                'error': 'Database error',
+                                'code': 500
+                            });
+                            throw(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(){
+                    // If bulk insert of data is successful
+                    res.status(200).send({
+                        'result': 'success',
+                    });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    // console.log(err);
+                    return;
+                }
+            );
         });
     }
 };
