@@ -14,11 +14,12 @@
  * 
  */
 const dbParser = {
+    // The parser for the basic problems
     basic: {
         // Parsing for the basic db models
         /**
          * @function
-         * function desc
+         * Parsing the tasks objects from the api controller into the insert statement needed for postgresql
          * 
          * @param {Array} tasks an array of tasks objects, tasks template
          * {
