@@ -10,8 +10,9 @@
  */
 
 // Importing npm libs needed
-const {check, validationResult, checkSchema, body} = require('express-validator');
+const {check, validationResult, checkSchema, body, query} = require('express-validator');
 const moment = require('moment');
+const v = require('validator');
 
 // Importing the custom libs
 const utils = require('../utils/index');
@@ -32,18 +33,28 @@ const basicController = {
      * 
      */
     init(app){
+        // Bulk Insert API
         app.post('/basic/insert', [
             // Checking if the main data object exists in the request
-            body('data').exists().custom((value) => {return Array.isArray(value);}).custom((value) => {return value.length > 0;}),
+            body('data').exists()
+                .custom((value) => {return Array.isArray(value);})
+                .custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
-            body('data.*.taskId').exists().isInt({min: 0, max: 9999999999}),
+            body('data.*.taskId').exists()
+                .isInt({min: 0, max: 9999999999}),
             // Same for projectId
-            body('data.*.projectId').exists().isInt({min: 0, max: 9999999999}),
+            body('data.*.projectId').exists()
+                .isInt({min: 0, max: 9999999999}),
             // Checking if date given is following format and is valid
-            body('data.*.dueDate').exists().custom((value) => {return /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/g.test(value);}).custom((value) => {return moment(value, 'YYYY/MM/DD').isValid();}),
+            body('data.*.dueDate').exists()
+                .custom((value) => {return /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/g.test(value);})
+                .custom((value) => {return moment(value, 'YYYY/MM/DD').isValid();}),
             // Checking if the time given 
-            body('data.*.dueTime').exists().custom((value) => {return !(value == '2400');}).custom((value) => {return moment(value, 'HHmm').isValid();}),
-            body('data.*.duration').exists().isInt({min: 1, max:1000}),
+            body('data.*.dueTime').exists()
+                .custom((value) => {return !(value == '2400');})
+                .custom((value) => {return moment(value, 'HHmm').isValid();}),
+            body('data.*.duration').exists()
+                .isInt({min: 1, max:1000}),
         ], function(req, res){
             // Check the validation
             const validationError = validationResult(req);
@@ -95,6 +106,37 @@ const basicController = {
                     return;
                 }
             );
+        });
+        // Get basic data
+        app.get('/basic/data',[
+            query('projectId').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 9999999999});}),
+            query('duration').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 9999999999});}),
+            query('page').optional()
+                .isInt(),
+            query('pageNum').optional()
+                .isInt(),
+            query('sortBy').optional()
+                .custom((value) => {return utils.v.basic.getSortByQuery(value);}),
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                console.log(validationError.mapped());
+                res.status(500).send(validationError.mapped());
+                return;
+            }
+            console.log(req.query);
+            res.send(req.query);
         });
     }
 };
