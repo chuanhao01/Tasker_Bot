@@ -10,7 +10,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe("Load the page", () => {
     it("Checks whether the html page loads properly", () => {
-        cy.visit("http://192.168.1.141:8080/files/");
+        cy.visit("http://192.168.0.102:8080/files/");
 
         // Check that the pop-up form is automatically hidden
         cy.get('#addNewTaskModal').should('not.be.visible');
@@ -36,18 +36,22 @@ describe("Unit testing for frontend insert task", () => {
 
         // Test whether the data submitted and being "inserted" is correct
         var insertedData = functions.insertTask(ftaskID, fprojectID, fdueDate, fdueTime, fduration);
-        console.log(insertedData)
+        var successfulInsert;
 
         if (insertedData.taskID != ftaskID || 
             insertedData.projectID != fprojectID ||
             insertedData.dueDate != fdueDate ||
             insertedData.dueTime != fdueTime ||
             insertedData.duration != fduration) {
-                // Manually throw an error to fail the Cypress test
-                expect(true).to.equal(false);
+                successfulInsert = false;
             }
         else {
-            expect(true).to.equal(true);
+            successfulInsert = true;
         };
+
+        // Check whether the data was inserted successfully as a Cypress test
+        // Cypress test passes if the data was inserted successfully
+        // Cypress test fails if the data was not inserted successfully
+        expect(successfulInsert).to.equal(true);
     });
 });
