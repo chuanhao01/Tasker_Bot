@@ -227,6 +227,14 @@
         Buttons which require onclick() events will also be handled here for easy readability
     -->
     <script>
+        // Define the input fields in the pop-up form for usage later on
+        var taskID = document.querySelector('#taskID');
+        var projectID = document.querySelector('#projectID');
+        var dueDate = document.querySelector('#dueDate');
+        var dueTime = document.querySelector('#dueTime');
+        var duration = document.querySelector('#duration');
+
+
         // Allow for the column names in the data viewer to be clickable and,
         // when clicked, to sort the data in ascending order
         let sortBtnArr = document.querySelectorAll("#sortBtn");
@@ -241,7 +249,7 @@
         let editBtnArr = document.querySelectorAll("editBtn");
         editBtnArr.forEach((btn) => {
             btn.addEventListener("click", function() {
-                editData();
+                edit_insertTask(taskID, projectID, dueDate, dueTime, duration);
             });
         });
 
@@ -255,16 +263,10 @@
         })
 
         
-        // Allow for the insertion of new data
-        let insertBtn = document.querySelector('#insertData');
-        var taskID = document.querySelector('#taskID');
-        var projectID = document.querySelector('#projectID');
-        var dueDate = document.querySelector('#dueDate');
-        var dueTime = document.querySelector('#dueTime');
-        var duration = document.querySelector('#duration');
-
+        // Allow for the insertion of new data / editing of pre-existing data
+        let insertBtn = document.querySelector('#insertData');    
         insertBtn.addEventListener("click", function() {
-            reloadData(insertTask(taskID, projectID, dueDate, dueTime, duration));
+            obtainData(edit_insertTask(taskID, projectID, dueDate, dueTime, duration));
         });
 
     </script>

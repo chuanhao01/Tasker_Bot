@@ -7,14 +7,6 @@ function sortData() {
 
 
 /**
- * @function Editing an existing record in the db
- */
-function editData() {
-    console.log("EDIT")
-};
-
-
-/**
  * @function Deleting an existing record in the db
  */
 function deleteData() {
@@ -34,7 +26,7 @@ function deleteData() {
  * @returns The value of each of the parameters in JSON format
  * 
  */
-function insertTask(taskID, projectID, dueDate, dueTime, duration) {
+function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
     var data = {
         "taskID": taskID,
         "projectID": projectID,
@@ -83,8 +75,7 @@ function obtainData(data) {
 
 export default {
     sortData,
-    insertTask,
-    editData,
+    edit_insertTask,
     deleteData,
     obtainData
 }
