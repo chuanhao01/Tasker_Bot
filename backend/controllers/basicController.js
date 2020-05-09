@@ -30,7 +30,7 @@ const basicController = {
     init(app){
         app.post('/basic/insert', [
             // Checking if the main data object exists in the request
-            body('data').exists(),
+            body('data').exists().custom((value) => {return Array.isArray(value);}).custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
             body('data.*.taskId').exists().isInt({min: 0, max: 9999999999}),
             // Same for projectId
@@ -39,14 +39,15 @@ const basicController = {
             body('data.*.dueDate').exists().custom((value) => {return /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/g.test(value);}).custom((value) => {return moment(value, 'YYYY/MM/DD').isValid();}),
             // Checking if the time given 
             body('data.*.dueTime').exists().custom((value) => {return !(value == '2400');}).custom((value) => {return moment(value, 'HHmm').isValid();}),
-
+            body('data.*.duration').exists().isInt({min: 1, max:1000}),
         ], function(req, res){
             // Check the validation
             const validationError = validationResult(req);
             if(!validationError.isEmpty()){
-                console.log(validationError.mapped());
-                res.status(500).send({
-                    'Error': 'error'
+                // console.log(validationError.mapped());
+                res.status(400).send({
+                    'error': 'Invalid data format',
+                    'code': 400
                 });
                 return;
             }
