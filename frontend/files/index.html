@@ -39,7 +39,7 @@
             <div class="input-group p-2">
                 <!-- Insert new task -->
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
-                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#addNewTaskModal" id="addNewBtn">+ Add new</button>
+                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#insert_editModal" id="addNewBtn">+ Add new</button>
                 </div>
 
                 <div class="col-sm-0 col-md-3 col-lg-3"></div>
@@ -75,7 +75,7 @@
         </div>
 
         <div class="dataViewer">
-            <div class="row table-responsive">
+            <div class="row table-responsive" id="dataViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
@@ -96,10 +96,10 @@
                             <th>1300</th>
                             <th>4</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -110,10 +110,10 @@
                             <th>0000</th>
                             <th>I'm not calculating this</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -124,10 +124,10 @@
                             <th>1200</th>
                             <th>I'm not calculating this</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -138,10 +138,10 @@
                             <th>0000</th>
                             <th>I'm not calculating this. Now how long can this table column go? Apparently its an auto column. Nice</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
                             </th>
                         </tr>   
                     </tbody>
@@ -182,12 +182,10 @@
     </div>
 
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
-    <div class="modal" id="addNewTaskModal" tabindex="1" aria-hidden="true">
+    <div class="modal" id="insert_editModal" tabindex="1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Insert a new task</h5>
-
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" id="addNewTask_closeBtn">&times;</span>
                     </button>
@@ -234,9 +232,27 @@
         let sortBtnArr = document.querySelectorAll("#sortBtn");
         sortBtnArr.forEach((btn) => {
             btn.addEventListener("click", function() {
-                sortData()
+                sortData();
             });
         });
+
+        
+        // Allow for data to be edited
+        let editBtnArr = document.querySelectorAll("editBtn");
+        editBtnArr.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                editData();
+            });
+        });
+
+
+        // Allow for data to be deleted
+        let deleteBtnArr = document.querySelectorAll("deleteBtn");
+        deleteBtnArr.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                deleteData();
+            })
+        })
 
         
         // Allow for the insertion of new data
@@ -248,7 +264,7 @@
         var duration = document.querySelector('#duration');
 
         insertBtn.addEventListener("click", function() {
-            insertTask(taskID, projectID, dueDate, dueTime, duration);
+            reloadData(insertTask(taskID, projectID, dueDate, dueTime, duration));
         });
 
     </script>

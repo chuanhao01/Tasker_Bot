@@ -13,7 +13,7 @@ describe("Load the page", () => {
         cy.visit("http://192.168.0.102:8080/files/");
 
         // Check that the pop-up form is automatically hidden
-        cy.get('#addNewTaskModal').should('not.be.visible');
+        cy.get('#insert_editModal').should('not.be.visible');
     });
 });
 
@@ -23,9 +23,9 @@ describe("Unit testing for frontend insert task", () => {
         cy.get('#addNewBtn').click();
 
         // Check that the pop-up form is now visible after clicking and that the close button works properly
-        cy.get('#addNewTaskModal').should('be.visible');
-        cy.get('#addNewTask_closeBtn').click()
-        cy.get('#addNewTaskModal').should('not.be.visible');
+        cy.get('#insert_editModal').should('be.visible');
+        cy.get('#insert_editModal').click()
+        cy.get('#insert_editModal').should('not.be.visible');
 
         // Fake data
         var ftaskID = "1";
