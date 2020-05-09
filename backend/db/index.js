@@ -21,7 +21,7 @@ const pool = new Pool({
 });
 
 // Importing all the custom models for basic and advanced
-const basic_db = require('./basic');
+const basic_db = require('./basicDB');
 basic_db.init(pool);
 
 /**
