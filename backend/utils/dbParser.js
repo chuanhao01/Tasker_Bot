@@ -8,17 +8,17 @@
 
 
 /**
- * The class/singleton/object/module for the db model inputs
  * @class 
  * @module
+ * The class/singleton/object/module for the db model inputs
  * 
  */
 const dbParser = {
     basic: {
         // Parsing for the basic db models
         /**
-         * function desc
          * @function
+         * function desc
          * 
          * @param {Array} tasks an array of tasks objects, tasks template
          * {
