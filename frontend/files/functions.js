@@ -1,6 +1,5 @@
 /**
- * @function
- * Sorting the data in the column
+ * @function Sorting the data in the column
  */
 function sortData() {
     console.log("SORT")
@@ -8,8 +7,23 @@ function sortData() {
 
 
 /**
- * @function
- * Inserting a new row of data into the db
+ * @function Editing an existing record in the db
+ */
+function editData() {
+    console.log("EDIT")
+};
+
+
+/**
+ * @function Deleting an existing record in the db
+ */
+function deleteData() {
+    console.log("DELETE")
+};
+
+
+/**
+ * @function Inserting a new row of data into the db
  * 
  * @param {string} taskID The task ID of the new task that is to be inserted
  * @param {string} projectID The project ID of the new task that is to be inserted
@@ -32,7 +46,45 @@ function insertTask(taskID, projectID, dueDate, dueTime, duration) {
     return data
 };
 
+
+/**
+ * @function Obtaining the data to be shown in the dataviewer table
+ * 
+ * @returns The data to be shown in the dataviewer table
+ */
+function obtainData(data) {
+    var dataViewerTable = document.querySelector('#dataViewerTable');
+
+    var data = [{
+        
+    }]
+
+    dataViewerTable.ajax({
+        method: 'GET',
+
+        /**
+         * @function Calling the api endpoint to obtain data
+         * 
+         * @param {JSON object} data The data containing all the tasks and their information to be shown
+         * @param {int} err Whether there are any errors in obtaining the response
+         */
+        success: function(data, err) {
+            if (err != null) {
+                console.log("An error occurred..");
+            }
+
+            else {
+
+            }
+        }
+    })
+};
+
+
 export default {
     sortData,
-    insertTask
+    insertTask,
+    editData,
+    deleteData,
+    obtainData
 }
