@@ -7,7 +7,7 @@
  * 
  * @requires NPM:pg
  * @requires NPM:chai
- * @requires ../src/index.js
+ * @requires ../db/index.js
  * 
  */
 
@@ -29,7 +29,7 @@ before(
 );
 
 // Importing the custom model lib to test
-const db = require('../src/index');
+const db = require('../db/index');
 
 describe('DB test', function(){
     describe('Checking if the initialized of DB is done properly', function(){
