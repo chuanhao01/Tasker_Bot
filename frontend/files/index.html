@@ -121,7 +121,21 @@
                                 <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <th>14</th>
+                            <th>293/03/2020</th>
+                            <th>13030</th>
+                            <th>434</th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -135,7 +149,7 @@
                                 <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -149,7 +163,7 @@
                                 <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -163,7 +177,7 @@
                                 <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#insert_editModal" id="deleteBtn">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>   
                     </tbody>
@@ -268,7 +282,7 @@
 
         
         // Allow for data to be edited
-        let editBtnArr = document.querySelectorAll("editBtn");
+        let editBtnArr = document.querySelectorAll("#editBtn");
         editBtnArr.forEach((btn) => {
             btn.addEventListener("click", function() {
                 edit_insertTask(taskID, projectID, dueDate, dueTime, duration);
@@ -277,7 +291,7 @@
 
 
         // Allow for data to be deleted
-        let deleteBtnArr = document.querySelectorAll("deleteBtn");
+        let deleteBtnArr = document.querySelectorAll("#deleteBtn");
         deleteBtnArr.forEach((btn) => {
             btn.addEventListener("click", function() {
                 deleteData();
