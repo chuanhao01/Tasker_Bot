@@ -72,10 +72,11 @@ function obtainData(data) {
     })
 };
 
-
-export default {
-    sortData,
-    edit_insertTask,
-    deleteData,
-    obtainData
+const allFunctions = {
+    sortData: sortData,
+    edit_insertTask: edit_insertTask,
+    deleteData: deleteData,
+    obtainData: obtainData
 }
+
+module.exports = allFunctions;
