@@ -1,16 +1,16 @@
 // Import all the functions that we are using for the frontend
-const functions = require('../../files/functions.js');
+const allFunctions = require('../../files/functions.js');
 
 // Catch any uncaught errors which likely results from application code and not Cypress
 Cypress.on('uncaught:exception', (err, runnable) => {
-    console.log("err :" + err)
-    console.log("runnable :" + runnable)
-    return false
-})
+    console.log("err :" + err);
+    console.log("runnable :" + runnable);
+    return false;
+});
 
-describe("Load the page", () => {
-    it("Checks whether the html page loads properly", () => {
-        cy.visit("http://192.168.0.102:8080/files/");
+describe("Load the basic data viewer", () => {
+    it("Checks whether index.html loads properly", () => {
+        cy.visit("http://127.0.0.1:8080/files/");
 
         // Check that the pop-up form is automatically hidden
         cy.get('#insert_editModal').should('not.be.visible');
@@ -25,6 +25,8 @@ describe("Load the page", () => {
     });
 });
 
+
+
 describe("Unit testing for frontend insert task", () => {
     it("Tests whether the insertion of tasks works correctly, inserting the correct data", () => {
         // Fake data
@@ -35,7 +37,7 @@ describe("Unit testing for frontend insert task", () => {
         var fduration = "0";
 
         // Test whether the data submitted and being "inserted" is correct
-        var newData = functions.edit_insertTask(ftaskID, fprojectID, fdueDate, fdueTime, fduration);
+        var newData = allFunctions.edit_insertTask(ftaskID, fprojectID, fdueDate, fdueTime, fduration);
         var successfulInsert;
 
         if (newData.taskID != ftaskID || 
@@ -54,4 +56,35 @@ describe("Unit testing for frontend insert task", () => {
         // Cypress test fails if the data was not inserted successfully
         expect(successfulInsert).to.equal(true);
     });
+});
+
+describe("Check whether the navigation works", () => {
+    it("Clicks the navigation links and checks that the new page is correct", () => {
+        var successfulNavigation;
+    
+        cy.get('#resultNav').should('have.attr', 'href')
+                            .then((href) => {
+                                cy.visit(`http://127.0.0.1:8080/files/${href}`);
+                            });
+
+
+        cy.get('#homeNav').should('have.attr', 'href')
+                            .then((href) => {
+                                cy.visit(`http://127.0.0.1:8080/files/${href}`);
+                            });
+    });
+});
+
+describe("Load the basic result viewer", () => {
+    it("Checks that both the table and the chart is loaded", () => {
+        // Navigate to the result viewer page
+        cy.get('#resultNav').should('have.attr', 'href')
+                            .then((href) => {
+                                cy.visit(`http://127.0.0.1:8080/files/${href}`);
+                            });
+
+        // Check that the table and chart are visible
+        cy.get('#resultTable').should('be.visible');
+        cy.get('#resultChart').should('be.visible');
+    })
 });
