@@ -21,11 +21,14 @@
     <!-- Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <!-- Chartjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+
     <!-- External Scripts -->
     <script src="./functions.js"></script>
     <script src="styles.css"></script>
 
-    <title>JiBaBoom Data Viewer</title>
+    <title>JiBaBoom Result Viewer</title>
 </head>
 <body>
     <header>
@@ -54,29 +57,30 @@
         </div>
     </header>
     
+
     <!-- Table containing data -->
-    <div class="mr-4 ml-5">
+    <div class="mr-4 ml-5 pb-5" id="resultTable">
         <div class="row">
             <!-- Input group above the table => Computation input -->
-            <div class="input-group p-2">
-                <div class="col-sm-0 col-md-3 col-lg-3"></div>
+            <div class="input-group p-2 row">
+                <div class="col-sm-1 col-md-1 col-lg-1"></div>
 
                 <!-- Filtering data: Choose attribue to filter by -->
-                <div class="col-sm-2 col-md-2 col-lg-2 p-0 pr-1">
+                <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1">
                     <input type="text" class="form-control" placeholder="Enter projectID value..">
                 </div>
     
                 <!-- Filtering data: Choose operation to filter attribute by -->
-                <div class="col-sm-2 col-md-2 col-lg-2 p-0 pr-1">
+                <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1">
                     <input type="text" class="form-control" placeholder="Enter startDate value..">
                 </div>
 
                 <!-- Filtering data: Input value to complete the filter 'equation' -->
-                <div class="col-sm-2 col-md-2 col-lg-2 p-0 pr-1 ">
+                <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1 ">
                     <input type="text" class="form-control" placeholder="Enter startTime value..">
                 </div>
     
-                <div class="input-group-append col-sm-0 col-md-1 col-lg-1 p-0">
+                <div class="input-group-append p-0">
                     <button class="btn btn-secondary" type="button">Compute</button>
                 </div>
             </div>
@@ -172,5 +176,95 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Chart -->
+    <canvas id="resultChart"></canvas>
+
+    <script>
+        var ctx = document.querySelector('#resultChart');
+
+        var barOptions_stacked = {
+            tooltips: {
+                enabled: false
+            },
+            hover :{
+                animationDuration: 0
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontFamily: "'Open Sans Bold', sans-serif",
+                        fontSize: 11
+                    },
+                    scaleLabel:{
+                        display:false
+                    },  
+                    stacked: true
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: false,
+                        color: "#fff",
+                        zeroLineColor: "#fff",
+                        zeroLineWidth: 0
+                    },
+                    ticks: {
+                        fontFamily: "'Open Sans Bold', sans-serif",
+                        fontSize: 11
+                    },
+                    stacked: true
+                }]
+            },
+            legend:{
+                display: true
+            },
+    
+            animation: {
+                onComplete: function () {
+                    var chartInstance = this.chart;
+                    var ctx = chartInstance.ctx;
+
+                    ctx.fillStyle = "#fff";
+
+                    Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                    }),this);
+                }
+            }
+        };
+
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: ['Task 1', 'Task 2','Task 3', 'Task 4'],
+                
+                datasets: [{
+                    label: 'Wireframe',
+                    data: [0, 15, 10, 30],
+                    backgroundColor: "rgba(63,103,126,1)",
+                    hoverBackgroundColor: "rgba(50,90,100,1)"
+                }, {
+                    label: 'API',
+                    data: [10, 0, 20, 30],
+                    backgroundColor: "rgba(163,103,126,1)",
+                    hoverBackgroundColor: "rgba(140,85,100,1)"
+                }, {
+                    label: 'Database',
+                    data: [10, 15, 0, 50],
+                    backgroundColor: "rgba(63,203,226,1)",
+                    hoverBackgroundColor: "rgba(46,185,235,1)"
+                }, {
+                    label: 'Code',
+                    data: [10, 15, 60, 0],
+                    backgroundColor: "rgba(30, 130, 76, 1)",
+                    hoverBackgroundColor: "rgba(20, 110, 95, 1)"
+                }]
+            },
+
+            options: barOptions_stacked,
+        });
+    </script>
 </body>
 </html>
