@@ -15,6 +15,7 @@
 const {Pool} = require('pg');
 const assert = require('chai').assert;
 const should = require('chai').should();
+const expect = require('chai').expect;
 
 // Define global var for pool
 let pool;
@@ -29,14 +30,10 @@ before(
 );
 
 // Importing the custom model lib to test
-const db = require('../db/index');
+const model = require('../db/index');
 
 describe('DB test', function(){
     describe('Checking if the initialized of DB is done properly', function(){
-        /**
-         * @test  
-         * This is a test to check if the db tables are initialized properly
-         */
         it('Checking the initialized of the DB', function(done){
             const check_query = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
@@ -82,22 +79,46 @@ describe('DB test', function(){
             );
         });
     });
-    /**
-     * This set of test is to make sure the basic db model functions works as expected
-     * @tests 
-     * 
-     */
     describe('Checking basic model functions', function(){
-        /**
-         * This test is to make sure the insert data basic db call is working
-         * @test
-         *  
-         */
+        before('Populating dummy data for the test', function(done){
+            const dummyTasks = [
+                "(1, 11, '1998-02-02', '01:32:00', 2)",
+                "(2, 11, '1998-02-02', '01:32:00', 2)",
+                "(3, 11, '1998-02-02', '01:32:00', 2)",
+                "(4, 11, '1998-02-02', '01:32:00', 2)",
+                "(5, 11, '1998-02-02', '01:32:00', 2)",
+                "(6, 11, '1998-02-02', '01:32:00', 2)",
+                "(7, 11, '1998-02-02', '01:32:00', 2)",
+                "(8, 11, '1998-02-02', '01:32:00', 2)",
+                "(9, 11, '1998-02-02', '01:32:00', 2)",
+                "(10, 11, '1998-02-02', '01:32:00', 2)"
+            ];
+            new Promise((resolve, reject) => {
+                resolve(
+                    model.basic.insertTask(dummyTasks)
+                    .catch(
+                        function(err){
+                            done(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(){
+                    done();
+                }
+            )
+            .catch(
+                function(err){
+                    done(err);
+                }
+            );
+        });
         it('Checking the insert model of the basic db', function(done){
             const test_tasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
             new Promise((resolve, reject) => {
                 resolve(
-                    db.basic.insertTask(test_tasks)
+                    model.basic.insertTask(test_tasks)
                     .catch(
                         function(err){
                             done(err);
@@ -154,14 +175,74 @@ describe('DB test', function(){
                 }
             );
         });
-        /**
-         * This is to make sure the mock data added is deleted after its done
-         */
+        it('Checking the get data by query conditions', function(done){
+            const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
+            new Promise((resolve, reject) => {
+                resolve(
+                    model.basic.getData(queryCondition)
+                    .catch(
+                        function(err){
+                            done(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(res){
+                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify([
+                        {
+                            taskid: 6,
+                            duedate: '1998-02-01T16:00:00.000Z',
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: 11
+                        },
+                        {
+                            taskid: 7,
+                            duedate: '1998-02-01T16:00:00.000Z',
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: 11
+                        },
+                        {
+                            taskid: 8,
+                            duedate: '1998-02-01T16:00:00.000Z',
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: 11
+                        },
+                        {
+                            taskid: 9,
+                            duedate: '1998-02-01T16:00:00.000Z',
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: 11
+                        },
+                        {
+                            taskid: 10,
+                            duedate: '1998-02-01T16:00:00.000Z',
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: 11
+                        }
+                    ]));
+                    done();
+                }
+            )
+            .catch(
+                function(err){
+                    done(err);
+                }
+            );
+        });
+        /*
+        This is to make sure the mock data added is deleted after its done
+        */
         after('Deleting the mocked data used for testing', function(){
             new Promise((resolve) => {
                 pool.query(`
                 DELETE FROM TASKSBASIC
-                WHERE taskId IN (11, 21)
+                WHERE taskId IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21)
                 `, function(err, data){
                     return;
                 });
