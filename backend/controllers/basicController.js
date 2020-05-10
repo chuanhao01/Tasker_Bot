@@ -108,6 +108,10 @@ const basicController = {
             );
         });
         // Get basic data
+        /*
+        Example of a get url with query params
+        localhost:3000/basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&page=2&pageNum=3
+        */
         app.get('/basic/data',[
             query('projectId').optional()
                 .custom((value) => {return Object.keys(value).length == 1;})
