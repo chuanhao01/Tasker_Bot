@@ -57,6 +57,31 @@ const basic_db = {
                 resolve(res);
             });
         });
+    },
+    /**
+     * @function
+     * This is the function for the getData API endpoint, it returns the res object based on the selected tasks depending on the given queryConditions
+     * Note: If the get data query returns nothing, it will return nothing
+     *
+     * @param {String} queryConditions The string of the query conditions given when the query params from the API request is parsed
+     * 
+     * @returns {Promise} A promise call to the db to get the data, resolves the pg res object
+     * 
+     * @throws {Promise.error} if there is any pg error
+     * 
+     */
+    getData(queryConditions){
+        return new Promise((resolve, reject) => {
+            this.pool.query(`
+            SELECT * FROM TASKSBASIC
+            ${queryConditions}
+            `, function(err, res){
+                if(err){
+                    reject(err);
+                }
+                resolve(res);
+            });
+        });
     }
 };
 
