@@ -117,7 +117,7 @@ const basicController = {
                 .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 9999999999});}),
             query('duration').optional()
                 .custom((value) => {return Object.keys(value).length == 1;})
-                .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return ['>', '<', '=', '>=', '<='].includes(Object.keys(value)[0]);})
                 .custom((value) => {return Object.values(value).length == 1;})
                 .custom((value) => {return Object.values(value)[0] != '';})
                 .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 1000});}),
@@ -138,8 +138,38 @@ const basicController = {
                 });
                 return;
             }
-            console.log(req.query);
-            res.send(req.query);
+            // Parse the query params to be used in the db call
+            const queryConditions = utils.dbParser.all.getDataQueryParams(req.query);
+            new Promise((resolve) => {
+                resolve(
+                    model.basic.getData(queryConditions)
+                    .catch(
+                        function(err){
+                            // If the db has an error
+                            res.status(500).send({
+                                'error': 'Database error',
+                                'code': 500
+                            });
+                            throw(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    res.status(200).send({
+                        'result': 'success',
+                        'data': pgRes.rows,
+                    });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    // console.log(err);
+                    return;
+                }
+            );
         });
     }
 };
