@@ -120,19 +120,22 @@ const basicController = {
                 .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
                 .custom((value) => {return Object.values(value).length == 1;})
                 .custom((value) => {return Object.values(value)[0] != '';})
-                .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 9999999999});}),
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 1000});}),
             query('page').optional()
-                .isInt(),
+                .isInt({min: 1}),
             query('pageNum').optional()
-                .isInt(),
+                .isInt({min: 1}),
             query('sortBy').optional()
                 .custom((value) => {return utils.v.basic.getSortByQuery(value);}),
         ], function(req, res){
             // Check the validation
             const validationError = validationResult(req);
             if(!validationError.isEmpty()){
-                console.log(validationError.mapped());
-                res.status(500).send(validationError.mapped());
+                // console.log(validationError.mapped());
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
                 return;
             }
             console.log(req.query);
