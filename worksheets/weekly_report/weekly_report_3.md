@@ -4,18 +4,23 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:  
+-   Basic result viewer design 
+-   Cypress unit testing for basic data viewer
+-   Basic data viewer insert / edit data (mock data)
+-   Pop-up form for inserting / editing data
+-   Ajax
+
+Chuan Hao:  
+-   
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+-   Finish minimum requirements for Basic Data Viewer
+-   Cypress unit testing for Basic Data Viewer code (including API)
+-   
 
 ## Additional Thoughts
 
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+Questions / Clarifications:
+-   Pagination design - can we show only previous, current and next page? (And first page)
