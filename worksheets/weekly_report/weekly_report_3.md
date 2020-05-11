@@ -12,7 +12,12 @@ Sherisse:
 -   Ajax
 
 Chuan Hao:  
--   
+- Finished up Basic Bulk insert API
+- Finished up Basic Get data API
+- Finished up database schema and tests for functionality
+- Add validation framework for API's and tests
+- Added tests for utils and parser
+- Minor update to code style docs
 
 ## What do I plan to do next week
 
