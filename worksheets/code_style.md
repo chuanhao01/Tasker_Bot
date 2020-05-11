@@ -38,6 +38,7 @@ Based on your chosen rules, give an example of a code that follows the code styl
   - [Table of Contents](#table-of-contents)
 - [JSDoc style guide](#jsdoc-style-guide)
   - [Intro](#intro)
+  - [Comments](#comments)
   - [Files](#files)
   - [Modules](#modules)
   - [Functions](#functions)
@@ -59,28 +60,6 @@ for even the largest of codebases.
 JSDoc enables developers to generate documentation from comments
 within a Javascript codebase. It also forces a commenting style
 throughout a codebase as an added benefit.
-
-All JSDoc comments are of the forms:
-
-*Single line:*
-```js
-/** jsdoc comment here */
-```
-
-*Multiple lines:*
-```js
-/** 
- *  jsdoc comment here
- *  and here
- *  and even here
- */
-```
-
-You can mix normal comments in with JSDoc comments throughout
-a codebase. At Kimono, we use the double slash // commenting
-style for non-JSDoc comments. JSDoc comments are used for 
-documentation whereas the // commenting style is leveraged
-for detail-oriented notes.
 
 JSDoc leverages tags preceeded with the @ symbol in order to
 keep track of relationships within the comments. For example
@@ -109,6 +88,25 @@ as well.
 
 In the following section, we'll go over how to leverage and
 group tags throughout a javascript code base.
+
+## Comments
+
+So for JS comments made to explain some parts of the code we will use the format:  
+
+*Single line:*
+```js
+// Single line comments
+```
+
+*Multiple lines:*
+```js
+/*
+Multi-line comments are in this form
+*/
+```
+
+This is mainly to differentiate between JSDocs documentation and JS comments meant to explain parts of the code.  
+As such normal JS comments as seen above are for details/extra explaination included in the code and are different from JSDocs comments which are to document the code.  
 
 ## Files
 
@@ -140,8 +138,6 @@ Document the top of files using the following style:
  
  **NPM** -- used for NPM modules, followed by :module_name
  
- **BOWER** -- used for Bower modules, followed by :module_name
- 
  **EXTERNAL** -- used for External Links, followed by the
  @link tag with a url to the module followed by its
  name in curly braces, e.g. 
@@ -154,16 +150,23 @@ Document the top of files using the following style:
 
 ## Modules
 
-Modules can be documented using the **@module**
-tag in JSDoc:
-
+This will be referring to the module object being exported.  
+Thus, the comment will be at where the object is initialized not at where the object is exported
+This might also be tagged with the **@class** tag, as the module also acts as a singleton/class.  
+Modules can be documented using the **@module** tag in JSDoc.  
 ```js
 /**
  * description of module here
- * @module ModuleName
+ * @class (may be included sometimes too)
+ * @module (Optional module name here, this is as the name is assumed to be name of the variable)
+ *
  */
+ const moduleObj = {
+   ...
+ };
 
-module.exports = new(function () {
+
+module.exports = moduleObj;
 ...
 ```
 
