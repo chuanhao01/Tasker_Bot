@@ -23,7 +23,14 @@ Together:
 
 ## What do I plan to do next week
 
-- Thinking
+-   Insert data API
+-   Get data API
+-   Code style, schema, statement, weekly report docs
+-   Look into deployment
+-   Frontend javascript functions
+-   Unit testing
+-   Improving frontend design
+-   Read up on Ajax
 
 ## Additional Thoughts
 
