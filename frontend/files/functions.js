@@ -1,4 +1,9 @@
 /**
+ * @author Sherisse Tan
+ */
+
+
+/**
  * @function Sorting the data in the column
  */
 function sortData() {

@@ -1,3 +1,10 @@
+/**
+ * @author Sherisse Tan
+ * 
+ * @requires NPM:Cypress
+ * @requires allFunctions (frontend/files/functions.js)
+ */
+
 // Import all the functions that we are using for the frontend
 const allFunctions = require('../../files/functions.js');
 
