@@ -28,21 +28,46 @@
     <title>JiBaBoom Data Viewer</title>
 </head>
 <body>
-    <div class="jumbotron jumbotron fluid">
-        <h2 class="text-center">FSP Basic Data Viewer</h2>
-    </div>
+    <header>
+        <!-- Navigation bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navigationBar" aria-controls="navigationBar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="nav nav-pills mr-auto">
+                    <nav class="navbar fixed-top justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html" id="homeNav">Home</a>
+                        </li>
+                    
+                        <li class="nav-item">
+                            <a class="nav-link" href='results.html' id="resultNav">Result</a>
+                        </li>
+                    </nav>
+                </ul>
+            </div>
+        </nav>
+        <div class="jumbotron jumbotron fluid">
+            <h2 class="text-center">FSP Basic Data Viewer</h2>
+        </div>
+    </header>
 
     <!-- Table containing data -->
-    <div class="container p-0">
+    <div class="mr-4 ml-5">
         <div class="row">
+            <!-- Input group above the table => inserting task and filtering data -->
             <div class="input-group p-2">
+                <!-- Insert new task -->
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
-                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#addNewTaskModal">+ Add new</button>
+                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#insert_editModal" id="addNewBtn">+ Add new</button>
                 </div>
 
                 <div class="col-sm-0 col-md-3 col-lg-3"></div>
 
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0">
+                <!-- Filtering data: Choose attribue to filter by -->
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0">
                     <select class="custom-select mb-0">
                         <option selected></option>
                         <option value="1">ProjectId</option>
@@ -50,12 +75,19 @@
                     </select>
                 </div>
     
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0">
+                <!-- Filtering data: Choose operation to filter attribute by -->
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0">
                     <select class="custom-select mb-0">
                         <option selected></option>
-                        <option value="1">ProjectId</option>
-                        <option value="2">Duration</option>
+                        <option value="1">Less than</option>
+                        <option value="2">Equal to</option>
+                        <option value="3">Greater than</option>
                     </select>
+                </div>
+
+                <!-- Filtering data: Input value to complete the filter 'equation' -->
+                <div class="col-sm-2 col-md-2 col-lg-2 p-0">
+                    <input type="text" class="form-control" placeholder="Enter value..">
                 </div>
     
                 <div class="input-group-append col-sm-0 col-md-1 col-lg-1 p-0">
@@ -65,15 +97,15 @@
         </div>
 
         <div class="dataViewer">
-            <div class="row table-responsive">
+            <div class="row table-responsive" id="dataViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th>Task ID</th>
-                            <th>Project ID</th>
-                            <th>Due Date</th>
-                            <th>Due Time</th>
-                            <th>Duration (in Hrs)</th>
+                            <th id="sortBtn">Task ID &#9660;</th>
+                            <th id="sortBtn">Project ID &#9660;</th>
+                            <th id="sortBtn">Due Date &#9660;</th>
+                            <th id="sortBtn">Due Time &#9660;</th>
+                            <th id="sortBtn">Duration (in Hrs) &#9660;</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -86,10 +118,24 @@
                             <th>1300</th>
                             <th>4</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <th>14</th>
+                            <th>293/03/2020</th>
+                            <th>13030</th>
+                            <th>434</th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -100,10 +146,10 @@
                             <th>0000</th>
                             <th>I'm not calculating this</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -114,10 +160,10 @@
                             <th>1200</th>
                             <th>I'm not calculating this</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>
     
@@ -128,10 +174,10 @@
                             <th>0000</th>
                             <th>I'm not calculating this. Now how long can this table column go? Apparently its an auto column. Nice</th>
                             <th>
-                                <button class="btn btn-outline-success" type="button">Edit</button>
+                                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                             </th>
                             <th>
-                                <button class="btn btn-outline-danger" type="button">Delete</button>
+                                <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
                             </th>
                         </tr>   
                     </tbody>
@@ -172,6 +218,93 @@
     </div>
 
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
-    <
+    <div class="modal" id="insert_editModal" tabindex="1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" id="addNewTask_closeBtn">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label for="taskID">Task ID</label>
+                            <input type="text" class="form-control" id="taskID" placeholder="1">
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label for="projectID">Project ID</label>
+                            <input type="text" class="form-control" id="projectID" placeholder="1">
+                        </div>
+                    </div>
+
+                    <label for="dueDate">Due Date</label>
+                    <input type="text" class="form-control" id="dueDate" placeholder="YYYY/MM/DD">
+
+                    <label for="dueTime">Due Time</label>
+                    <input type="text" class="form-control" id="dueTime" placeholder="0000">
+
+                    <label for="duration">Duration (in Hours)</label>
+                    <input type="text" class="form-control" id='duration' placeholder="4">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="insertData">Insert</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- 
+        This script will handle any event listeners that may be needed
+        Buttons which require onclick() events will also be handled here for easy readability
+    -->
+    <script>
+        // Define the input fields in the pop-up form for usage later on
+        var taskID = document.querySelector('#taskID');
+        var projectID = document.querySelector('#projectID');
+        var dueDate = document.querySelector('#dueDate');
+        var dueTime = document.querySelector('#dueTime');
+        var duration = document.querySelector('#duration');
+
+
+        // Allow for the column names in the data viewer to be clickable and,
+        // when clicked, to sort the data in ascending order
+        let sortBtnArr = document.querySelectorAll("#sortBtn");
+        sortBtnArr.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                sortData();
+            });
+        });
+
+        
+        // Allow for data to be edited
+        let editBtnArr = document.querySelectorAll("#editBtn");
+        editBtnArr.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                edit_insertTask(taskID, projectID, dueDate, dueTime, duration);
+            });
+        });
+
+
+        // Allow for data to be deleted
+        let deleteBtnArr = document.querySelectorAll("#deleteBtn");
+        deleteBtnArr.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                deleteData();
+            })
+        })
+
+        
+        // Allow for the insertion of new data / editing of pre-existing data
+        let insertBtn = document.querySelector('#insertData');    
+        insertBtn.addEventListener("click", function() {
+            obtainData(edit_insertTask(taskID, projectID, dueDate, dueTime, duration));
+        });
+
+    </script>
 </body>
 </html>

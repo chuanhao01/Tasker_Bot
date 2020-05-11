@@ -18,7 +18,7 @@
 
 ###### Data Viewer
 
-![Data-viewer-wireframe](../worksheets/wireframes/justifications/Data_viewer_wireframe_draft.png)
+![Data-viewer-wireframe](../worksheets/wireframes/justifications/Data_viewer_wireframe.png)
 
 ###### Result Viewer
 
