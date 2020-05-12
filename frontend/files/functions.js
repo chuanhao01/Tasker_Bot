@@ -49,30 +49,54 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * 
  * @returns The data to be shown in the dataviewer table
  */
-function obtainData(data) {
+function obtainData() {
+    console.log("TEST");
+
     var dataViewerTable = document.querySelector('#dataViewerTable');
+    // What the hell is pgRes in basicController (line 159)
+    var data = {};
 
-    var data = [{
-        
-    }]
+    /*
+    // Ajax call to the backend server
+    var xhttp = new XMLHttpRequest();
 
-    dataViewerTable.ajax({
-        method: 'GET',
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            dataViewerTable.innerHTML = "TEST"
+        };
+    };
+
+    xhttp.open("GET", "localhost:3000/basic/data")
+    xhttp.send();
+    */
+
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/basic/data',
+        // Data that we are expecting back from the server
+        dataType: 'json', 
 
         /**
-         * @function Calling the api endpoint to obtain data
+         * @function
          * 
-         * @param {JSON object} data The data containing all the tasks and their information to be shown
-         * @param {int} err Whether there are any errors in obtaining the response
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {int} statusCode The response status code
+         * @param xhr The XMLHttpRequest 
          */
-        success: function(data, err) {
-            if (err != null) {
-                console.log("An error occurred..");
-            }
+        success: function(data, statusCode, xhr) {
+            console.log(data);
+            console.log(statusCode);
+        },
 
-            else {
-
-            }
+        /**
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param {int} statusCode The response status code
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, statusCode, err) {
+            console.log(err);
+            window.alert("An error occurred");
         }
     })
 };

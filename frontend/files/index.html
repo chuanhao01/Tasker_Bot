@@ -263,6 +263,8 @@
         Buttons which require onclick() events will also be handled here for easy readability
     -->
     <script>
+        window.document.onload = obtainData();
+
         // Define the input fields in the pop-up form for usage later on
         var taskID = document.querySelector('#taskID');
         var projectID = document.querySelector('#projectID');
@@ -302,7 +304,8 @@
         // Allow for the insertion of new data / editing of pre-existing data
         let insertBtn = document.querySelector('#insertData');    
         insertBtn.addEventListener("click", function() {
-            obtainData(edit_insertTask(taskID, projectID, dueDate, dueTime, duration));
+            obtainData();
+            // edit_insertTask(taskID, projectID, dueDate, dueTime, duration)
         });
 
     </script>
