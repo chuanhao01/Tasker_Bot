@@ -13,6 +13,10 @@
 const express = require('express');
 const app = express();
 
+// Adding CORS
+const cors = require('cors');
+app.use(cors());
+
 // Setting up body parser
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
