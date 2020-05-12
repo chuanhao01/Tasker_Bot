@@ -4,14 +4,6 @@
 
 
 /**
- * @function Sorting the data in the column
- */
-function sortData() {
-    console.log("SORT")
-};
-
-
-/**
  * @function Deleting an existing record in the db
  */
 function deleteData() {
@@ -45,33 +37,38 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
 
 
 /**
- * @function Obtaining the data to be shown in the dataviewer table
+ * @function Obtaining the data to be shown in the dataviewer table and appending it directly to the table. 
+ *           This will handle SORTING, FILTERING and OBTAINING data
  * 
- * @returns The data to be shown in the dataviewer table
+ * @params {string} projectId The project ID of the new task that is to be inserted
+ * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} page The page number that we are on / navigating to
+ * @params {string} pageNum The number of tasks displayed on each page
+ * @params {string} sortBy The column to be sorted by
  */
-function obtainData() {
-    var dataViewerTable = document.querySelector('#tableBody');
-
+function obtainData(projectId, duration, page, pageNum, sortBy) {
+    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
 
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/basic/data',
+        url: url,
         // Data that we are expecting back from the server
         dataType: 'json', 
 
         /**
-         * @function
+         * @function Handling the event in which the ajax request call is a success
          * 
          * @param {JSON} data The task data that we are getting from the server
-         * @param {int} statusCode The response status code
+         * @param {string} textStatus A string stating whether the call was a success or failure
          * @param xhr The XMLHttpRequest 
          */
-        success: function(data, statusCode, xhr) {
+        success: function(data, textStatus, xhr) {
+            // Ensure that the data viewer table is empty before appending any data
+            $('#tableBody').empty();
+
             var allTaskData = data.data;
-            console.log(statusCode);
-            
+            // Appending each task to a row in the table
             allTaskData.forEach((task) => {
-                console.log(task);
                 const taskHtml = `
                 <tr>
                     <th scope="row">${task.taskid}</th>
@@ -88,25 +85,29 @@ function obtainData() {
                 </tr>
                 `
 
-                $('#dataViewerTable').append(taskHtml);
+                $('#tableBody').append(taskHtml);
             })
         },
 
         /**
+         * @function Handling the event in which the ajax request call has an error
          * 
          * @param xhr The XMLHttpRequest
-         * @param {int} statusCode The response status code
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
          * @param err The error message / response sent back by the server
          */
-        error: function(xhr, statusCode, err) {
-            console.log(err);
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
             window.alert("An error occurred");
         }
     }); // End of ajax call
 };
 
+
 const allFunctions = {
-    sortData: sortData,
     edit_insertTask: edit_insertTask,
     deleteData: deleteData,
     obtainData: obtainData

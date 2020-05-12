@@ -101,11 +101,11 @@
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th id="sortBtn">Task ID &#9660;</th>
-                            <th id="sortBtn">Project ID &#9660;</th>
-                            <th id="sortBtn">Due Date &#9660;</th>
-                            <th id="sortBtn">Due Time &#9660;</th>
-                            <th id="sortBtn">Duration (in Hrs) &#9660;</th>
+                            <th class="sortBtn asc" id="sort_taskId">Task ID &#9660;</th>
+                            <th class="sortBtn asc" id="sort_projectId">Project ID &#9660;</th>
+                            <th class="sortBtn asc" id="sort_duedate">Due Date &#9660;</th>
+                            <th class="sortBtn asc" id="sort_duetime">Due Time &#9660;</th>
+                            <th class="sortBtn asc" id="sort_duration">Duration (in Hrs) &#9660;</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -194,6 +194,7 @@
         Buttons which require onclick() events will also be handled here for easy readability
     -->
     <script>
+        // Obtain all the data in the data viewer table everytime the page is loaded
         window.document.onload = obtainData();
 
         // Define the input fields in the pop-up form for usage later on
@@ -205,13 +206,33 @@
 
 
         // Allow for the column names in the data viewer to be clickable and,
-        // when clicked, to sort the data in ascending order
-        let sortBtnArr = document.querySelectorAll("#sortBtn");
-        sortBtnArr.forEach((btn) => {
-            btn.addEventListener("click", function() {
-                sortData();
-            });
-        });
+        // when clicked, to sort the data in either ascending or descending order
+        let sortBtnArr = document.querySelectorAll('.sortBtn');
+        sortBtnArr.forEach((sortBtn) => {
+            sortBtn.addEventListener("click", function() {
+                // Obtain whether the column is already sorted in ascending order or descending order
+                var currentSort = this.className.split(' ')[1];
+
+                // Obtain the id of the button that was clicked and obtain the column name
+                var sortType = this.id.split('_')[1];
+
+                // Define whether to sort in ascending or descending order
+                if (currentSort == 'asc') {
+                    sortType += ".desc";
+
+                    // Change the className of the button for further usage
+                    $('.sortBtn').toggleClass('asc desc')
+                }
+                else {
+                    sortType += '.asc';
+
+                    // Change the className of the button for further usage
+                    $('.sortBtn').toggleClass('asc desc')
+                };
+                
+                obtainData(sortBy=`sortBy=${sortType}`);
+            })
+        })
 
         
         // Allow for data to be edited
