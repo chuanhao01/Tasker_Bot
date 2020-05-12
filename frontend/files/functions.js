@@ -52,7 +52,7 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
 function obtainData() {
     console.log("TEST");
 
-    var dataViewerTable = document.querySelector('#dataViewerTable');
+    var dataViewerTable = document.querySelector('#tableBody');
     // What the hell is pgRes in basicController (line 159)
     var data = {};
 
@@ -84,8 +84,28 @@ function obtainData() {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, statusCode, xhr) {
-            console.log(data);
+            var allTaskData = data.data;
             console.log(statusCode);
+            
+            allTaskData.forEach((task) => {
+                const taskHtml = `
+                <tr>
+                    <th scope="row">1</th>
+                    <th>1</th>
+                    <th>29/03/2020</th>
+                    <th>1300</th>
+                    <th>4</th>
+                    <th>
+                        <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
+                    </th>
+                    <th>
+                        <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
+                    </th>
+                </tr>
+                `
+
+                dataViewerTable.append(taskHtml);
+            })
         },
 
         /**
