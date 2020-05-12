@@ -50,25 +50,8 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * @returns The data to be shown in the dataviewer table
  */
 function obtainData() {
-    console.log("TEST");
-
     var dataViewerTable = document.querySelector('#tableBody');
-    // What the hell is pgRes in basicController (line 159)
-    var data = {};
 
-    /*
-    // Ajax call to the backend server
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            dataViewerTable.innerHTML = "TEST"
-        };
-    };
-
-    xhttp.open("GET", "localhost:3000/basic/data")
-    xhttp.send();
-    */
 
     $.ajax({
         type: 'GET',
@@ -88,13 +71,14 @@ function obtainData() {
             console.log(statusCode);
             
             allTaskData.forEach((task) => {
+                console.log(task);
                 const taskHtml = `
                 <tr>
-                    <th scope="row">1</th>
-                    <th>1</th>
-                    <th>29/03/2020</th>
-                    <th>1300</th>
-                    <th>4</th>
+                    <th scope="row">${task.taskid}</th>
+                    <th>${task.projectid}</th>
+                    <th>${task.duedate}</th>
+                    <th>${task.duetime}</th>
+                    <th>${task.duration}</th>
                     <th>
                         <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                     </th>
@@ -104,7 +88,7 @@ function obtainData() {
                 </tr>
                 `
 
-                dataViewerTable.append(taskHtml);
+                $('#dataViewerTable').append(taskHtml);
             })
         },
 
@@ -118,7 +102,7 @@ function obtainData() {
             console.log(err);
             window.alert("An error occurred");
         }
-    })
+    }); // End of ajax call
 };
 
 const allFunctions = {
