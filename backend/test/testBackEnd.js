@@ -23,6 +23,15 @@ const expect = chai.expect;
 const app = require('../app');
 
 describe('Backend Test', function(){
+    before('Checking env', function(){
+        if(process.env.NODE_ENV === 'UNIT_TEST'){
+            // Nothing to setup
+            return;
+        }
+        else{
+            this.skip();
+        }
+    });
     describe('Testing for basic controllers', function(){
         describe('Testing the validation of bulk insert', function(){
             it('Empty data', function(done){

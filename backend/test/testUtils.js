@@ -21,6 +21,15 @@ const utils = require('../utils/index');
 
 // Tests below
 describe('Utils test', function(){
+    before('Checking env', function(){
+        if(process.env.NODE_ENV === 'UNIT_TEST'){
+            // Nothing to setup
+            return;
+        }
+        else{
+            this.skip();
+        }
+    });
     describe('Testing for dbPraser', function(){
         describe('Testing for the all/common parsers', function(){
             describe('Testing the get data query params parser', function(){
