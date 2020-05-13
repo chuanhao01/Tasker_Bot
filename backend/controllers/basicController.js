@@ -29,7 +29,7 @@ const basicController = {
      * Constructor  
      * This is the constructor function to set up all the controllers and api endpoints for the basic module
      * 
-     * @param {express_app_obj} pool the express app object, kinda like the server obj
+     * @param {express_app_obj} app the express app object, kinda like the server obj
      * 
      */
     init(app){
