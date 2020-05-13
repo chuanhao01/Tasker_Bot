@@ -17,7 +17,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe("Load the basic data viewer", () => {
     it("Checks whether index.html loads properly", () => {
-        cy.visit("http://127.0.0.1:8080/files/");
+        cy.visit("http://127.0.0.1:8080/");
 
         // Check that the pop-up form is automatically hidden
         cy.get('#insert_editModal').should('not.be.visible');
@@ -71,13 +71,13 @@ describe("Check whether the navigation works", () => {
     
         cy.get('#resultNav').should('have.attr', 'href')
                             .then((href) => {
-                                cy.visit(`http://127.0.0.1:8080/files/${href}`);
+                                cy.visit(`http://127.0.0.1:8080/${href}`);
                             });
 
 
         cy.get('#homeNav').should('have.attr', 'href')
                             .then((href) => {
-                                cy.visit(`http://127.0.0.1:8080/files/${href}`);
+                                cy.visit(`http://127.0.0.1:8080/${href}`);
                             });
     });
 });
@@ -87,7 +87,7 @@ describe("Load the basic result viewer", () => {
         // Navigate to the result viewer page
         cy.get('#resultNav').should('have.attr', 'href')
                             .then((href) => {
-                                cy.visit(`http://127.0.0.1:8080/files/${href}`);
+                                cy.visit(`http://127.0.0.1:8080/${href}`);
                             });
 
         // Check that the table and chart are visible
