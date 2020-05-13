@@ -68,16 +68,16 @@
 
                 <!-- Filtering data: Choose attribue to filter by -->
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0">
-                    <select class="custom-select mb-0">
+                    <select class="custom-select mb-0" id="filterAttribute">
                         <option selected></option>
-                        <option value="1">ProjectId</option>
-                        <option value="2">Duration</option>
+                        <option value="1">projectId</option>
+                        <option value="2">duration</option>
                     </select>
                 </div>
     
                 <!-- Filtering data: Choose operation to filter attribute by -->
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0">
-                    <select class="custom-select mb-0">
+                    <select class="custom-select mb-0" id="filterOperation">
                         <option selected></option>
                         <option value="1">Less than</option>
                         <option value="2">Equal to</option>
@@ -87,16 +87,17 @@
 
                 <!-- Filtering data: Input value to complete the filter 'equation' -->
                 <div class="col-sm-2 col-md-2 col-lg-2 p-0">
-                    <input type="text" class="form-control" placeholder="Enter value..">
+                    <input type="text" class="form-control" id="filterInput" placeholder="Enter value..">
                 </div>
     
                 <div class="input-group-append col-sm-0 col-md-1 col-lg-1 p-0">
-                    <button class="btn btn-secondary" type="button">Filter</button>
+                    <button class="btn btn-secondary" type="button" id="filterBtn">Filter</button>
                 </div>
             </div>
         </div>
 
         <div class="dataViewer">
+            <!-- Table containing data -->
             <div class="row table-responsive" id="dataViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
@@ -115,6 +116,7 @@
                 </table>
             </div>
 
+            <!-- Pagination -->
             <div class="row">
                 <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
                     <ul class="pagination">
@@ -235,6 +237,38 @@
         })
 
         
+        // Filtering data
+        document.querySelector('#filterBtn').addEventListener('click', function() {
+            let filterAttribute = $('#filterAttribute option:selected').text();
+            let filterOperation = $('#filterOperation option:selected').text();
+            let filterInput = $('#filterInput').val();
+
+            var filterType;
+
+            // Determining the mathematical filter operation
+            if (filterOperation == 'Equal to') {
+                filterOperation = '=';
+            }
+            else if (filterOperation == 'Greater than') {
+                filterOperation = '>'
+            }
+            else {
+                filterOperation = '<'
+            }
+
+
+            // Determining the attribute to filter by
+            if (filterAttribute == 'projectId') {
+                filterType = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+                obtainData(projectId=`${filterType}`);
+            }
+            else if (filterAttribute == 'duration') {
+                filterType = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+                obtainData(duration=`${filterType}`);
+            };
+        })
+
+
         // Allow for data to be edited
         let editBtnArr = document.querySelectorAll("#editBtn");
         editBtnArr.forEach((btn) => {
@@ -253,7 +287,7 @@
         })
 
         
-        // Allow for the insertion of new data / editing of pre-existing data
+        // Allow for the insertion of new data
         let insertBtn = document.querySelector('#insertData');    
         insertBtn.addEventListener("click", function() {
             obtainData();
