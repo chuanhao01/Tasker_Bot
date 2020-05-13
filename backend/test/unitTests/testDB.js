@@ -8,8 +8,8 @@
  * @requires NPM:pg
  * @requires NPM:chai
  * @requires dotenv
- * @requires ../db/index.js
- * @requires ../scripts/index.js
+ * @requires ../../db/index.js
+ * @requires ../../scripts/index.js
  * 
  */
 
@@ -25,8 +25,8 @@ const expect = require('chai').expect;
 let pool;
 
 // Importing the custom model lib to test
-const model = require('../db/index');
-const scripts = require('../scripts/index');
+const model = require('../../db/index');
+const scripts = require('../../scripts/index');
 
 describe('DB unit test', function(){
     before('Checking env and setting pool accordingly', function(){

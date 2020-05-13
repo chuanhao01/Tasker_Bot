@@ -7,7 +7,7 @@
  * 
  * @requires NPM:pg
  * @requires NPM:chai
- * @requires ../utils/index
+ * @requires ../../utils/index
  * 
  */
 
@@ -17,7 +17,7 @@ const expect = require('chai').expect;
 const should = require('chai').should();
 
 // Importing the custom utils to test
-const utils = require('../utils/index');
+const utils = require('../../utils/index');
 
 // Tests below
 describe('Utils test', function(){
