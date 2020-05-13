@@ -7,32 +7,91 @@
  * 
  * @requires NPM:pg
  * @requires NPM:chai
+ * @requires dotenv
  * @requires ../db/index.js
+ * @requires ../scripts/index.js
  * 
  */
+
+// Loading dotenv for the test
+require('dotenv').config();
 
 //  Importing libs needed to run the test
 const {Pool} = require('pg');
 const assert = require('chai').assert;
-const should = require('chai').should();
 const expect = require('chai').expect;
 
 // Define global var for pool
 let pool;
-before(
-    function(){
-        // Generating the pool obj to connect to the database
-        pool = new Pool({
-            connectionString: process.env.PG_URL,
-            max: 5,
-        });
-    }
-);
 
 // Importing the custom model lib to test
 const model = require('../db/index');
+const scripts = require('../scripts/index');
 
-describe('DB test', function(){
+describe('DB unit test', function(){
+    before('Checking env and setting pool accordingly', function(){
+        if(process.env.NODE_ENV === 'UNIT_TEST'){
+            // If the test env is set up, continue to do normal setup
+            // Generating the pool obj to connect to the database
+            pool = new Pool({
+                connectionString: process.env.PG_URL,
+                max: 5,
+            });
+        }
+        else{
+            this.skip();
+        }
+    });
+    before('Init the db', function(done){
+        // For async calls to be done before the test
+        // Need to check if this should be passed along with the whole test suite
+        if(process.env.NODE_ENV !== 'UNIT_TEST'){
+            this.skip();
+        }
+        // If the env is set up properly, run the init script
+        scripts.db.dbInit(pool)
+        .then(
+            function(){
+                done();
+            }
+        )
+        .catch(done);
+    });
+    before('Placing in mock data', function(done){
+        // For async calls to be done before the test
+        // Need to check if this should be passed along with the whole test suite
+        if(process.env.NODE_ENV !== 'UNIT_TEST'){
+            this.skip();
+        }
+        const dummyTasks = [
+            "(1, 11, '1998-02-02', '01:32:00', 2)",
+            "(2, 11, '1998-02-02', '01:32:00', 2)",
+            "(3, 11, '1998-02-02', '01:32:00', 2)",
+            "(4, 11, '1998-02-02', '01:32:00', 2)",
+            "(5, 11, '1998-02-02', '01:32:00', 2)",
+            "(6, 11, '1998-02-02', '01:32:00', 2)",
+            "(7, 11, '1998-02-02', '01:32:00', 2)",
+            "(8, 11, '1998-02-02', '01:32:00', 2)",
+            "(9, 11, '1998-02-02', '01:32:00', 2)",
+            "(10, 11, '1998-02-02', '01:32:00', 2)"
+        ];
+        new Promise((resolve, reject) => {
+            resolve(
+                model.basic.insertTask(dummyTasks)
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                )
+            );
+        })
+        .then(
+            function(){
+                done();
+            }
+        )
+        .catch(done);
+    });
     describe('Checking if the initialized of DB is done properly', function(){
         it('Checking the initialized of the DB', function(done){
             const check_query = `
@@ -80,40 +139,6 @@ describe('DB test', function(){
         });
     });
     describe('Checking basic model functions', function(){
-        before('Populating dummy data for the test', function(done){
-            const dummyTasks = [
-                "(1, 11, '1998-02-02', '01:32:00', 2)",
-                "(2, 11, '1998-02-02', '01:32:00', 2)",
-                "(3, 11, '1998-02-02', '01:32:00', 2)",
-                "(4, 11, '1998-02-02', '01:32:00', 2)",
-                "(5, 11, '1998-02-02', '01:32:00', 2)",
-                "(6, 11, '1998-02-02', '01:32:00', 2)",
-                "(7, 11, '1998-02-02', '01:32:00', 2)",
-                "(8, 11, '1998-02-02', '01:32:00', 2)",
-                "(9, 11, '1998-02-02', '01:32:00', 2)",
-                "(10, 11, '1998-02-02', '01:32:00', 2)"
-            ];
-            new Promise((resolve, reject) => {
-                resolve(
-                    model.basic.insertTask(dummyTasks)
-                    .catch(
-                        function(err){
-                            done(err);
-                        }
-                    )
-                );
-            })
-            .then(
-                function(){
-                    done();
-                }
-            )
-            .catch(
-                function(err){
-                    done(err);
-                }
-            );
-        });
         it('Checking the insert model of the basic db', function(done){
             const test_tasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
             new Promise((resolve, reject) => {
@@ -234,19 +259,6 @@ describe('DB test', function(){
                     done(err);
                 }
             );
-        });
-        /*
-        This is to make sure the mock data added is deleted after its done
-        */
-        after('Deleting the mocked data used for testing', function(){
-            new Promise((resolve) => {
-                pool.query(`
-                DELETE FROM TASKSBASIC
-                WHERE taskId IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21)
-                `, function(err, data){
-                    return;
-                });
-            });
         });
     });
 });
