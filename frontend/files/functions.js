@@ -70,7 +70,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
             // Appending each task to a row in the table
             allTaskData.forEach((task) => {
                 const taskHtml = `
-                <tr>
+                <tr id="data_${task.taskid}">
                     <th scope="row">${task.taskid}</th>
                     <th>${task.projectid}</th>
                     <th>${task.duedate}</th>
