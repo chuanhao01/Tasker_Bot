@@ -303,7 +303,6 @@
 
         // Handling Pagination
         let paginationLinksArr = document.querySelectorAll('.page-link');
-
         paginationLinksArr.forEach((paginationLink) => {
             paginationLink.addEventListener("click", function() {
                 var paginationType;
@@ -314,20 +313,22 @@
                     obtainData(page=`page=${paginationType}`);
 
                     // Set the var currentPage to the new page
-                    currentPage = paginationType;
+                    currentPage = parseInt(paginationType);
                 }
                 else if (paginationType == 'previous') {
                     obtainData(page=`page=${currentPage - 1}`);
 
                     // Set the var currentPage to the new page
-                    currentPage = currentPage - 1;
+                    currentPage -= 1;
                 }
                 else if (paginationType == 'next') {
                     obtainData(page=`page=${currentPage + 1}`);
 
                     // Set the var currentPage to the new page
-                    currentPage = currentPage - 1;
+                    currentPage += 1;
                 };
+
+                console.log(currentPage)
             });
         });
 
