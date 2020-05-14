@@ -199,6 +199,9 @@
         // Obtain all the data in the data viewer table everytime the page is loaded
         window.document.onload = obtainData();
 
+        // Define the current page (starting page) as 1 -> This will be updated everytime we navigate to a new page
+        var currentPage = 1;
+
         // Define the input fields in the pop-up form for usage later on
         var taskID = document.querySelector('#taskID');
         var projectID = document.querySelector('#projectID');
@@ -309,7 +312,22 @@
                 // In the event that the page-link clicked was not 'previous' or 'next'
                 if (paginationType != 'previous' && paginationType != 'next') {
                     obtainData(page=`page=${paginationType}`);
+
+                    // Set the var currentPage to the new page
+                    currentPage = paginationType;
                 }
+                else if (paginationType == 'previous') {
+                    obtainData(page=`page=${currentPage - 1}`);
+
+                    // Set the var currentPage to the new page
+                    currentPage = currentPage - 1;
+                }
+                else if (paginationType == 'next') {
+                    obtainData(page=`page=${currentPage + 1}`);
+
+                    // Set the var currentPage to the new page
+                    currentPage = currentPage - 1;
+                };
             });
         });
 
