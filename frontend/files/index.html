@@ -103,10 +103,10 @@
                     <thead class="thead-light">
                         <tr>
                             <th class="sortBtn asc" id="sort_taskId">Task ID &#9660;</th>
-                            <th class="sortBtn asc" id="sort_projectId">Project ID &#9660;</th>
+                            <th class="sortBtn asc filteredBy_no" id="sort_projectId">Project ID &#9660;</th>
                             <th class="sortBtn asc" id="sort_duedate">Due Date &#9660;</th>
                             <th class="sortBtn asc" id="sort_duetime">Due Time &#9660;</th>
-                            <th class="sortBtn asc" id="sort_duration">Duration (in Hrs) &#9660;</th>
+                            <th class="sortBtn asc filteredBy_no" id="sort_duration">Duration (in Hrs) &#9660;</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -243,8 +243,6 @@
             let filterOperation = $('#filterOperation option:selected').text();
             let filterInput = $('#filterInput').val();
 
-            var filterType;
-
             // Determining the mathematical filter operation
             if (filterOperation == 'Equal to') {
                 filterOperation = '=';
@@ -256,17 +254,42 @@
                 filterOperation = '<'
             }
 
-
-            // Determining the attribute to filter by
+            
+            // If the current filter attribute is projectId
             if (filterAttribute == 'projectId') {
-                filterType = `${filterAttribute}[${filterOperation}]=${filterInput}`;
-                obtainData(projectId=`${filterType}`);
+                var filterType_projectId = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+                var currentFilter_duration = $('#sort_duration').attr('class').split(' ')[2];
+
+                // Change the className for projectId to reflect that it has already been filtered once
+                $('#sort_projectId').toggleClass('filteredBy_no filteredBy_yes');
+                
+                // Have not filtered by duration yet -> No need to pass in 2 arguments
+                if (currentFilter_duration == 'filteredBy_no') {
+                    obtainData(projectId=`${filterType_projectId}`);
+                }
+                // Already filtered by duration -> Pass in 2 arguments
+                else {
+                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`);
+                };
             }
-            else if (filterAttribute == 'duration') {
-                filterType = `${filterAttribute}[${filterOperation}]=${filterInput}`;
-                obtainData(duration=`${filterType}`);
+
+            // If the current filter attribute is duration
+            else {
+                var filterType_duration = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+                var currentFilter_projectId = $('#sort_projectId').attr('class').split(' ')[2];
+
+                // Change the className for duration to reflect that it has already been filtered once
+                $('#sort_duration').toggleClass('filteredBy_no filteredBy_yes');
+
+                // Have not filtered by projectId yet
+                if (currentFilter_projectId == 'filteredBy_no') {
+                    obtainData(duration=`${filterType}`);
+                }
+                else {
+                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`);
+                }
             };
-        })
+        });
 
 
         // Allow for data to be edited
