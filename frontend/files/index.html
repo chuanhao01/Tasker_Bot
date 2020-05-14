@@ -207,10 +207,10 @@
         // Obtain all the data in the data viewer table everytime the page is loaded
         window.document.onload = obtainData();
 
-        // Define the current page (starting page) as 1 -> This will be updated everytime we navigate to a new page
+        // Define the default starting page as 1 -> This will be updated everytime we navigate to a new page
         var currentPage = 1;
 
-        // Define the current pageNum as 10 (default value) -> This will be updated everytime we change the desired pageNum
+        // Define the default pageNum as 10 -> This will be updated everytime we change the desired pageNum
         var pageNumType = 10;
 
         // Define the input fields in the pop-up form for usage later on
@@ -243,7 +243,7 @@
                     sortType += '.asc';
                 };
                 
-                obtainData(sortBy=`sortBy=${sortType}`);
+                obtainData(sortBy=`sortBy=${sortType}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
             })
         })
 
@@ -283,11 +283,11 @@
                 
                 // Have not filtered by duration yet -> No need to pass in 2 arguments
                 if (currentFilter_duration == 'filteredBy_no') {
-                    obtainData(projectId=`${filterType_projectId}`);
+                    obtainData(projectId=`${filterType_projectId}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
                 }
                 // Already filtered by duration -> Pass in 2 arguments
                 else {
-                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`);
+                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
                 };
             }
 
@@ -303,10 +303,10 @@
 
                 // Have not filtered by projectId yet
                 if (currentFilter_projectId == 'filteredBy_no') {
-                    obtainData(duration=`${filterType_duration}`);
+                    obtainData(duration=`${filterType_duration}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
                 }
                 else {
-                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`);
+                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`,page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
                 }
             };
         });
@@ -350,6 +350,8 @@
                 obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
             }
         });
+
+
 
         // Allow for data to be edited
         let editBtnArr = document.querySelectorAll("#editBtn");
