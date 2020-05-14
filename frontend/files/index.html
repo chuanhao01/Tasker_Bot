@@ -218,18 +218,15 @@
                 // Obtain the id of the button that was clicked and obtain the column name
                 var sortType = this.id.split('_')[1];
 
+                // Change the className of the button for further usage
+                $(this).toggleClass('asc desc')
+
                 // Define whether to sort in ascending or descending order
                 if (currentSort == 'asc') {
                     sortType += ".desc";
-
-                    // Change the className of the button for further usage
-                    $('.sortBtn').toggleClass('asc desc')
                 }
                 else {
                     sortType += '.asc';
-
-                    // Change the className of the button for further usage
-                    $('.sortBtn').toggleClass('asc desc')
                 };
                 
                 obtainData(sortBy=`sortBy=${sortType}`);
