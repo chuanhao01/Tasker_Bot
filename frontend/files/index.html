@@ -210,6 +210,9 @@
         // Define the current page (starting page) as 1 -> This will be updated everytime we navigate to a new page
         var currentPage = 1;
 
+        // Define the current pageNum as 10 (default value) -> This will be updated everytime we change the desired pageNum
+        var pageNumType = 10;
+
         // Define the input fields in the pop-up form for usage later on
         var taskID = document.querySelector('#taskID');
         var projectID = document.querySelector('#projectID');
@@ -318,19 +321,19 @@
                 
                 // In the event that the page-link clicked was not 'previous' or 'next'
                 if (paginationType != 'previous' && paginationType != 'next') {
-                    obtainData(page=`page=${paginationType}`);
+                    obtainData(page=`page=${paginationType}`, pageNum=`pageNum=${pageNumType}`);
 
                     // Set the var currentPage to the new page
                     currentPage = parseInt(paginationType);
                 }
                 else if (paginationType == 'previous') {
-                    obtainData(page=`page=${currentPage - 1}`);
+                    obtainData(page=`page=${currentPage - 1}`, pageNum=`pageNum=${pageNumType}`);
 
                     // Set the var currentPage to the new page
                     currentPage -= 1;
                 }
                 else if (paginationType == 'next') {
-                    obtainData(page=`page=${currentPage + 1}`);
+                    obtainData(page=`page=${currentPage + 1}`, pageNum=`pageNum=${pageNumType}`);
 
                     // Set the var currentPage to the new page
                     currentPage += 1;
@@ -342,11 +345,11 @@
         // Handling pageNum
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                var pageNumType = $(this).val();
+                pageNumType = $(this).val();
                 
-                obtainData(pageNum=`pageNum=${pageNumType}`);
+                obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
             }
-        })
+        });
 
         // Allow for data to be edited
         let editBtnArr = document.querySelectorAll("#editBtn");
