@@ -251,14 +251,21 @@
                 filterOperation = '<'
             }
 
+            // Checking the status of the current filter
+            var currentFilter_duration = $('#sort_duration').attr('class').split(' ')[2];
+            var currentFilter_projectId = $('#sort_projectId').attr('class').split(' ')[2];
+
             
             // If the current filter attribute is projectId
             if (filterAttribute == 'projectId') {
                 var filterType_projectId = `${filterAttribute}[${filterOperation}]=${filterInput}`;
-                var currentFilter_duration = $('#sort_duration').attr('class').split(' ')[2];
 
-                // Change the className for projectId to reflect that it has already been filtered once
-                $('#sort_projectId').toggleClass('filteredBy_no filteredBy_yes');
+                // Check if there is already a filter being applied to projectId
+                if (currentFilter_projectId == 'filteredBy_no') {
+                    // Change the className for projectId to reflect that it has already been filtered once
+                    $('#sort_projectId').toggleClass('filteredBy_no filteredBy_yes');
+                };
+                /* In the event that there is already a filter for the projectId, the className in the column already reflects such and the current filter is replaced by the new filter. This is also true for duration */
                 
                 // Have not filtered by duration yet -> No need to pass in 2 arguments
                 if (currentFilter_duration == 'filteredBy_no') {
@@ -273,14 +280,16 @@
             // If the current filter attribute is duration
             else {
                 var filterType_duration = `${filterAttribute}[${filterOperation}]=${filterInput}`;
-                var currentFilter_projectId = $('#sort_projectId').attr('class').split(' ')[2];
 
-                // Change the className for duration to reflect that it has already been filtered once
-                $('#sort_duration').toggleClass('filteredBy_no filteredBy_yes');
+                // Check if there is already a filter being applied to duration
+                if (currentFilter_duration == 'filteredBy_no') {
+                    // Change the className for duration to reflect that it has already been filtered once
+                    $('#sort_duration').toggleClass('filteredBy_no filteredBy_yes');
+                };
 
                 // Have not filtered by projectId yet
                 if (currentFilter_projectId == 'filteredBy_no') {
-                    obtainData(duration=`${filterType}`);
+                    obtainData(duration=`${filterType_duration}`);
                 }
                 else {
                     obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`);
