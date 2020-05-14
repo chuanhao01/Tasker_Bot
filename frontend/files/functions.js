@@ -47,8 +47,6 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * @params {string} sortBy The column to be sorted by
  */
 function obtainData(projectId, duration, page, pageNum, sortBy) {
-    // For testing pagination while pageNum has not been implemented (REMOVE THIS BEFORE OFFICIAL SUBMISSION)
-    pageNum = 'pageNum=5';
     var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
 
     $.ajax({

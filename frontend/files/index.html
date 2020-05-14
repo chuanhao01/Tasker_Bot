@@ -116,8 +116,9 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
+            <!-- pagination & page size display -->
             <div class="row">
+                <!-- page -->
                 <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
                     <ul class="pagination">
                         <li class="page-item">
@@ -143,16 +144,23 @@
                     </ul>
                 </nav>
     
-                <div class="ml-auto p-2 col-lg-6 col-md-6 col-sm-6 text-right">
-                    <h6 class="lead">1 of 1 pages (4 items)</h6>
+                <!-- pageNum -->
+                <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
+                    <div class="input-group row">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Show: </span>
+                        </div>
+                        <input type="text" class="form-control" id="input_pageNum" placeholder='10'>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
     <div class="modal" id="insert_editModal" tabindex="1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -327,11 +335,18 @@
                     // Set the var currentPage to the new page
                     currentPage += 1;
                 };
-
-                console.log(currentPage)
             });
         });
 
+
+        // Handling pageNum
+        document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                var pageNumType = $(this).val();
+                
+                obtainData(pageNum=`pageNum=${pageNumType}`);
+            }
+        })
 
         // Allow for data to be edited
         let editBtnArr = document.querySelectorAll("#editBtn");
