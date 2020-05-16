@@ -15,9 +15,9 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
 });
 
-describe("Load the basic data viewer", () => {
-    it("Checks whether index.html loads properly", () => {
-        cy.visit("http://127.0.0.1:8080/");
+describe("Load the basic data and result viewer", () => {
+    it("Checks whether the webpage loads properly", () => {
+        cy.visit("http://127.0.0.1:8080/index.html");
 
         // Check that the pop-up form is automatically hidden
         cy.get('#insert_editModal').should('not.be.visible');
@@ -29,12 +29,26 @@ describe("Load the basic data viewer", () => {
         cy.get('#insert_editModal').should('be.visible');
         cy.get('#addNewTask_closeBtn').click()
         cy.get('#insert_editModal').should('not.be.visible');
+
+
+        // Navigate to the result viewer page
+        cy.get('#resultNav').should('have.attr', 'href')
+                            .then((href) => {
+                                cy.visit(`http://127.0.0.1:8080/${href}`);
+                            });
+
+        // Check that the table and chart are visible
+        cy.get('#resultTable').should('be.visible');
+        cy.get('#resultChart').should('be.visible');
+
+
+        // Return to the basic data viewer (homepage -> index.html)
+        cy.visit("http://127.0.0.1:8080/index.html");
     });
 });
 
 
-
-describe("Unit testing for frontend insert task", () => {
+describe("Unit testing for frontend insert task with mock data", () => {
     it("Tests whether the insertion of tasks works correctly, inserting the correct data", () => {
         // Fake data
         var ftaskID = "1";
@@ -65,6 +79,7 @@ describe("Unit testing for frontend insert task", () => {
     });
 });
 
+
 describe("Check whether the navigation works", () => {
     it("Clicks the navigation links and checks that the new page is correct", () => {
         var successfulNavigation;
@@ -82,16 +97,4 @@ describe("Check whether the navigation works", () => {
     });
 });
 
-describe("Load the basic result viewer", () => {
-    it("Checks that both the table and the chart is loaded", () => {
-        // Navigate to the result viewer page
-        cy.get('#resultNav').should('have.attr', 'href')
-                            .then((href) => {
-                                cy.visit(`http://127.0.0.1:8080/${href}`);
-                            });
 
-        // Check that the table and chart are visible
-        cy.get('#resultTable').should('be.visible');
-        cy.get('#resultChart').should('be.visible');
-    })
-});
