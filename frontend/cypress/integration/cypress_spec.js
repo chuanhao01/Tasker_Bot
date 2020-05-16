@@ -16,7 +16,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 
 describe("Load the basic data and result viewer", () => {
-    it("Checks whether the webpage loads properly", () => {
+    it("Checks whether the webpages loads properly", () => {
         cy.visit("http://127.0.0.1:8080/index.html");
 
         // Check that the pop-up form is automatically hidden
@@ -44,6 +44,7 @@ describe("Load the basic data and result viewer", () => {
 
         // Return to the basic data viewer (homepage -> index.html)
         cy.visit("http://127.0.0.1:8080/index.html");
+        cy.wait(1000);
     });
 });
 
@@ -98,3 +99,9 @@ describe("Check whether the navigation works", () => {
 });
 
 
+describe("Check whether the GET data is working", () => {
+    it("Checks to see whether the data viewer table is empty", () => {
+        // Checks that the table has rows ('tr') and each row has data ('th')
+        cy.get('#tableBody').children('tr').children('th');
+    })
+})
