@@ -150,7 +150,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Show: </span>
                         </div>
-                        <input type="text" class="form-control" id="input_pageNum" placeholder='10'>
+                        <input type="text" class="form-control" id="input_pageNum">
                     </div>
                 </div>
             </div>
@@ -343,6 +343,7 @@
 
 
         // Handling pageNum
+        document.querySelector('#input_pageNum').placeholder = `${pageNumType}`;
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 pageNumType = $(this).val();
