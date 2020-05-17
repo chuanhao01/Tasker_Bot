@@ -10,6 +10,7 @@
 
 // Import all the functions that we are using for the frontend
 const allFunctions = require('../../files/functions.js');
+var numDataRows = 10;
 
 // Catch any uncaught errors which likely results from application code and not Cypress
 Cypress.on('uncaught:exception', (err, runnable) => {
@@ -47,7 +48,7 @@ describe("Load the basic data and result viewer", () => {
 
         // Return to the basic data viewer (homepage -> index.html)
         cy.visit("http://127.0.0.1:8080/index.html");
-        cy.wait(1000);
+        cy.wait(2000);
     });
 });
 
@@ -104,7 +105,14 @@ describe("Check whether the navigation works", () => {
 
 describe("Check whether the GET data is working", () => {
     it("Checks to see whether the data viewer table is empty", () => {
-        // Checks that the table has rows ('tr') and each row has data ('th')
-        cy.get('#tableBody').children('tr').children('th');
+        // Checks that the table has rows ('tr')
+        cy.get('#tableBody').children('tr').then(($tr) => {
+            // Expecting there to be 10 rows of data (DEV)
+            expect($tr).to.have.length(numDataRows); 
+
+            // Check that each row has 7 columns of data ('th')
+            expect($tr.children()).to.have.length(numDataRows * 7);
+        });
+
     })
 })
