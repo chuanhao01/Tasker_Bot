@@ -204,14 +204,15 @@
         Buttons which require onclick() events will also be handled here for easy readability
     -->
     <script>
-        // Obtain all the data in the data viewer table everytime the page is loaded
-        window.document.onload = obtainData();
-
         // Define the default starting page as 1 -> This will be updated everytime we navigate to a new page
         var currentPage = 1;
 
         // Define the default pageNum as 10 -> This will be updated everytime we change the desired pageNum
         var pageNumType = 10;
+
+        // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
+        window.document.onload = obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+
 
         // Define the input fields in the pop-up form for usage later on
         var taskID = document.querySelector('#taskID');
