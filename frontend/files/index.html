@@ -349,7 +349,7 @@
         document.querySelector('#input_pageNum').placeholder = `${pageNumType}`;
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                pageNumType = $(this).val();
+                pageNumType = $(this).val().trim();
                 
                 obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
             }
