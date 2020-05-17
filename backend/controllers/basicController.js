@@ -18,6 +18,12 @@ const v = require('validator');
 const utils = require('../utils/index');
 const model = require('../db/index');
 
+const configs = {
+    idMin: 0,
+    idMax: 9999999999,
+    durationMin: 1,
+};
+
 /**
  * @module
  * The module holding all the controllers and api endpoints for the basic problem
@@ -41,10 +47,10 @@ const basicController = {
                 .custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
             body('data.*.taskId').exists()
-                .isInt({min: 0, max: 9999999999}),
+                .isInt({min: configs.idMin, max: configs.idMax}),
             // Same for projectId
             body('data.*.projectId').exists()
-                .isInt({min: 0, max: 9999999999}),
+                .isInt({min: configs.idMin, max: configs.idMax}),
             // Checking if date given is following format and is valid
             body('data.*.dueDate').exists()
                 .custom((value) => {return /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/g.test(value);})
@@ -54,7 +60,7 @@ const basicController = {
                 .custom((value) => {return !(value == '2400');})
                 .custom((value) => {return moment(value, 'HHmm').isValid();}),
             body('data.*.duration').exists()
-                .isInt({min: 1, max:1000}),
+                .isInt({min: configs.durationMin}),
         ], function(req, res){
             // Check the validation
             const validationError = validationResult(req);
@@ -118,13 +124,13 @@ const basicController = {
                 .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
                 .custom((value) => {return Object.values(value).length == 1;})
                 .custom((value) => {return Object.values(value)[0] != '';})
-                .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 9999999999});}),
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.idMin, max: configs.idMax});}),
             query('duration').optional()
                 .custom((value) => {return Object.keys(value).length == 1;})
                 .custom((value) => {return ['>', '<', '=', '>=', '<='].includes(Object.keys(value)[0]);})
                 .custom((value) => {return Object.values(value).length == 1;})
                 .custom((value) => {return Object.values(value)[0] != '';})
-                .custom((value) => {return v.isInt(Object.values(value)[0], {min:0, max: 1000});}),
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.durationMin});}),
             query('page').optional()
                 .isInt({min: 1}),
             query('pageNum').optional()
