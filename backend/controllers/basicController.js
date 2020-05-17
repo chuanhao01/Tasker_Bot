@@ -202,6 +202,87 @@ const basicController = {
                 }
             );
         });
+        /**
+         * @API
+         * This is the basic problem api to get the number of the lastpage based on the optional query supplied
+         * This api should be called with the above get data api
+         * 
+         */
+        app.get('/basic/data/lastpage',[
+            query('projectId').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.idMin, max: configs.idMax});}),
+            query('duration').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '=', '>=', '<='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.durationMin});}),
+            query('page').optional()
+                .isInt({min: 1}),
+            query('pageNum').optional()
+                .isInt({min: 1}),
+            query('sortBy').optional()
+                .custom((value) => {return utils.v.basic.getSortByQuery(value);}),
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                // console.log(validationError.mapped());
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
+                return;
+            }
+            // Parse the query params to be used in the db call
+            let queryConditions = utils.dbParser.all.getDataQueryParams(req.query);
+            // Removing the last line, so that it removes the limit
+            queryConditions = queryConditions.replace(/\n.*$/, '');
+            new Promise((resolve) => {
+                resolve(
+                    model.basic.getData(queryConditions)
+                    .catch(
+                        function(err){
+                            // If the db has an error
+                            res.status(500).send({
+                                'error': 'Database error',
+                                'code': 500
+                            });
+                            throw(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    const rowCount = pgRes.rowCount;
+                    let lastPage;
+                    if(req.query.pageNum){
+                        lastPage = Math.ceil(rowCount/req.query.pageNum);
+                    }
+                    else{
+                        lastPage = Math.ceil(rowCount/10);
+                    }
+                    res.status(200).send({
+                        'result': 'success',
+                        'data': {
+                            'lastPage': lastPage,
+                        }
+                    });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    // console.log(err);
+                    return;
+                }
+            );
+        });
     }
 };
 
