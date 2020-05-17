@@ -71,11 +71,11 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
             allTaskData.forEach((task) => {
                 const taskHtml = `
                 <tr class="dataRow" id="data_${task.taskid}">
-                    <th scope="row">${task.taskid}</th>
-                    <th>${task.projectid}</th>
-                    <th>${task.duedate}</th>
-                    <th>${task.duetime}</th>
-                    <th>${task.duration}</th>
+                    <th scope="row" id="taskId_data">${task.taskid}</th>
+                    <th id="projectId_data">${task.projectid}</th>
+                    <th id="duedate_data">${task.duedate}</th>
+                    <th id="duetime_data">${task.duetime}</th>
+                    <th id="duration_data">${task.duration}</th>
                     <th>
                         <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
                     </th>
