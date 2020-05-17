@@ -103,7 +103,7 @@ describe("Check whether the navigation works", () => {
 });
 
 
-describe("Check whether the GET data is working", () => {
+describe("Checks whether the GET data is working -> dataViewerTable", () => {
     it("Checks to see whether the data viewer table is empty", () => {
         // Checks that the table has rows ('tr')
         cy.get('#tableBody').children('tr').then(($tr) => {
@@ -113,6 +113,25 @@ describe("Check whether the GET data is working", () => {
             // Check that each row has 7 columns of data ('th')
             expect($tr.children()).to.have.length(numDataRows * 7);
         });
+    });
+});
 
-    })
-})
+
+describe("Checks whether the GET data is working -> pageNum", () => {
+    it("Changes the pageNum and checks whether the number of rows of data changes accordingly", () => {
+        // Changing the pageNum for the purpose of this test
+        numDataRows = 5;
+
+        // Fills in the pageNum input and presses 'enter'
+        cy.get('#input_pageNum').type(`${numDataRows}{enter}`);
+        cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
+
+        // Repeats the test for the dataViewerTable but with the new pageNum
+        cy.get('#tableBody').children('tr').then(($tr) => {
+            expect($tr).to.have.length(numDataRows); 
+
+            // Check that each row has 7 columns of data ('th')
+            expect($tr.children()).to.have.length(numDataRows * 7);
+        });
+    });
+});
