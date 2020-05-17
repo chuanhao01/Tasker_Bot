@@ -2,6 +2,8 @@
  * @fileoverview This file is the code for Cypress unit testing. 
  * To run, cd to frontend and run the cmd '..\node_modules\.bin\cypress open' in the terminal
  * 
+ * Note that this file makes tests with the same 10 rows of data where the only difference is an incremental * taskId
+ * 
  * @author Sherisse Tan
  * 
  * @requires NPM:Cypress
@@ -126,7 +128,7 @@ describe("Checks whether the GET data is working -> pageNum", () => {
         cy.get('#input_pageNum').type(`${numDataRows}{enter}`);
         cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
 
-        // Repeats the test for the dataViewerTable but with the new pageNum
+        // Repeats the same test for the dataViewerTable but with the new pageNum
         cy.get('#tableBody').children('tr').then(($tr) => {
             expect($tr).to.have.length(numDataRows); 
 
@@ -135,3 +137,74 @@ describe("Checks whether the GET data is working -> pageNum", () => {
         });
     });
 });
+
+
+describe("Checks whether the GET data is working -> Filtering", () => {
+    it("Gives an equation to filter all the data by and checks that the filter works appropriately", () => {
+        var maxNum = 20;
+        var minNum = 10;
+
+        // Selects 'projectId' in the dropdown for the filter attribute and run through diff filters
+        cy.get('#filterAttribute').select('projectId').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('11');
+            cy.get('#filterBtn').click();
+
+            // Check that all remaining data has projectId = 11
+            cy.get('#projectId_data').should(($th) => {
+                expect($th).to.contain('11');
+            });
+
+            // Check that there is no data (table should only have 1 element -> column attributes)
+            cy.get('#filterInput').clear();
+            cy.get('#filterInput').type(`${minNum}`);
+            cy.get('#filterBtn').click();
+            cy.get('#tableBody').should(($tableBody) => {
+                expect($tableBody).to.have.length(1);
+            });
+
+
+            // Check filterOperation == 'Greater than'
+            cy.get('#filterInput').clear();
+            cy.get('#filterOperation').select('Greater than');
+            cy.get('#filterInput').type(`${minNum}`);
+            cy.get('#filterBtn').click();  
+            
+            // Check that all remaining data has projectId > 10
+            cy.get('#projectId_data').should(($th) => {
+                var dataValue = parseInt($th.text());
+                expect(dataValue).to.be.greaterThan(minNum);
+            });
+
+            // Check that there is no data
+            cy.get('#filterInput').clear();
+            cy.get('#filterInput').type(`${maxNum}`);
+            cy.get('#filterBtn').click();
+            cy.get('#tableBody').should(($tableBody) => {
+                expect($tableBody).to.have.length(1);
+            });
+
+
+            // Check filterOperation == 'Less than'
+            cy.get('#filterInput').clear();
+            cy.get('#filterOperation').select('Less than');
+            cy.get('#filterInput').type(`${maxNum}`);
+            cy.get('#filterBtn').click();  
+            
+            // Check that all remaining data has projectId > 10
+            cy.get('#projectId_data').should(($th) => {
+                var dataValue = parseInt($th.text());
+                expect(dataValue).to.be.lessThan(maxNum);
+            });
+
+            // Check that there is no data
+            cy.get('#filterInput').clear();
+            cy.get('#filterInput').type(`${minNum}`);
+            cy.get('#filterBtn').click();
+            cy.get('#tableBody').should(($tableBody) => {
+                expect($tableBody).to.have.length(1);
+            })
+        });
+    })
+})
