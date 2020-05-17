@@ -40,6 +40,21 @@ const basicController = {
      */
     init(app){
         // Bulk Insert API
+        /**
+         * @API
+         * This is the basic problem bulk insert API
+         * As for this request, refer to api.md for more deatils.
+         * 
+         * Expected a json object as part of the request
+         * {
+         *     data: [
+         *         {
+         *          taskId, projectId, dueDate, dueTime, duration
+         *         }
+         *     ],
+         * }
+         * 
+         */
         app.post('/basic/insert', [
             // Checking if the main data object exists in the request
             body('data').exists()
@@ -114,10 +129,16 @@ const basicController = {
             );
         });
         // Get basic data
-        /*
-        Example of a get url with query params
-        localhost:3000/basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&page=2&pageNum=3
-        */
+        /**
+         * @API
+         * This is the basic problem get data API for the basic data viewer
+         * As for this request, refer to api.md for more deatils.
+         * 
+         * Expected optional querys:
+         * ?projectId[>]=Int&duration[<]=Int&sortBy=attribute.order,&page=Int&pageNum=Int
+         * localhost:3000/basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&page=2&pageNum=3
+         * 
+         */
         app.get('/basic/data',[
             query('projectId').optional()
                 .custom((value) => {return Object.keys(value).length == 1;})
