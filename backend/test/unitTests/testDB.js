@@ -14,7 +14,9 @@
  */
 
 // Loading dotenv for the test
-require('dotenv').config();
+before('Making sure dotenv is loaded', function(){
+    require('dotenv').config();
+});
 
 //  Importing libs needed to run the test
 const {Pool} = require('pg');
@@ -117,13 +119,13 @@ describe('DB unit test', function(){
                         Schema: 'public',
                         Name: 'tasksadvanced',
                         Type: 'table',
-                        Owner: 'chuanhao01'
+                        Owner: 'ppcwyyvc'
                     },
                     {
                         Schema: 'public',
                         Name: 'tasksbasic',
                         Type: 'table',
-                        Owner: 'chuanhao01'
+                        Owner: 'ppcwyyvc'
                     }
                     ];
                     // Checking if the result is the same
