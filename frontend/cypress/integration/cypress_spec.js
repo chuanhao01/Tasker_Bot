@@ -1,4 +1,7 @@
 /**
+ * @fileoverview This file is the code for Cypress unit testing. 
+ * To run, cd to frontend and run the cmd '..\node_modules\.bin\cypress open' in the terminal
+ * 
  * @author Sherisse Tan
  * 
  * @requires NPM:Cypress
