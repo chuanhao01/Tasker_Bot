@@ -139,8 +139,13 @@ describe("Checks whether the GET data is working -> pageNum", () => {
 });
 
 
-describe("Checks whether the GET data is working -> Filtering", () => {
+describe("Checks whether the GET data is working -> Filtering projectId", () => {
     it("Gives an equation to filter all the data by and checks that the filter works appropriately", () => {
+        // Refresh the data in the dataViewerTable
+        numDataRows = 10;
+        cy.get('#input_pageNum').type(`${numDataRows}{enter}`);
+        cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
+        
         var maxNum = 20;
         var minNum = 10;
 
@@ -192,8 +197,82 @@ describe("Checks whether the GET data is working -> Filtering", () => {
             cy.get('#filterInput').type(`${maxNum}`);
             cy.get('#filterBtn').click();  
             
-            // Check that all remaining data has projectId > 10
+            // Check that all remaining data has projectId < 20
             cy.get('#projectId_data').should(($th) => {
+                var dataValue = parseInt($th.text());
+                expect(dataValue).to.be.lessThan(maxNum);
+            });
+
+            // Check that there is no data
+            cy.get('#filterInput').clear();
+            cy.get('#filterInput').type(`${minNum}`);
+            cy.get('#filterBtn').click();
+            cy.get('#tableBody').should(($tableBody) => {
+                expect($tableBody).to.have.length(1);
+            })
+        });
+    });
+});
+
+describe("Checks whether the GET data is working -> Filtering duration", () => {
+    it("Gives an equation to filter all the data by and checks that the filter works appropriately", () => {
+        // Refresh the data in the dataViewerTable
+        cy.get('#input_pageNum').type(`${numDataRows}{enter}`);
+        cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
+        
+        var maxNum = 3;
+        var minNum = 1;
+
+        // Selects 'projectId' in the dropdown for the filter attribute and run through diff filters
+        cy.get('#filterAttribute').select('duration').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('2');
+            cy.get('#filterBtn').click();
+
+            // Check that all remaining data has projectId = 2
+            cy.get('#duration_data').should(($th) => {
+                expect($th).to.contain('2');
+            });
+
+            // Check that there is no data (table should only have 1 element -> column attributes)
+            cy.get('#filterInput').clear();
+            cy.get('#filterInput').type(`${minNum}`);
+            cy.get('#filterBtn').click();
+            cy.get('#tableBody').should(($tableBody) => {
+                expect($tableBody).to.have.length(1);
+            });
+
+
+            // Check filterOperation == 'Greater than'
+            cy.get('#filterInput').clear();
+            cy.get('#filterOperation').select('Greater than');
+            cy.get('#filterInput').type(`${minNum}`);
+            cy.get('#filterBtn').click();  
+            
+            // Check that all remaining data has projectId > 1
+            cy.get('#duration_data').should(($th) => {
+                var dataValue = parseInt($th.text());
+                expect(dataValue).to.be.greaterThan(minNum);
+            });
+
+            // Check that there is no data
+            cy.get('#filterInput').clear();
+            cy.get('#filterInput').type(`${maxNum}`);
+            cy.get('#filterBtn').click();
+            cy.get('#tableBody').should(($tableBody) => {
+                expect($tableBody).to.have.length(1);
+            });
+
+
+            // Check filterOperation == 'Less than'
+            cy.get('#filterInput').clear();
+            cy.get('#filterOperation').select('Less than');
+            cy.get('#filterInput').type(`${maxNum}`);
+            cy.get('#filterBtn').click();  
+            
+            // Check that all remaining data has projectId < 3
+            cy.get('#duration_data').should(($th) => {
                 var dataValue = parseInt($th.text());
                 expect(dataValue).to.be.lessThan(maxNum);
             });
