@@ -161,4 +161,12 @@ describe('Utils test', function(){
             });
         });
     });
+    describe('Test for data parser', function(){
+        describe('For basic parser', function(){
+            describe('Parsing get data', function(){
+                // To do
+                it('Making sure format is done correctly');
+            });
+        });
+    });
 });

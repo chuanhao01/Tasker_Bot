@@ -190,7 +190,7 @@ const basicController = {
                 function(pgRes){
                     res.status(200).send({
                         'result': 'success',
-                        'data': pgRes.rows,
+                        'data': utils.dataParser.basic.getData(pgRes.rows),
                     });
                 }
             )
