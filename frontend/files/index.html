@@ -196,7 +196,7 @@
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
         window.document.onload = obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
-        //window.document.onload = obtainTotalPage(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+        window.document.onload = obtainTotalPage(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
 
 
         // Define the input fields in the pop-up form for usage later on

@@ -101,7 +101,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
                 status: textStatus,
                 err: err
             });
-            window.alert("An error occurred");
+            window.alert("An error occurred in: obtainData()");
         }
     }); // End of ajax call
 };
@@ -132,39 +132,86 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
-            var lastPage = 5;
+            var lastPage = data.data.lastPage;
 
-            // On the first page
-            if (page == 1) {
-                var paginationHtml = `
-                <li class="page-item">
-                    <a class="page-link" id="page_1" href="#">1</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" id="page_2" href="#">2</a>
-                </li>
-    
-                <li class="page-item">
-                    <a class="page-link" id="page_next" href="#!" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li> 
-                `
+            // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
+            var nextPageHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_${page + 1}" href="#">${page + 1}</a>
+            </li>
+            `;
 
-                $('#paginationDisplay').append(paginationHtml);
+            var currentPageHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_${page}" href="#">${page}</a>
+            </li>
+            `;
+
+            var previousPageHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_${page - 1}" href="#">${page - 1}</a>
+            </li>
+            `;
+
+            var nextPageHtml_symbol = `
+            <li class="page-item">
+                <a class="page-link" id="page_next" href="#!" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+            </li>
+            `;
+
+            var previousPageHtml_symbol = `
+            <li class="page-item">
+                <a class="page-link" id="page_previous" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            `;
+
+
+            // Second page
+            if (page == 2) {
+                var paginationHtml_prepend = `
+                    ${previousPageHtml_symbol}
+                `;
+                $('#paginationDisplay').prepend(paginationHtml_prepend);
             }
 
-            // On the second page
-            else if (page == 2) {}
-
-            // On the last page
+            // Last page
             else if (page == lastPage) {
-
+                var paginationHtml_prepend = `
+                    ${previousPageHtml_symbol}
+                    ${previousPageHtml}
+                `;
+                $('#paginationDisplay').prepend(paginationHtml_prepend);
             }
 
-            // Any other page
-            else {};
+            // Any other pages
+            else {
+                var paginationHtml_prepend = `
+                    ${previousPageHtml_symbol}
+                `;
+                $('#paginationDisplay').prepend(paginationHtml_prepend);
+
+                var paginationHtml_append = `
+                    ...
+                    ${previousPageHtml}
+                    ${currentPageHtml}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
+            };
+
+            // For all pages, append the page-link for pagination to the next page where appropriate
+            if (lastPage > page) {
+                var paginationHtml_append = `
+                    ${nextPageHtml}
+                    ${nextPageHtml_symbol}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
+            }
         },
 
         /**
@@ -179,7 +226,7 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
                 status: textStatus,
                 err: err
             });
-            window.alert("An error occurred");
+            window.alert("An error occurred in: obtainTotalPage()");
         }
     });
 };
