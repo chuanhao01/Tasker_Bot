@@ -117,7 +117,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
  * @params {string} sortBy The column to be sorted by
  */
 function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+    var url = `http://localhost:3000/basic/data/lastPage?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
 
     $.ajax({
         type: 'GET',
