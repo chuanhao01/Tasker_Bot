@@ -122,7 +122,8 @@
             <div class="row">
                 <!-- page -->
                 <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                    <ul class="pagination">
+                    <ul class="pagination" id="paginationDisplay">
+                    <!-- 
                         <li class="page-item">
                             <a class="page-link" id="page_previous" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
@@ -130,11 +131,10 @@
                             </a>
                         </li>
     
-                        <li class="page-item pr-2">
+                        <li class="page-item">
                             <a class="page-link" id="page_1" href="#">1</a>
                         </li>
-                        ...
-                        <li class="page-item pl-2">
+                        <li class="page-item">
                             <a class="page-link" id="page_2" href="#">2</a>
                         </li>
     
@@ -143,7 +143,8 @@
                               <span aria-hidden="true">&raquo;</span>
                               <span class="sr-only">Next</span>
                             </a>
-                        </li>
+                        </li> 
+                    -->
                     </ul>
                 </nav>
     
@@ -207,14 +208,14 @@
         Buttons which require onclick() events will also be handled here for easy readability
     -->
     <script>
-        // Define the default starting page as 1 -> This will be updated everytime we navigate to a new page
+        // Define all the default starting variables needed for the API -> This will be updated as the user performs actions in the website
         var currentPage = 1;
-
-        // Define the default pageNum as 10 -> This will be updated everytime we change the desired pageNum
         var pageNumType = 10;
+        var sortType = '';
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
         window.document.onload = obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+        window.document.onload = obtainTotalPage(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
 
 
         // Define the input fields in the pop-up form for usage later on

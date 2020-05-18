@@ -117,7 +117,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
  * @params {string} sortBy The column to be sorted by
  */
 function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/data/lastPage?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
 
     $.ajax({
         type: 'GET',
@@ -132,7 +132,39 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
-            
+            var lastPage = 5;
+
+            // On the first page
+            if (page == 1) {
+                var paginationHtml = `
+                <li class="page-item">
+                    <a class="page-link" id="page_1" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" id="page_2" href="#">2</a>
+                </li>
+    
+                <li class="page-item">
+                    <a class="page-link" id="page_next" href="#!" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li> 
+                `
+
+                $('#paginationDisplay').append(paginationHtml);
+            }
+
+            // On the second page
+            else if (page == 2) {}
+
+            // On the last page
+            else if (page == lastPage) {
+
+            }
+
+            // Any other page
+            else {};
         },
 
         /**

@@ -21,6 +21,8 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
 });
 
+
+
 describe("Load the basic data and result viewer", () => {
     it("Checks whether the webpages loads properly", () => {
         cy.visit("http://127.0.0.1:8080/index.html");
@@ -214,6 +216,7 @@ describe("Checks whether the GET data is working -> Filtering projectId", () => 
     });
 });
 
+
 describe("Checks whether the GET data is working -> Filtering duration", () => {
     it("Gives an equation to filter all the data by and checks that the filter works appropriately", () => {
         // Refresh the data in the dataViewerTable
@@ -285,5 +288,5 @@ describe("Checks whether the GET data is working -> Filtering duration", () => {
                 expect($tableBody).to.have.length(1);
             })
         });
-    })
-})
+    });
+});
