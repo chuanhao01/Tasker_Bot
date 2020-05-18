@@ -7,7 +7,7 @@
  * 
  * @requires NPM:pg
  * @requires NPM:chai
- * @requires ../utils/index
+ * @requires ../../utils/index
  * 
  */
 
@@ -17,10 +17,19 @@ const expect = require('chai').expect;
 const should = require('chai').should();
 
 // Importing the custom utils to test
-const utils = require('../utils/index');
+const utils = require('../../utils/index');
 
 // Tests below
 describe('Utils test', function(){
+    before('Checking env', function(){
+        if(process.env.NODE_ENV === 'UNIT_TEST'){
+            // Nothing to setup
+            return;
+        }
+        else{
+            this.skip();
+        }
+    });
     describe('Testing for dbPraser', function(){
         describe('Testing for the all/common parsers', function(){
             describe('Testing the get data query params parser', function(){
@@ -149,6 +158,14 @@ describe('Utils test', function(){
                     const result = utils.v.basic.getSortByQuery('projectId.asc,taskId.asc,duration.desc');
                     expect(result).to.be.true;
                 });
+            });
+        });
+    });
+    describe('Test for data parser', function(){
+        describe('For basic parser', function(){
+            describe('Parsing get data', function(){
+                // To do
+                it('Making sure format is done correctly');
             });
         });
     });

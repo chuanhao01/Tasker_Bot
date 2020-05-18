@@ -1,5 +1,8 @@
+require('dotenv').config();
+
 const db = require('./db/index');
 const utils = require('./utils');
+const scripts = require('./scripts');
 
 // const arr = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 21, \'1998-02-02\', \'01:32:00\', 22)'];
 // db.basic.insertTask(arr)
@@ -55,3 +58,10 @@ db.basic.insertTask(utils.dbParser.basic.bulkInsert(tasks))
         console.log(res.rows);
     }
 );
+
+// scripts.db.dbInit(db.basic.pool)
+// .then(
+//     function(res){
+//         console.log(res.rows);
+//     }
+// );
