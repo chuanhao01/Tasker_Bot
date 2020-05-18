@@ -47,8 +47,6 @@ Each API should include
     - [Sample Response](#sample-response-3)
     - [Sample Error](#sample-error-3)
 
-
-
 ## Template
 
 | attribute   | value       |
