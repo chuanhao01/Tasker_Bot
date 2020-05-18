@@ -4,18 +4,21 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:  
+-   Basic GET data API implementation (sort, filter, pagination, pageNum)
+-   Cypress unit testing (filter, pageNum)
+
+Chuan Hao:  
+-
+
+Together:  
+-
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+-   Frontend: display accurate pagination view
+-   Project worksheet
+-   Cypress unit testing for rest of basic GET data API implementation
 
 ## Additional Thoughts
 
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
