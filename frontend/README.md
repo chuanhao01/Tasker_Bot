@@ -22,4 +22,4 @@
 
 ###### Result Viewer
 
-![Result-viewer-wireframe](../worksheets/wireframes/justifications/Result_viewer_wireframe_draft.png)
+![Result-viewer-wireframe](../worksheets/wireframes/justifications/result_viewer_wireframe.png)
