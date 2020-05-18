@@ -2,13 +2,7 @@
 
 ## Wireframe
 
-<<<<<<< HEAD
-
 ![Wireframe](justifications/Data_viewer_wireframe.png)
-
-=======
-![Wireframe](justifications/Data_viewer_wireframe_draft.png)
->>>>>>> 93045f590ce3a6219e42c6fd7123700dded87fbc
 
 ## Justifications
 
@@ -29,11 +23,7 @@
 
 ### Justification 2
 
-<<<<<<< HEAD
 ![Justification 2](justifications/Data_viewer_Pagination.png)
-=======
-![Justification 2](justifications/Data_viewer_pagination.png)
->>>>>>> 93045f590ce3a6219e42c6fd7123700dded87fbc
 
 #### Good Points
 
