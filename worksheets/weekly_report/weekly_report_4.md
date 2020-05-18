@@ -9,16 +9,37 @@ Sherisse:
 -   Cypress unit testing (filter, pageNum)
 
 Chuan Hao:  
--
 
-Together:  
--
+BackEnd:
+- Formatted data return in basic GET data API
+- Changed validation of basic controller to config json.
+- Changed to dotenv
+- Lastpage API added
+
+Database:  
+- Made the 3 db envs for testing
+- Set up mock data to be inserted into the dbs
+  
+General: 
+- Set up the workflow for test and test envs
+- db statement docs added
+- Migrated code to new envs and configs
+- Added api docs for get data and last page api
+
 
 ## What do I plan to do next week
 
--   Frontend: display accurate pagination view
--   Project worksheet
--   Cypress unit testing for rest of basic GET data API implementation
+- Frontend: display accurate pagination view
+- Project worksheet
+- Fix up API docs
+- Fix up backend readme
+- Fix up db schema
+- Fix up statements
+- Problem worksheet docs
+- Project planning docs
+- Touch up code style docs
+- Cypress unit testing for rest of basic GET data API implementation
+- Integration testing (If there is time)
+- Finish up for the CA1 and CA2
 
 ## Additional Thoughts
-
