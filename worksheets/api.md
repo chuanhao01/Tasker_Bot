@@ -25,13 +25,20 @@ Each API should include
     - [Sample Request](#sample-request)
     - [Sample Response](#sample-response)
     - [Sample Error](#sample-error)
-  - [Insert Data](#insert-data)
-    - [Parameters](#parameters-1)
+  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
+    - [Optional query parameters](#optional-query-parameters)
     - [Response Body](#response-body-1)
     - [Error](#error-1)
     - [Sample Request](#sample-request-1)
     - [Sample Response](#sample-response-1)
     - [Sample Error](#sample-error-1)
+  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
+    - [Request body](#request-body)
+    - [Response Body](#response-body-2)
+    - [Error](#error-2)
+    - [Sample Request](#sample-request-2)
+    - [Sample Response](#sample-response-2)
+    - [Sample Error](#sample-error-2)
 
 
 
@@ -102,14 +109,89 @@ GET /basic/data?id=1234567890
 }
 ```
 
-## Insert Data
+## Basic GET data API endpoint for the lastpage number
+
+This is the API endpoint used in conjunction with the basic GET data endpoint for the basic data viewer.  
+This endpoint will supply the number of the last page given the same optional query parameters.
+
+| attribute   | value                |
+| ----------- | -----------          |
+| HTTP Method | GET                  |
+| Endpoint    | /basic/data/lastpage |
+
+As this is a GET API endpoint, no request body is expected and only optional query parameters are expected.
+
+### Optional query parameters
+
+| parameter | datatype                                        | example       |
+|-----------|-------------------------------------------------|---------------|
+| projectId | 10 digit number                                 | 123456789     |
+| duration  | Positive Integer greater than 0                 | 10            |
+| sortBy    | A string in the format of `attribute.order,...` | projectId.asc |
+| page      | Positive Integer greater than 0                 | 11            |
+| pageNum   | Positive Integer greater than 0                 | 5             |
+
+
+### Response Body
+
+```json
+{
+    'data': {
+        'lastPage': number
+    }
+    'result': 'successful'
+}
+```
+
+### Error
+
+```json
+{
+	"error": string,
+	"code": number
+}
+```
+
+### Sample Request
+
+```http
+GET /basic/data/lastpage?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&page=2&pageNum=3
+```
+
+### Sample Response
+
+```json
+{
+    "result": "successful",
+    "data": {
+        "lastPage": "1"
+    }
+}
+```
+
+### Sample Error
+
+```json
+{
+	"error": "Database Error",
+	"code": 500
+}
+```
+
+## Basic Bulk Insert Data
+
+This API endpoint based on the required Bulk Insert API endpoint of the assignment.
+
+Short desc
 
 | attribute   | value         |
 | ----------- | ------------- |
 | HTTP Method | POST          |
 | Endpoint    | /basic/insert |
 
-### Parameters
+For this request, as it is a post request, there are no optional query parameters and only a request body is expected
+
+### Request body
 
 | parameter | datatype        | example   |
 | --------- | --------------- | --------- |
@@ -137,16 +219,20 @@ Table for insert objects
 
 ```json
 {
-	"error": string,
-	"code": number
+	"error": String,
+	"code": Int
 }
 ```
 
 ### Sample Request
 
+Sample endpoint
 ```http
 POST /basic/insert
+```
 
+Sample body
+```json
 {
     "data": [
         {
