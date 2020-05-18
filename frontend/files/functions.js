@@ -107,10 +107,57 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
 };
 
 
+/**
+ * @function Obtain the total number of pages
+ * 
+ * @params {string} projectId The project ID of the new task that is to be inserted
+ * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} page The page number that we are on / navigating to
+ * @params {string} pageNum The number of tasks displayed on each page
+ * @params {string} sortBy The column to be sorted by
+ */
+function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
+    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+
+                /**
+         * @function Handling the event in which the ajax request call is a success
+         * 
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
+         */
+        success: function(data, textStatus, xhr) {
+            
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred");
+        }
+    });
+};
+
+
 const allFunctions = {
     edit_insertTask: edit_insertTask,
     deleteData: deleteData,
-    obtainData: obtainData
+    obtainData: obtainData,
+    obtainTotalPage: obtainTotalPage
 }
 
 module.exports = allFunctions;
