@@ -9,9 +9,16 @@
  * 
  */
 
+// Getting env setup using the dotenv module
+require('dotenv').config();
+
 // Setting up express and app
 const express = require('express');
 const app = express();
+
+// Adding CORS
+const cors = require('cors');
+app.use(cors());
 
 // Setting up body parser
 const bodyParser = require('body-parser');

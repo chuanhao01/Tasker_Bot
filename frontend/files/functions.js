@@ -1,9 +1,6 @@
 /**
- * @function Sorting the data in the column
+ * @author Sherisse Tan
  */
-function sortData() {
-    console.log("SORT")
-};
 
 
 /**
@@ -40,43 +37,159 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
 
 
 /**
- * @function Obtaining the data to be shown in the dataviewer table
+ * @function Obtaining the data to be shown in the dataviewer table and appending it directly to the table. 
+ *           This will handle SORTING, FILTERING and OBTAINING data
  * 
- * @returns The data to be shown in the dataviewer table
+ * @params {string} projectId The project ID of the new task that is to be inserted
+ * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} page The page number that we are on / navigating to
+ * @params {string} pageNum The number of tasks displayed on each page
+ * @params {string} sortBy The column to be sorted by
  */
-function obtainData(data) {
-    var dataViewerTable = document.querySelector('#dataViewerTable');
+function obtainData(projectId, duration, page, pageNum, sortBy) {
+    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
 
-    var data = [{
-        
-    }]
-
-    dataViewerTable.ajax({
-        method: 'GET',
+    $.ajax({
+        type: 'GET',
+        url: url,
+        // Data that we are expecting back from the server
+        dataType: 'json', 
 
         /**
-         * @function Calling the api endpoint to obtain data
+         * @function Handling the event in which the ajax request call is a success
          * 
-         * @param {JSON object} data The data containing all the tasks and their information to be shown
-         * @param {int} err Whether there are any errors in obtaining the response
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
          */
-        success: function(data, err) {
-            if (err != null) {
-                console.log("An error occurred..");
-            }
+        success: function(data, textStatus, xhr) {
+            // Ensure that the data viewer table is empty before appending any data
+            $('#tableBody').empty();
 
-            else {
+            var allTaskData = data.data;
+            // Appending each task to a row in the table
+            allTaskData.forEach((task) => {
+                const taskHtml = `
+                <tr class="dataRow" id="data_${task.taskid}">
+                    <th scope="row" id="taskId_data">${task.taskid}</th>
+                    <th id="projectId_data">${task.projectid}</th>
+                    <th id="duedate_data">${task.duedate}</th>
+                    <th id="duetime_data">${task.duetime}</th>
+                    <th id="duration_data">${task.duration}</th>
+                    <th>
+                        <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
+                    </th>
+                    <th>
+                        <button class="btn btn-outline-danger" type="button" id="deleteBtn">Delete</button>
+                    </th>
+                </tr>
+                `
 
-            }
+                $('#tableBody').append(taskHtml);
+            })
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred");
         }
-    })
+    }); // End of ajax call
 };
 
+
+/**
+ * @function Obtain the total number of pages
+ * 
+ * @params {string} projectId The project ID of the new task that is to be inserted
+ * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} page The page number that we are on / navigating to
+ * @params {string} pageNum The number of tasks displayed on each page
+ * @params {string} sortBy The column to be sorted by
+ */
+function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
+    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+
+                /**
+         * @function Handling the event in which the ajax request call is a success
+         * 
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
+         */
+        success: function(data, textStatus, xhr) {
+            var lastPage = 5;
+
+            // On the first page
+            if (page == 1) {
+                var paginationHtml = `
+                <li class="page-item">
+                    <a class="page-link" id="page_1" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" id="page_2" href="#">2</a>
+                </li>
+    
+                <li class="page-item">
+                    <a class="page-link" id="page_next" href="#!" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li> 
+                `
+
+                $('#paginationDisplay').append(paginationHtml);
+            }
+
+            // On the second page
+            else if (page == 2) {}
+
+            // On the last page
+            else if (page == lastPage) {
+
+            }
+
+            // Any other page
+            else {};
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred");
+        }
+    });
+};
+
+
 const allFunctions = {
-    sortData: sortData,
     edit_insertTask: edit_insertTask,
     deleteData: deleteData,
-    obtainData: obtainData
+    obtainData: obtainData,
+    obtainTotalPage: obtainTotalPage
 }
 
 module.exports = allFunctions;
