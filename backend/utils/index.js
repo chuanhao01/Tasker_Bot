@@ -8,12 +8,14 @@
  * @requires NPM:pg
  * @requires ./dbParser.js
  * @requires ./validator.js
+ * @requires ./dataParser
  * 
  */
 
 // Importing the other utils modules
 const dbParser = require('./dbParser');
 const validator = require('./validator');
+const dataParser = require('./dataParser');
 
 /**
  * @module utils
@@ -23,6 +25,7 @@ const validator = require('./validator');
  const utils = {
    dbParser,
    v: validator,
+   dataParser,
  };
 
  module.exports = utils;

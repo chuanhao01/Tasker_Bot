@@ -7,7 +7,7 @@
  * 
  * @requires NPM:chai
  * @requires NPM:chai-http
- * @requires ../app.js
+ * @requires ../../app.js
  * 
  */
 
@@ -20,9 +20,18 @@ const should = chai.should();
 const expect = chai.expect;
 
 // Importing own modules
-const app = require('../app');
+const app = require('../../app');
 
 describe('Backend Test', function(){
+    before('Checking env', function(){
+        if(process.env.NODE_ENV === 'UNIT_TEST'){
+            // Nothing to setup
+            return;
+        }
+        else{
+            this.skip();
+        }
+    });
     describe('Testing for basic controllers', function(){
         describe('Testing the validation of bulk insert', function(){
             it('Empty data', function(done){
