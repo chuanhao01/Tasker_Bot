@@ -18,31 +18,38 @@ Each API should include
 ## Table of Contents
 - [API Documentation](#api-documentation)
   - [Table of Contents](#table-of-contents)
-  - [Get Data](#get-data)
+  - [Template](#template)
     - [Parameters](#parameters)
     - [Response Body](#response-body)
     - [Error](#error)
     - [Sample Request](#sample-request)
     - [Sample Response](#sample-response)
     - [Sample Error](#sample-error)
-  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
+  - [Basic GET data API](#basic-get-data-api)
     - [Optional query parameters](#optional-query-parameters)
     - [Response Body](#response-body-1)
     - [Error](#error-1)
     - [Sample Request](#sample-request-1)
     - [Sample Response](#sample-response-1)
     - [Sample Error](#sample-error-1)
-  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
-    - [Request body](#request-body)
+  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
+    - [Optional query parameters](#optional-query-parameters-1)
     - [Response Body](#response-body-2)
     - [Error](#error-2)
     - [Sample Request](#sample-request-2)
     - [Sample Response](#sample-response-2)
     - [Sample Error](#sample-error-2)
+  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
+    - [Request body](#request-body)
+    - [Response Body](#response-body-3)
+    - [Error](#error-3)
+    - [Sample Request](#sample-request-3)
+    - [Sample Response](#sample-response-3)
+    - [Sample Error](#sample-error-3)
 
 
 
-## Get Data
+## Template
 
 | attribute   | value       |
 | ----------- | ----------- |
@@ -109,6 +116,88 @@ GET /basic/data?id=1234567890
 }
 ```
 
+## Basic GET data API 
+
+This is the API endpoint used to get the data to display on the basic data viewer front-end.
+The results returned by the API will depends on the supplied optional querys.  
+
+| attribute   | value                |
+| ----------- | -----------          |
+| HTTP Method | GET                  |
+| Endpoint    | /basic/data/lastpage |
+
+As this is a GET API endpoint, no request body is expected and only optional query parameters are expected.
+
+### Optional query parameters
+
+| parameter | datatype                                        | example       |
+|-----------|-------------------------------------------------|---------------|
+| projectId | 10 digit number                                 | 123456789     |
+| duration  | Positive Integer greater than 0                 | 10            |
+| sortBy    | A string in the format of `attribute.order,...` | projectId.asc |
+| page      | Positive Integer greater than 0                 | 11            |
+| pageNum   | Positive Integer greater than 0                 | 5             |
+
+
+### Response Body
+
+```json
+{
+    "result": "success"
+    "data": [
+        {
+            "projectId": number,
+            "taskId": number,
+            "dueDate": string,
+            "dueTime": number,
+            "duration": number
+        },
+        ...
+    ],
+}
+```
+
+### Error
+
+```json
+{
+	"error": string,
+	"code": number
+}
+```
+
+### Sample Request
+
+```http
+GET /basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&page=2&pageNum=3
+```
+
+### Sample Response
+
+```json
+{
+    "result": "successful",
+    "data": [
+        {
+            "taskId": 1234567890,
+            "projectId": 1234567890,
+            "dueDate": "2020/01/13",
+            "dueTime": "2200",
+            "duration": 1,
+        }
+    ]
+}
+```
+
+### Sample Error
+
+```json
+{
+	"error": "Database Error",
+	"code": 500
+}
+```
+
 ## Basic GET data API endpoint for the lastpage number
 
 This is the API endpoint used in conjunction with the basic GET data endpoint for the basic data viewer.  
@@ -136,10 +225,10 @@ As this is a GET API endpoint, no request body is expected and only optional que
 
 ```json
 {
-    'data': {
-        'lastPage': number
+    "result": "success",
+    "data": {
+        "lastPage": number
     }
-    'result': 'successful'
 }
 ```
 
