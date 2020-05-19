@@ -11,18 +11,18 @@ The statement used to create our database.
 DROP TABLE IF EXISTS TASKSBASIC, TASKSADVANCED;
 
 CREATE TABLE IF NOT EXISTS TASKSBASIC(
-    taskId INT UNIQUE NOT NULL,
+    taskId BIGINT UNIQUE NOT NULL,
     dueDate DATE NOT NULL,
     dueTime TIME NOT NULL,
     duration INT NOT NULL,
-    projectId INT NOT NULL,
+    projectId BIGINT NOT NULL,
     PRIMARY KEY (taskId)
 );
 
 CREATE TABLE IF NOT EXISTS TASKSADVANCED(
-    taskId INT UNIQUE NOT NULL,
+    taskId BIGINT UNIQUE NOT NULL,
     duration INT NOT NULL,
-    projectId INT NOT NULL,
+    projectId BIGINT NOT NULL,
     PRIMARY KEY (taskId)
 );
 ```
