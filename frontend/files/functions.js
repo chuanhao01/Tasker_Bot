@@ -47,7 +47,7 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * @params {string} sortBy The column to be sorted by
  */
 function obtainData(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
         type: 'GET',
@@ -116,8 +116,10 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
  * @params {string} pageNum The number of tasks displayed on each page
  * @params {string} sortBy The column to be sorted by
  */
-function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
+    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+    console.log(pageNum)
+    console.log(url)
 
     $.ajax({
         type: 'GET',
@@ -132,24 +134,35 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
+            // Always append the first page to the pagination display
+            $('#paginationDisplay').empty();
+            var defaultPaginationHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_1" href="#">1</a>
+            </li>
+            `;
+            $('#paginationDisplay').append(defaultPaginationHtml);
+
             var lastPage = data.data.lastPage;
+            var currentPage = parseInt(page.split('=')[1]);
+
 
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
             var nextPageHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_${page + 1}" href="#">${page + 1}</a>
+                <a class="page-link" id="page_${currentPage + 1}" href="#">${currentPage + 1}</a>
             </li>
             `;
 
             var currentPageHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_${page}" href="#">${page}</a>
+                <a class="page-link" id="page_${currentPage}" href="#">${currentPage}</a>
             </li>
             `;
 
             var previousPageHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_${page - 1}" href="#">${page - 1}</a>
+                <a class="page-link" id="page_${currentPage - 1}" href="#">${currentPage - 1}</a>
             </li>
             `;
 
@@ -173,15 +186,15 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
 
 
             // Second page
-            if (page == 2) {
+            if (currentPage == 2) {
                 var paginationHtml_prepend = `
                     ${previousPageHtml_symbol}
                 `;
                 $('#paginationDisplay').prepend(paginationHtml_prepend);
             }
 
-            // Last page
-            else if (page == lastPage) {
+            // Last page with other pages before it
+            else if (currentPage == lastPage && currentPage != 1) {
                 var paginationHtml_prepend = `
                     ${previousPageHtml_symbol}
                     ${previousPageHtml}
@@ -190,7 +203,7 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
             }
 
             // Any other pages
-            else {
+            else if (currentPage != 1 && lastPage > 1) {
                 var paginationHtml_prepend = `
                     ${previousPageHtml_symbol}
                 `;
@@ -205,7 +218,7 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
             };
 
             // For all pages, append the page-link for pagination to the next page where appropriate
-            if (lastPage > page) {
+            if (lastPage > currentPage) {
                 var paginationHtml_append = `
                     ${nextPageHtml}
                     ${nextPageHtml_symbol}

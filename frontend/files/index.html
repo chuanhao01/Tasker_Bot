@@ -123,9 +123,6 @@
                 <!-- page -->
                 <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
                     <ul class="pagination" id="paginationDisplay">
-                        <li class="page-item">
-                            <a class="page-link" id="page_1" href="#">1</a>
-                        </li>
                     </ul>
                 </nav>
     
@@ -195,8 +192,8 @@
         var sortType = '';
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
-        window.document.onload = obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
-        window.document.onload = obtainTotalPage(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+        window.document.onload = obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+        window.document.onload = obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
 
 
         // Define the input fields in the pop-up form for usage later on
@@ -229,7 +226,7 @@
                     sortType += '.asc';
                 };
                 
-                obtainData(sortBy=`sortBy=${sortType}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+                obtainData("", "", `sortBy=${sortType}`, `${currentPage}`, `pageNum=${pageNumType}`);
             })
         })
 
@@ -269,11 +266,13 @@
                 
                 // Have not filtered by duration yet -> No need to pass in 2 arguments
                 if (currentFilter_duration == 'filteredBy_no') {
-                    obtainData(projectId=`${filterType_projectId}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData(`${filterType_projectId}`, "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage(`${filterType_projectId}`, "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
                 }
                 // Already filtered by duration -> Pass in 2 arguments
                 else {
-                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData(`${filterType_projectId}`, duration=`${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage(`${filterType_projectId}`, duration=`${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
                 };
             }
 
@@ -289,10 +288,12 @@
 
                 // Have not filtered by projectId yet
                 if (currentFilter_projectId == 'filteredBy_no') {
-                    obtainData(duration=`${filterType_duration}`, page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData("", `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage("", `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
                 }
                 else {
-                    obtainData(projectId=`${filterType_projectId}`, duration=`${filterType_duration}`,page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData(`${filterType_projectId}`, `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage(`${filterType_projectId}`, `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
                 }
             };
         });
@@ -300,6 +301,7 @@
 
         // Handling Pagination
         let paginationLinksArr = document.querySelectorAll('.page-link');
+        console.log(paginationLinksArr);
         paginationLinksArr.forEach((paginationLink) => {
             paginationLink.addEventListener("click", function() {
                 var paginationType;
@@ -307,19 +309,22 @@
                 
                 // In the event that the page-link clicked was not 'previous' or 'next'
                 if (paginationType != 'previous' && paginationType != 'next') {
-                    obtainData(page=`page=${paginationType}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
 
                     // Set the var currentPage to the new page
                     currentPage = parseInt(paginationType);
                 }
                 else if (paginationType == 'previous') {
-                    obtainData(page=`page=${currentPage - 1}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
 
                     // Set the var currentPage to the new page
                     currentPage -= 1;
                 }
                 else if (paginationType == 'next') {
-                    obtainData(page=`page=${currentPage + 1}`, pageNum=`pageNum=${pageNumType}`);
+                    obtainData("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
+                    obtainTotalPage("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
 
                     // Set the var currentPage to the new page
                     currentPage += 1;
@@ -332,9 +337,11 @@
         document.querySelector('#input_pageNum').placeholder = `${pageNumType}`;
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                pageNumType = $(this).val().trim();
+                pageNumType = parseInt($(this).val().trim());
+                console.log(pageNumType);
                 
-                obtainData(page=`${currentPage}`, pageNum=`pageNum=${pageNumType}`);
+                obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+                obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
             }
         });
 
