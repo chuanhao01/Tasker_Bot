@@ -168,19 +168,13 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
 
             var nextPageHtml_symbol = `
             <li class="page-item">
-                <a class="page-link" id="page_next" href="#!" aria-label="Next" onclick="changePage()">
-                    <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
+                <a class="page-link" id="page_next" href="#!" aria-label="Next" onclick="changePage()">&raquo;</a>
             </li>
             `;
 
             var previousPageHtml_symbol = `
             <li class="page-item">
-                <a class="page-link" id="page_previous" href="#" aria-label="Previous" onclick="changePage()">
-                    <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
+                <a class="page-link" id="page_previous" href="#" aria-label="Previous" onclick="changePage()">&laquo;</a>
             </li>
             `;
 
@@ -208,6 +202,7 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
                 var paginationHtml_append = `
                     ...
                     ${previousPageHtml}
+                    ${currentPageHtml}
                 `;
                 $('#paginationDisplay').append(paginationHtml_append);
             }

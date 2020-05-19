@@ -302,7 +302,7 @@
         // Handling Pagination
         function changePage() {
             // Obtain the id of the element that triggered this function
-            pageLinkId = event.srcElement.id;
+            pageLinkId = event.target.id;
 
             var paginationType;
             paginationType = pageLinkId.split('_')[1];
