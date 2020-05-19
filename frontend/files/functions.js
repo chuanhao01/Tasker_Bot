@@ -144,6 +144,7 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
             var lastPage = data.data.lastPage;
             var currentPage = parseInt(page.split('=')[1]);
             console.log(lastPage)
+            console.log(currentPage)
 
 
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
@@ -190,15 +191,25 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
                     ${previousPageHtml_symbol}
                 `;
                 $('#paginationDisplay').prepend(paginationHtml_prepend);
+
+                var paginationHtml_append = `
+                    ${currentPageHtml}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
             }
 
             // Last page with other pages before it
             else if (currentPage == lastPage && currentPage != 1) {
                 var paginationHtml_prepend = `
                     ${previousPageHtml_symbol}
-                    ${previousPageHtml}
                 `;
                 $('#paginationDisplay').prepend(paginationHtml_prepend);
+
+                var paginationHtml_append = `
+                    ...
+                    ${previousPageHtml}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
             }
 
             // Any other pages

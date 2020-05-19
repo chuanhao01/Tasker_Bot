@@ -301,36 +301,34 @@
 
         // Handling Pagination
         function changePage() {
-            let paginationLinksArr = document.querySelectorAll('.page-link');
-            paginationLinksArr.forEach((paginationLink) => {
-                paginationLink.addEventListener("click", function() {
-                    var paginationType;
-                    paginationType = this.id.split('_')[1];
+            // Obtain the id of the element that triggered this function
+            pageLinkId = event.srcElement.id;
+
+            var paginationType;
+            paginationType = pageLinkId.split('_')[1];
                 
-                    // In the event that the page-link clicked was not 'previous' or 'next'
-                    if (paginationType != 'previous' && paginationType != 'next') {
-                        obtainData("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
-                        obtainTotalPage("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+            // In the event that the page-link clicked was not 'previous' or 'next'
+            if (paginationType != 'previous' && paginationType != 'next') {
+                obtainData("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+                obtainTotalPage("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
 
-                        // Set the var currentPage to the new page
-                        currentPage = parseInt(paginationType);
-                    }
-                    else if (paginationType == 'previous') {
-                        obtainData("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
-                        obtainTotalPage("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
+                // Set the var currentPage to the new page
+                currentPage = parseInt(paginationType);
+            }
+            else if (paginationType == 'previous') {
+                obtainData("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
+                obtainTotalPage("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
 
-                        // Set the var currentPage to the new page
-                        currentPage -= 1;
-                    }
-                    else if (paginationType == 'next') {
-                        obtainData("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
-                        obtainTotalPage("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
+                // Set the var currentPage to the new page
+                currentPage -= 1;
+            }
+            else if (paginationType == 'next') {
+                obtainData("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
+                obtainTotalPage("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
 
-                        // Set the var currentPage to the new page
-                        currentPage += 1;
-                    };
-                });
-            });
+                // Set the var currentPage to the new page
+                currentPage += 1;
+            };
         }
 
 
@@ -339,7 +337,6 @@
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 pageNumType = parseInt($(this).val().trim());
-                console.log(pageNumType);
                 
                 obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
                 obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
