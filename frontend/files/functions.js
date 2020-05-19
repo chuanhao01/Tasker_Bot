@@ -118,8 +118,6 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
  */
 function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
     var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
-    console.log(pageNum)
-    console.log(url)
 
     $.ajax({
         type: 'GET',
@@ -138,37 +136,38 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
             $('#paginationDisplay').empty();
             var defaultPaginationHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_1" href="#">1</a>
+                <a class="page-link" id="page_1" href="#" onclick="changePage()">1</a>
             </li>
             `;
             $('#paginationDisplay').append(defaultPaginationHtml);
 
             var lastPage = data.data.lastPage;
             var currentPage = parseInt(page.split('=')[1]);
+            console.log(lastPage)
 
 
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
             var nextPageHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_${currentPage + 1}" href="#">${currentPage + 1}</a>
+                <a class="page-link" id="page_${currentPage + 1}" href="#" onclick="changePage()">${currentPage + 1}</a>
             </li>
             `;
 
             var currentPageHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_${currentPage}" href="#">${currentPage}</a>
+                <a class="page-link" id="page_${currentPage}" href="#" onclick="changePage()">${currentPage}</a>
             </li>
             `;
 
             var previousPageHtml = `
             <li class="page-item">
-                <a class="page-link" id="page_${currentPage - 1}" href="#">${currentPage - 1}</a>
+                <a class="page-link" id="page_${currentPage - 1}" href="#" onclick="changePage()">${currentPage - 1}</a>
             </li>
             `;
 
             var nextPageHtml_symbol = `
             <li class="page-item">
-                <a class="page-link" id="page_next" href="#!" aria-label="Next">
+                <a class="page-link" id="page_next" href="#!" aria-label="Next" onclick="changePage()">
                     <span aria-hidden="true">&raquo;</span>
                   <span class="sr-only">Next</span>
                 </a>
@@ -177,7 +176,7 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
 
             var previousPageHtml_symbol = `
             <li class="page-item">
-                <a class="page-link" id="page_previous" href="#" aria-label="Previous">
+                <a class="page-link" id="page_previous" href="#" aria-label="Previous" onclick="changePage()">
                     <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Previous</span>
                 </a>
