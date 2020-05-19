@@ -42,9 +42,9 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * 
  * @params {string} projectId The project ID of the new task that is to be inserted
  * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} sortBy The column to be sorted by
  * @params {string} page The page number that we are on / navigating to
  * @params {string} pageNum The number of tasks displayed on each page
- * @params {string} sortBy The column to be sorted by
  */
 function obtainData(projectId, duration, page, pageNum, sortBy) {
     var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
@@ -112,9 +112,9 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
  * 
  * @params {string} projectId The project ID of the new task that is to be inserted
  * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} sortBy The column to be sorted by
  * @params {string} page The page number that we are on / navigating to
  * @params {string} pageNum The number of tasks displayed on each page
- * @params {string} sortBy The column to be sorted by
  */
 function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
     var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
@@ -132,8 +132,10 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
-            // Always append the first page to the pagination display
+            // Clear the current pagination display
             $('#paginationDisplay').empty();
+
+            // Always append the first page to the pagination display
             var defaultPaginationHtml = `
             <li class="page-item">
                 <a class="page-link" id="page_1" href="#" onclick="changePage()">1</a>
@@ -141,11 +143,10 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
             `;
             $('#paginationDisplay').append(defaultPaginationHtml);
 
+
+            // Obtain the values of the lastPage (from the API endpoint) and the current page(argument)
             var lastPage = data.data.lastPage;
             var currentPage = parseInt(page.split('=')[1]);
-            console.log(lastPage)
-            console.log(currentPage)
-
 
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
             var nextPageHtml = `
