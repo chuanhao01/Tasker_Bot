@@ -177,18 +177,18 @@ describe('DB unit test', function(){
                 function(res){
                     const expected_result = [
                     {
-                        taskid: 11,
+                        taskid: '11',
                         duedate: '1998-01-31T16:00:00.000Z',
                         duetime: '13:07:00',
                         duration: 2,
-                        projectid: 11
+                        projectid: '11'
                     },
                     {
-                        taskid: 21,
+                        taskid: '21',
                         duedate: '1998-02-01T16:00:00.000Z',
                         duetime: '01:32:00',
                         duration: 22,
-                        projectid: 11
+                        projectid: '11'
                     }
                     ];
                     // Checking if the result is as expected
@@ -218,39 +218,39 @@ describe('DB unit test', function(){
                 function(res){
                     expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify([
                         {
-                            taskid: 6,
+                            taskid: '6',
                             duedate: '1998-02-01T16:00:00.000Z',
                             duetime: '01:32:00',
                             duration: 2,
-                            projectid: 11
+                            projectid: '11'
                         },
                         {
-                            taskid: 7,
+                            taskid: '7',
                             duedate: '1998-02-01T16:00:00.000Z',
                             duetime: '01:32:00',
                             duration: 2,
-                            projectid: 11
+                            projectid: '11'
                         },
                         {
-                            taskid: 8,
+                            taskid: '8',
                             duedate: '1998-02-01T16:00:00.000Z',
                             duetime: '01:32:00',
                             duration: 2,
-                            projectid: 11
+                            projectid: '11'
                         },
                         {
-                            taskid: 9,
+                            taskid: '9',
                             duedate: '1998-02-01T16:00:00.000Z',
                             duetime: '01:32:00',
                             duration: 2,
-                            projectid: 11
+                            projectid: '11'
                         },
                         {
-                            taskid: 10,
+                            taskid: '10',
                             duedate: '1998-02-01T16:00:00.000Z',
                             duetime: '01:32:00',
                             duration: 2,
-                            projectid: 11
+                            projectid: '11'
                         }
                     ]));
                     done();
