@@ -40,12 +40,18 @@ const dataParser = {
                 // Getting the values
                 let dueDate = `${data[i].duedate.getFullYear()}/${data[i].duedate.getMonth()}/${data[i].duedate.getDate()}`,
                 dueTime = `${data[i].duetime}`;
+                let taskId = data[i].taskid,
+                projectId = data[i].projectid;
                 // Formatting and parsing them
                 dueTime = dueTime.substring(0, 5);
                 dueTime = dueTime.replace(':', '');
+                taskId = parseInt(taskId);
+                projectId = parseInt(projectId);
                 // Setting values back
                 data[i].duedate = dueDate;
                 data[i].duetime = dueTime;
+                data[i].taskid = taskId;
+                data[i].projectid = projectId;
             }
             return data;
         },

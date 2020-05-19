@@ -241,7 +241,7 @@ const basicController = {
             // Parse the query params to be used in the db call
             let queryConditions = utils.dbParser.all.getDataQueryParams(req.query);
             // Removing the last line, so that it removes the limit
-            queryConditions = queryConditions.replace(/\n.*$/, '');
+            queryConditions = queryConditions.replace(/\r?\n?[^\r\n]*$/, "");
             new Promise((resolve) => {
                 resolve(
                     model.basic.getData(queryConditions)
