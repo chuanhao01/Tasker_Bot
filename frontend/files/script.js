@@ -100,7 +100,33 @@
  };
 
 
-function pagination() {};
+function pagination(pageLinkId) {
+    var paginationType;
+    paginationType = pageLinkId.split('_')[1];
+        
+    // In the event that the page-link clicked was not 'previous' or 'next'
+    if (paginationType != 'previous' && paginationType != 'next') {
+        obtainData("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+        obtainTotalPage("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+
+        // Set the var currentPage to the new page
+        currentPage = parseInt(paginationType);
+    }
+    else if (paginationType == 'previous') {
+        obtainData("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
+        obtainTotalPage("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
+
+        // Set the var currentPage to the new page
+        currentPage -= 1;
+    }
+    else if (paginationType == 'next') {
+        obtainData("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
+        obtainTotalPage("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
+
+        // Set the var currentPage to the new page
+        currentPage += 1;
+    };
+};
 
 
 function pageNum(pageNumType) {
