@@ -18,101 +18,27 @@ Each API should include
 ## Table of Contents
 - [API Documentation](#api-documentation)
   - [Table of Contents](#table-of-contents)
-  - [Template](#template)
-    - [Parameters](#parameters)
+  - [Basic GET data API](#basic-get-data-api)
+    - [Query parameters](#query-parameters)
     - [Response Body](#response-body)
     - [Error](#error)
     - [Sample Request](#sample-request)
     - [Sample Response](#sample-response)
     - [Sample Error](#sample-error)
-  - [Basic GET data API](#basic-get-data-api)
-    - [Query parameters](#query-parameters)
+  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
+    - [Query parameters](#query-parameters-1)
     - [Response Body](#response-body-1)
     - [Error](#error-1)
     - [Sample Request](#sample-request-1)
     - [Sample Response](#sample-response-1)
     - [Sample Error](#sample-error-1)
-  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
-    - [Query parameters](#query-parameters-1)
+  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
+    - [Request body](#request-body)
     - [Response Body](#response-body-2)
     - [Error](#error-2)
     - [Sample Request](#sample-request-2)
     - [Sample Response](#sample-response-2)
     - [Sample Error](#sample-error-2)
-  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
-    - [Request body](#request-body)
-    - [Response Body](#response-body-3)
-    - [Error](#error-3)
-    - [Sample Request](#sample-request-3)
-    - [Sample Response](#sample-response-3)
-    - [Sample Error](#sample-error-3)
-
-## Template
-
-| attribute   | value       |
-| ----------- | ----------- |
-| HTTP Method | GET         |
-| Endpoint    | /basic/data |
-
-### Parameters
-
-| parameter | datatype        | example   |
-| --------- | --------------- | --------- |
-| id        | 10 digit number | 123456789 |
-
-### Response Body
-
-```json
-{
-    "result": [
-        {
-            "id": number,
-            "property1": number,
-            "property2": string,
-            ...
-        }
-    ]
-}
-```
-
-### Error
-
-```json
-{
-	"error": string,
-	"code": number
-}
-```
-
-### Sample Request
-
-```http
-GET /basic/data?id=1234567890
-```
-
-### Sample Response
-
-```json
-{
-    "result": [
-        {
-            "id": 1234567890,
-            "property1": 1234567890,
-            "property2": "haha",
-            ...
-        }
-    ]
-}
-```
-
-### Sample Error
-
-```json
-{
-	"error": "Server Error",
-	"code": 500
-}
-```
 
 ## Basic GET data API 
 
