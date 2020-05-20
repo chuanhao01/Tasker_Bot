@@ -195,14 +195,6 @@
         window.document.onload = obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
 
 
-        // Define the input fields in the pop-up form for usage later on
-        var taskID = document.querySelector('#taskID');
-        var projectID = document.querySelector('#projectID');
-        var dueDate = document.querySelector('#dueDate');
-        var dueTime = document.querySelector('#dueTime');
-        var duration = document.querySelector('#duration');
-
-
         // Allow for the column names in the data viewer to be clickable and,
         // when clicked, to sort the data in either ascending or descending order
         let sortBtnArr = document.querySelectorAll('.sortBtn');
@@ -235,34 +227,6 @@
                 pageNum(pageNumType);
             };
         });
-
-
-
-        // Allow for data to be edited
-        let editBtnArr = document.querySelectorAll("#editBtn");
-        editBtnArr.forEach((btn) => {
-            btn.addEventListener("click", function() {
-                edit_insertTask(taskID, projectID, dueDate, dueTime, duration);
-            });
-        });
-
-
-        // Allow for data to be deleted
-        let deleteBtnArr = document.querySelectorAll("#deleteBtn");
-        deleteBtnArr.forEach((btn) => {
-            btn.addEventListener("click", function() {
-                deleteData();
-            })
-        })
-
-        
-        // Allow for the insertion of new data
-        let insertBtn = document.querySelector('#insertData');    
-        insertBtn.addEventListener("click", function() {
-            obtainData();
-            // edit_insertTask(taskID, projectID, dueDate, dueTime, duration)
-        });
-
     </script>
 </body>
 </html>
