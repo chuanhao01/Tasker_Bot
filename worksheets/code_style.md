@@ -21,11 +21,86 @@ Based on your chosen rules, give an example of a code that follows the code styl
 ### Good Example
 
 ```js
+// For normal functions, control statements and variables
+function pow(x, n){
+  let result = 1;
+  for(let i=0; i<n; i++){
+    result *= x;
+  }
+  return result;
+}
+
+let x = prompt("x?", ''),
+n = prompt("n?", '');
+
+if (n <= 0){
+  alert(`Power ${n} is not supported, please enter an integer number greater than zero`);
+}
+else{
+  alert(pow(x,n));
+}
+
+let promises = new Promise((resolve, reject) => {
+    resolve(
+        new Promise((resolve, rejct) => {
+            resolve('This resolved and is done');
+        })
+        .catch(
+            function(err){
+                throw err;
+            }
+        )
+    );
+})
+.then(
+    function(data){
+        doSomething(data);
+    }
+)
+.catch(
+    function(e){
+        finalError(e);
+    }
+);
 ```
 
 ### Bad Example
 
 ```js
+// For normal functions, control statements and variables
+function pow(x,n)
+{
+  let result=1;
+  for(let i=0;i<n;i++) {result*=x;}
+  return result;
+}
+
+let x=prompt("x?",''), n=prompt("n?",'')
+if (n<=0)
+{
+  alert(`Power ${n} is not supported, please enter an integer number greater than zero`);
+}
+else
+{
+  alert(pow(x,n))
+}
+
+let promises = new Promise((resolve, reject) => {
+    resolve(new Promise((resolve, rejct) => {
+            resolve('This resolved and is done');
+        })
+        .catch(
+            function(err){
+                throw err;
+            }
+        ));
+})
+    .then(function(data){
+            doSomething(data);
+        })
+    .catch(function(e){
+            finalError(e);
+        });
 ```
 
 
