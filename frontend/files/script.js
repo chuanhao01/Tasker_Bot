@@ -103,4 +103,7 @@
 function pagination() {};
 
 
-function pageNum() {}''
+function pageNum(pageNumType) {
+    obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+    obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+};

@@ -257,10 +257,8 @@
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 pageNumType = parseInt($(this).val().trim());
-                
-                obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-                obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-            }
+                pageNum(pageNumType);
+            };
         });
 
 
