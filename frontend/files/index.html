@@ -23,7 +23,7 @@
 
     <!-- External Scripts -->
     <script src="./functions.js"></script>
-    <script src="styles.css"></script>
+    <script src="./script.js"></script>
 
     <title>JiBaBoom Data Viewer</title>
 
@@ -189,7 +189,6 @@
         // Define all the default starting variables needed for the API -> This will be updated as the user performs actions in the website
         var currentPage = 1;
         var pageNumType = 10;
-        var sortType = '';
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
         window.document.onload = obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
@@ -209,24 +208,7 @@
         let sortBtnArr = document.querySelectorAll('.sortBtn');
         sortBtnArr.forEach((sortBtn) => {
             sortBtn.addEventListener("click", function() {
-                // Obtain whether the column is already sorted in ascending order or descending order
-                var currentSort = this.className.split(' ')[1];
 
-                // Obtain the id of the button that was clicked and obtain the column name
-                var sortType = this.id.split('_')[1];
-
-                // Change the className of the button for further usage
-                $(this).toggleClass('asc desc')
-
-                // Define whether to sort in ascending or descending order
-                if (currentSort == 'asc') {
-                    sortType += ".desc";
-                }
-                else {
-                    sortType += '.asc';
-                };
-                
-                obtainData("", "", `sortBy=${sortType}`, `${currentPage}`, `pageNum=${pageNumType}`);
             })
         })
 
