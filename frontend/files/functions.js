@@ -1,4 +1,6 @@
 /**
+ * @fileoverview This file deals with the various functions that makes Ajax calls to the backend
+ * 
  * @author Sherisse Tan
  */
 
