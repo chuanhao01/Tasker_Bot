@@ -13,6 +13,17 @@ const scripts = require('./scripts');
 // );
             
 
+var types = require('pg').types
+var Moment = require('moment');
+var parseDate = function parseDate(val) {
+    return val === null ? null : Moment(val)
+};
+
+var DATATYPE_DATE = 1082;
+types.setTypeParser(DATATYPE_DATE, function(val) {
+    return val === null ? null : parseDate(val)
+});
+
 const {Pool} = require('pg');
 
 let pool = new Pool({
@@ -71,6 +82,6 @@ let pool = new Pool({
 db.basic.getData()
 .then(
     function(res){
-        console.log(res.rows);
+        console.log(res.rows[0].duedate);
     }
 );
