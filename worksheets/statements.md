@@ -2,16 +2,6 @@
 
 For this worksheet you will need to provide an example of your own SQL statement. The two given are examples.
 
-### Template
-
-Format of statement:  
-```sql
-```
-
-Example:  
-```sql
-```
-
 ## For the Basic problem statement
 
 

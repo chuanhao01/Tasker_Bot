@@ -1,5 +1,7 @@
 ## Template
 
+For `API.md`
+
 | attribute   | value       |
 | ----------- | ----------- |
 | HTTP Method | GET         |
@@ -63,4 +65,16 @@ GET /basic/data?id=1234567890
 	"error": "Server Error",
 	"code": 500
 }
+```
+
+For `statement.md`
+
+### Template
+
+Format of statement:  
+```sql
+```
+
+Example:  
+```sql
 ```
