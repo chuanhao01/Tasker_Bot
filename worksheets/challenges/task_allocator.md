@@ -215,9 +215,9 @@ Name of problem: **Partition Problem**
 ## Advance Result 3
 
 | Member | Assigned Tasks | Total Hours |
-| ------ | -------------- | ----------- |
-| 1      | 9, 12              | 8           |
-| 2      | 10, 11              | 8           |
+|--------|----------------|-------------|
+| 1      | 9, 12          | 8           |
+| 2      | 10, 11         | 8           |
 
 ## Advance Query 4
 
@@ -228,6 +228,6 @@ Name of problem: **Partition Problem**
 ## Advance Result 4
 
 | Member | Assigned Tasks | Total Hours |
-| ------ | -------------- | ----------- |
-| 1      | 13, 15, 16              | 15           |
-| 2      | 14, 17              | 15           |
+|--------|----------------|-------------|
+| 1      | 13, 15, 16     | 15          |
+| 2      | 14, 17         | 15          |
