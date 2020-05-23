@@ -216,6 +216,10 @@ describe('DB unit test', function(){
             })
             .then(
                 function(res){
+                    /*
+                    Note of caution here, when stringfy the moment, although it is parsed to the correct date
+                    The original string from db is somewhat wrong, that is why the stringfy is still wrong
+                    */
                     expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify([
                         {
                             taskid: '6',

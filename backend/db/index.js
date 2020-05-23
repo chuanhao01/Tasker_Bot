@@ -6,10 +6,18 @@
  * @author Lim Chuan Hao
  * 
  * @requires NPM:pg
+ * @requires NPM:moment
  * @requires ./basic.js
  * @requires ./advanced.js
  * 
  */
+
+// Setting up date parser for pg
+var types = require('pg').types
+var moment = require('moment');
+types.setTypeParser(1082, function(val) {
+    return val === null ? null : moment(val);
+});
 
 //  Importing the pg lib
 const {Pool} = require('pg');
