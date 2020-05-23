@@ -1,4 +1,6 @@
 /**
+ * @fileoverview This file deals with the various functions that makes Ajax calls to the backend
+ * 
  * @author Sherisse Tan
  */
 
@@ -42,12 +44,12 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * 
  * @params {string} projectId The project ID of the new task that is to be inserted
  * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} sortBy The column to be sorted by
  * @params {string} page The page number that we are on / navigating to
  * @params {string} pageNum The number of tasks displayed on each page
- * @params {string} sortBy The column to be sorted by
  */
 function obtainData(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
         type: 'GET',
@@ -101,7 +103,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
                 status: textStatus,
                 err: err
             });
-            window.alert("An error occurred");
+            window.alert("An error occurred in: obtainData()");
         }
     }); // End of ajax call
 };
@@ -112,12 +114,12 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
  * 
  * @params {string} projectId The project ID of the new task that is to be inserted
  * @params {string} duration The duration of the new task that is to be inserted
+ * @params {string} sortBy The column to be sorted by
  * @params {string} page The page number that we are on / navigating to
  * @params {string} pageNum The number of tasks displayed on each page
- * @params {string} sortBy The column to be sorted by
  */
-function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${page}&${pageNum}&${sortBy}`;
+function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
+    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
         type: 'GET',
@@ -132,39 +134,105 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
-            var lastPage = 5;
+            // Clear the current pagination display
+            $('#paginationDisplay').empty();
 
-            // On the first page
-            if (page == 1) {
-                var paginationHtml = `
-                <li class="page-item">
-                    <a class="page-link" id="page_1" href="#">1</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" id="page_2" href="#">2</a>
-                </li>
-    
-                <li class="page-item">
-                    <a class="page-link" id="page_next" href="#!" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li> 
-                `
+            // Always append the first page to the pagination display
+            var defaultPaginationHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_1" href="#" onclick="changePage()">1</a>
+            </li>
+            `;
+            $('#paginationDisplay').append(defaultPaginationHtml);
 
-                $('#paginationDisplay').append(paginationHtml);
+
+            // Obtain the values of the lastPage (from the API endpoint) and the current page(argument)
+            var lastPage = data.data.lastPage;
+            var currentPage = parseInt(page.split('=')[1]);
+
+            // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
+            var nextPageHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_${currentPage + 1}" href="#" onclick="changePage()">${currentPage + 1}</a>
+            </li>
+            `;
+
+            var currentPageHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_${currentPage}" href="#" onclick="changePage()">${currentPage}</a>
+            </li>
+            `;
+
+            var previousPageHtml = `
+            <li class="page-item">
+                <a class="page-link" id="page_${currentPage - 1}" href="#" onclick="changePage()">${currentPage - 1}</a>
+            </li>
+            `;
+
+            var nextPageHtml_symbol = `
+            <li class="page-item">
+                <a class="page-link" id="page_next" href="#!" aria-label="Next" onclick="changePage()">&raquo;</a>
+            </li>
+            `;
+
+            var previousPageHtml_symbol = `
+            <li class="page-item">
+                <a class="page-link" id="page_previous" href="#" aria-label="Previous" onclick="changePage()">&laquo;</a>
+            </li>
+            `;
+
+
+            // Second page
+            if (currentPage == 2) {
+                var paginationHtml_prepend = `
+                    ${previousPageHtml_symbol}
+                `;
+                $('#paginationDisplay').prepend(paginationHtml_prepend);
+
+                var paginationHtml_append = `
+                    ${currentPageHtml}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
             }
 
-            // On the second page
-            else if (page == 2) {}
+            // Last page with other pages before it
+            else if (currentPage == lastPage && currentPage != 1) {
+                var paginationHtml_prepend = `
+                    ${previousPageHtml_symbol}
+                `;
+                $('#paginationDisplay').prepend(paginationHtml_prepend);
 
-            // On the last page
-            else if (page == lastPage) {
-
+                var paginationHtml_append = `
+                    ...
+                    ${previousPageHtml}
+                    ${currentPageHtml}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
             }
 
-            // Any other page
-            else {};
+            // Any other pages
+            else if (currentPage != 1 && lastPage > 1) {
+                var paginationHtml_prepend = `
+                    ${previousPageHtml_symbol}
+                `;
+                $('#paginationDisplay').prepend(paginationHtml_prepend);
+
+                var paginationHtml_append = `
+                    ...
+                    ${previousPageHtml}
+                    ${currentPageHtml}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
+            };
+
+            // For all pages, append the page-link for pagination to the next page where appropriate
+            if (lastPage > currentPage) {
+                var paginationHtml_append = `
+                    ${nextPageHtml}
+                    ${nextPageHtml_symbol}
+                `;
+                $('#paginationDisplay').append(paginationHtml_append);
+            }
         },
 
         /**
@@ -179,7 +247,7 @@ function obtainTotalPage(projectId, duration, page, pageNum, sortBy) {
                 status: textStatus,
                 err: err
             });
-            window.alert("An error occurred");
+            window.alert("An error occurred in: obtainTotalPage()");
         }
     });
 };

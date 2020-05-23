@@ -1,8 +1,5 @@
 /**
  * @fileoverview This file is the code for Cypress unit testing. 
- * To run, cd to frontend and run the cmd '..\node_modules\.bin\cypress open' in the terminal
- * 
- * Note that this file makes tests with the same 10 rows of data where the only difference is an incremental * taskId
  * 
  * @author Sherisse Tan
  * 
@@ -155,12 +152,12 @@ describe("Checks whether the GET data is working -> Filtering projectId", () => 
         cy.get('#filterAttribute').select('projectId').then(() => {
             // Check filterOperation == 'Equal to'
             cy.get('#filterOperation').select('Equal to');
-            cy.get('#filterInput').type('11');
+            cy.get('#filterInput').type('9999999999');
             cy.get('#filterBtn').click();
 
             // Check that all remaining data has projectId = 11
             cy.get('#projectId_data').should(($th) => {
-                expect($th).to.contain('11');
+                expect($th).to.contain('9999999999');
             });
 
             // Check that there is no data (table should only have 1 element -> column attributes)
@@ -196,17 +193,6 @@ describe("Checks whether the GET data is working -> Filtering projectId", () => 
             // Check filterOperation == 'Less than'
             cy.get('#filterInput').clear();
             cy.get('#filterOperation').select('Less than');
-            cy.get('#filterInput').type(`${maxNum}`);
-            cy.get('#filterBtn').click();  
-            
-            // Check that all remaining data has projectId < 20
-            cy.get('#projectId_data').should(($th) => {
-                var dataValue = parseInt($th.text());
-                expect(dataValue).to.be.lessThan(maxNum);
-            });
-
-            // Check that there is no data
-            cy.get('#filterInput').clear();
             cy.get('#filterInput').type(`${minNum}`);
             cy.get('#filterBtn').click();
             cy.get('#tableBody').should(($tableBody) => {
