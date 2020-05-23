@@ -14,6 +14,8 @@
  */
 const dataParser = {
     // Parsers to be used for the basic problem
+
+    // Data parsers specifically for the basic problem statement
     basic: {
         /**
          * @function
@@ -31,21 +33,28 @@ const dataParser = {
          * task, ...
          * ]
          * 
-         * @returns {String} The query string to be passed down to the model to call for the data
-         * Returns the same array with all the respective data parsed to be sent by the API
+         * @returns {Array} Returns an array of tasks data parsed to be sent in the response of the get data API
          * 
          */
         getData(data){
+            // Defining helper function to add padding
+            function pad(n){return n<10 ? '0'+n : n}
             for(let i=0; i<data.length; i++){
                 // Getting the values
-                let dueDate = `${data[i].duedate.getFullYear()}/${data[i].duedate.getMonth()}/${data[i].duedate.getDate()}`,
+                let dueDate = data[i].duedate.format('YYYY/MM/DD'),
                 dueTime = `${data[i].duetime}`;
+                let taskId = data[i].taskid,
+                projectId = data[i].projectid;
                 // Formatting and parsing them
                 dueTime = dueTime.substring(0, 5);
                 dueTime = dueTime.replace(':', '');
+                taskId = parseInt(taskId);
+                projectId = parseInt(projectId);
                 // Setting values back
                 data[i].duedate = dueDate;
                 data[i].duetime = dueTime;
+                data[i].taskid = taskId;
+                data[i].projectid = projectId;
             }
             return data;
         },
