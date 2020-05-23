@@ -8,6 +8,7 @@ This document helps you identify the smaller tasks and helps you create a rough 
 
 > You can follow this template for the advance feature. You can plan it right at the start or you can plan it abit later.
 
+> This is just a template, you just need to state **WHO** will do **WHAT** and **WHEN**.
 ## Estimate Schedule  
 
 **For Block 1 (Week 1-6)**
@@ -76,4 +77,3 @@ This document helps you identify the smaller tasks and helps you create a rough 
 
 
 
-> This is just a template, you just need to state **WHO** will do **WHAT** and **WHEN**.
