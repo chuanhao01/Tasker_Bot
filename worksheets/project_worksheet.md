@@ -81,7 +81,7 @@ Link: [Component Diagram](https://www.plantuml.com/plantuml/svg/0/JK-x3i8m3Dpz5L
 1. Does the frontend communicate with the mobile? `(No)`
 2. Does the frontend communicate directly with the database? `(No)`
 3. How should the frontend display data from the database? `(The frontend should display the data in the form of a table, allowing the user to view the data.)`
-4. How does the frontend communicate with backend? `(Answer here)`
+4. How does the frontend communicate with backend? `(The frontend can send a HTTP request with an Ajax call to the appropriate API endpoints in the backend server. The backend server then processes the request, retrieving the appropriate data from the database and sending it back to the frontend in the HTTP response.)`
 
 ---
 
