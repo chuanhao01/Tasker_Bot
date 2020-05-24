@@ -2,7 +2,7 @@
 
 ## Wireframe
 
-![Wireframe](justifications/Result_viewer_wireframe_draft.png)
+![Wireframe](justifications/result_viewer_wireframe.png)
 
 ## Justifications
 

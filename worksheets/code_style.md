@@ -21,11 +21,86 @@ Based on your chosen rules, give an example of a code that follows the code styl
 ### Good Example
 
 ```js
+// For normal functions, control statements and variables
+function pow(x, n){
+  let result = 1;
+  for(let i=0; i<n; i++){
+    result *= x;
+  }
+  return result;
+}
+
+let x = prompt("x?", ''),
+n = prompt("n?", '');
+
+if (n <= 0){
+  alert(`Power ${n} is not supported, please enter an integer number greater than zero`);
+}
+else{
+  alert(pow(x,n));
+}
+
+let promises = new Promise((resolve, reject) => {
+    resolve(
+        new Promise((resolve, rejct) => {
+            resolve('This resolved and is done');
+        })
+        .catch(
+            function(err){
+                throw err;
+            }
+        )
+    );
+})
+.then(
+    function(data){
+        doSomething(data);
+    }
+)
+.catch(
+    function(e){
+        finalError(e);
+    }
+);
 ```
 
 ### Bad Example
 
 ```js
+// For normal functions, control statements and variables
+function pow(x,n)
+{
+  let result=1;
+  for(let i=0;i<n;i++) {result*=x;}
+  return result;
+}
+
+let x=prompt("x?",''), n=prompt("n?",'')
+if (n<=0)
+{
+  alert(`Power ${n} is not supported, please enter an integer number greater than zero`);
+}
+else
+{
+  alert(pow(x,n))
+}
+
+let promises = new Promise((resolve, reject) => {
+    resolve(new Promise((resolve, rejct) => {
+            resolve('This resolved and is done');
+        })
+        .catch(
+            function(err){
+                throw err;
+            }
+        ));
+})
+    .then(function(data){
+            doSomething(data);
+        })
+    .catch(function(e){
+            finalError(e);
+        });
 ```
 
 
@@ -43,9 +118,10 @@ Based on your chosen rules, give an example of a code that follows the code styl
   - [Modules](#modules)
   - [Functions](#functions)
   - [Classes](#classes)
-  - [Variables and Constants](#variables-and-constants)
+  - [Constants](#constants)
   - [Links](#links)
   - [Examples](#examples-1)
+  - [API](#api)
 
 # JSDoc style guide
 
@@ -177,6 +253,7 @@ JSDoc:
 
 ```js
 /**
+ * @function
  * Takes 2 numbers and returns their sum.
  * @param   {number} a     the first number
  * @param   {number} b     the second number
@@ -192,7 +269,9 @@ function addNumbers(a, b, c) {
 }
 ```
 
-The first line in the comment is a succinct
+We first tag the function with the **@function** tag.
+
+Then the first line below the **@function** tag in the comment is a succinct
 description of what the function does.
 
 The **@param** tag is used to define parameters
@@ -230,7 +309,7 @@ value for the param:
  *  @param {type} [paramname=default_value] param description
 ```
 
-Optional tags **@throws** and **@constructor** can be used
+Optional tags **@throws** can be used
 as well.
 
 **@throws** defines a possible exception:
@@ -238,11 +317,6 @@ as well.
  *  @throws {exceptionName}
 ```
 
-**@constructor** is used to label functions that
-are class constructors:
-```js
-*  @constructor
-```
 ## Classes
 
 Classes are defined similarly to functions with 
@@ -264,41 +338,26 @@ function Car(licensePlate) {
 }
 ```
 For classes, we use the first line to provide
-a description of the class.
+a description of the class.  
 
 The **@class** tag is used to label the function
-as a class.
+as a class.  
 
 The **@constructor** tag is used to label the 
-function as a constructor for the class.
+function as a constructor for the class.  
 
 The **@property** tag is used to define class 
 properties and is followed by the property name
-and the description of the property.
+and the description of the property.  
 
-## Variables and Constants
+## Constants
 
-Variables can be documented using JSDoc. 
-For example:
-
-```js
-/**
- * The current environment we're running in.
- * @type {string}
- */
- var currentEnvironment = getEnvironment();
-```
-The comment consists of a description in the 
-first line followed by a **@type** tag in the 
-second line.
-
-Constants can be documented the same way as 
-variables except with a **@constant** tag:
+The comment consist of the **@type** tag followed by a description below the tag.
 
 ```js
 /**
- * The environment we're running in.
  * @constant
+ * The environment we're running in.
  *
  * @type {string}
  */
@@ -306,6 +365,8 @@ variables except with a **@constant** tag:
 ```
 
 ## Links
+
+Just in case we need to refer back to copied code.  
 
 External links can be used in various comments
 by using the **@link** tag:
@@ -342,3 +403,28 @@ function addNumbers(a, b) {
 
 Use the **@example** tag within the comment block
 used to define a function, class, or constructor.
+
+## API
+
+For the backend server to document what the api does, we can use a **@API** tag:  
+```js
+/**
+ * @API
+ * This is the basic problem bulk insert API
+ * As for this request, refer to api.md for more deatils.
+ * 
+ * Expected a json object as part of the request
+ * {
+ *     data: [
+ *         {
+ *          taskId, projectId, dueDate, dueTime, duration
+ *         }
+ *     ],
+ * }
+ * 
+ */
+app.post('/basic/insert', [
+...
+```
+
+For this, we would include a short description of the API followed by a short example of the query/parameters/request body needed/optional with the request.  

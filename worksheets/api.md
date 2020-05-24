@@ -18,103 +18,27 @@ Each API should include
 ## Table of Contents
 - [API Documentation](#api-documentation)
   - [Table of Contents](#table-of-contents)
-  - [Template](#template)
-    - [Parameters](#parameters)
+  - [Basic GET data API](#basic-get-data-api)
+    - [Query parameters](#query-parameters)
     - [Response Body](#response-body)
     - [Error](#error)
     - [Sample Request](#sample-request)
     - [Sample Response](#sample-response)
     - [Sample Error](#sample-error)
-  - [Basic GET data API](#basic-get-data-api)
-    - [Optional query parameters](#optional-query-parameters)
+  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
+    - [Query parameters](#query-parameters-1)
     - [Response Body](#response-body-1)
     - [Error](#error-1)
     - [Sample Request](#sample-request-1)
     - [Sample Response](#sample-response-1)
     - [Sample Error](#sample-error-1)
-  - [Basic GET data API endpoint for the lastpage number](#basic-get-data-api-endpoint-for-the-lastpage-number)
-    - [Optional query parameters](#optional-query-parameters-1)
+  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
+    - [Request body](#request-body)
     - [Response Body](#response-body-2)
     - [Error](#error-2)
     - [Sample Request](#sample-request-2)
     - [Sample Response](#sample-response-2)
     - [Sample Error](#sample-error-2)
-  - [Basic Bulk Insert Data](#basic-bulk-insert-data)
-    - [Request body](#request-body)
-    - [Response Body](#response-body-3)
-    - [Error](#error-3)
-    - [Sample Request](#sample-request-3)
-    - [Sample Response](#sample-response-3)
-    - [Sample Error](#sample-error-3)
-
-
-
-## Template
-
-| attribute   | value       |
-| ----------- | ----------- |
-| HTTP Method | GET         |
-| Endpoint    | /basic/data |
-
-### Parameters
-
-| parameter | datatype        | example   |
-| --------- | --------------- | --------- |
-| id        | 10 digit number | 123456789 |
-
-### Response Body
-
-```json
-{
-    "result": [
-        {
-            "id": number,
-            "property1": number,
-            "property2": string,
-            ...
-        }
-    ]
-}
-```
-
-### Error
-
-```json
-{
-	"error": string,
-	"code": number
-}
-```
-
-### Sample Request
-
-```http
-GET /basic/data?id=1234567890
-```
-
-### Sample Response
-
-```json
-{
-    "result": [
-        {
-            "id": 1234567890,
-            "property1": 1234567890,
-            "property2": "haha",
-            ...
-        }
-    ]
-}
-```
-
-### Sample Error
-
-```json
-{
-	"error": "Server Error",
-	"code": 500
-}
-```
 
 ## Basic GET data API 
 
@@ -128,15 +52,17 @@ The results returned by the API will depends on the supplied optional querys.
 
 As this is a GET API endpoint, no request body is expected and only optional query parameters are expected.
 
-### Optional query parameters
+### Query parameters
 
-| parameter | datatype                                        | example       |
-|-----------|-------------------------------------------------|---------------|
-| projectId | 10 digit number                                 | 123456789     |
-| duration  | Positive Integer greater than 0                 | 10            |
-| sortBy    | A string in the format of `attribute.order,...` | projectId.asc |
-| page      | Positive Integer greater than 0                 | 11            |
-| pageNum   | Positive Integer greater than 0                 | 5             |
+As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
+
+| parameter | datatype                                        | example                    | Optional | Default Behaviour |
+|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
 
 
 ### Response Body
@@ -210,16 +136,17 @@ This endpoint will supply the number of the last page given the same optional qu
 
 As this is a GET API endpoint, no request body is expected and only optional query parameters are expected.
 
-### Optional query parameters
+### Query parameters
 
-| parameter | datatype                                        | example       |
-|-----------|-------------------------------------------------|---------------|
-| projectId | 10 digit number                                 | 123456789     |
-| duration  | Positive Integer greater than 0                 | 10            |
-| sortBy    | A string in the format of `attribute.order,...` | projectId.asc |
-| page      | Positive Integer greater than 0                 | 11            |
-| pageNum   | Positive Integer greater than 0                 | 5             |
+As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
 
+| parameter | datatype                                        | example                    | Optional | Default Behaviour |
+|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
 
 ### Response Body
 
@@ -282,18 +209,20 @@ For this request, as it is a post request, there are no optional query parameter
 
 ### Request body
 
-| parameter | datatype        | example   |
-| --------- | --------------- | --------- |
-| data        | Array of objects| {taskId, projectId, dueDate, dueTime, duration}  |
+| parameter | datatype         | example                                         | Optional | Default Behaviour |
+|-----------|------------------|-------------------------------------------------|----------|-------------------|
+| data      | Array of objects | {taskId, projectId, dueDate, dueTime, duration} | No       | NIL               |
+
 
 Table for insert objects  
-| parameter | datatype                                     | example    |
-|-----------|----------------------------------------------|------------|
-| taskId    | 10 digit number (int)                        | 0000000001 |
-| projectId | 10 digit number (int)                        | 0000000001 |
-| dueDate   | a date in the format oe yyyy/mm/dd (string)  | 1980/01/01 |
-| dueTime   | a 24H time in the format of HHMM (string)    | 2211       |
-| duration  | an integer(maximum of 10 digits) (int)       | 20         |
+| parameter | datatype                                    | example    | Optional | Default Behaviour |
+|-----------|---------------------------------------------|------------|----------|-------------------|
+| taskId    | 10 digit number (int)                       | 0000000001 | No       | NIL               |
+| projectId | 10 digit number (int)                       | 0000000001 | No       | NIL               |
+| dueDate   | a date in the format oe yyyy/mm/dd (string) | 1980/01/01 | No       | NIL               |
+| dueTime   | a 24H time in the format of HHMM (string)   | 2211       | No       | NIL               |
+| duration  | an integer(maximum of 10 digits) (int)      | 20         | No       | NIL               |
+
 
 
 ### Response Body
