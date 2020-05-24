@@ -7,6 +7,7 @@
  * 
  * @requires NPM:pg
  * @requires NPM:chai
+ * @requires NPM:moment
  * @requires ../../utils/index
  * 
  */
@@ -15,6 +16,7 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 const should = require('chai').should();
+const moment = require('moment');
 
 // Importing the custom utils to test
 const utils = require('../../utils/index');
@@ -165,7 +167,49 @@ describe('Utils test', function(){
         describe('For basic parser', function(){
             describe('Parsing get data', function(){
                 // To do
-                it('Making sure format is done correctly');
+                it('Making sure format is done correctly', function(){
+                    /*
+                    Note I am writing this here because there is a slight bug with node-pg
+                    For date 1998-02-02 it returns as the string 1998-02-01T16:00:00.000Z
+                    But using moment to parse it, it changes to 1998-02-02T00:00:00.000Z
+                    But when parsed back to string, it is still 1998-02-01T16:00:00.000Z
+                    So this test if for both
+                    */
+                    const testTasks = [
+                        {
+                            taskid: '6',
+                            duedate: moment('1998-02-01T16:00:00.000Z'),
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '7',
+                            duedate: moment('1998-02-02T00:00:00.000Z'),
+                            duetime: '01:32:00',
+                            duration: 2,
+                            projectid: '11'
+                        },
+                    ];
+                    const result = utils.dataParser.basic.getData(testTasks);
+                    const expectedResult = [
+                        {
+                            taskid: 6,
+                            duedate: '1998/02/02',
+                            duetime: '0132',
+                            duration: 2,
+                            projectid: 11
+                        },
+                        {
+                            taskid: 7,
+                            duedate: '1998/02/02',
+                            duetime: '0132',
+                            duration: 2,
+                            projectid: 11
+                        },
+                    ];
+                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
+                });
             });
         });
     });
