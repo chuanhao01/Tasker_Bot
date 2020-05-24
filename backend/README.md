@@ -18,6 +18,13 @@ Some notes:
 1. NODE_ENV has to be set appropriately in order for test to run, so as to make sure other dbs are not accidently overwritten.
 2. PG_URL has to be set to the appropriate pg db either locally or elephantsql
 
+How the `.env` should look like:
+Taken from the `.env.sample`
+```
+NODE_ENV=
+PG_URL=
+```
+
 ## How to run the code
 
 ### Running the server  

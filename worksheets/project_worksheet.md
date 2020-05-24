@@ -36,8 +36,10 @@ Link: [Use Case Diagram](https://www.plantuml.com/plantuml/svg/0/RP5D4e8m38NtFKM
 
 The above listed are functional requirements, that is, **WHAT** the system should allow users to do. There are also non-functional requirements that state **HOW** a system should perform.
 
--   Q1. Consider the use case of `Compute basic/advance result`, **HOW** is this functionality made available to both JiBaBoom and Adminstrator _(Hint: They are different)_? `(Answer Here)`
--   Q2. Consider the use case of `Insert basic/advance data`. **HOW** is the data stored? `(Answer Here)`
+-   Q1. Consider the use case of `Compute basic/advance result`, **HOW** is this functionality made available to both JiBaBoom and Adminstrator _(Hint: They are different)_? 
+`(This is made available through the use of the frontend web application and the backend server. Jibaboom can access the Compute basic/advance result by directly calling the backend API endpoints. The administrator can also access this functionality through the web application.)`
+-   Q2. Consider the use case of `Insert basic/advance data`. **HOW** is the data stored? 
+`(It is stored in the appropriate database.)`
 
 ---
 
@@ -76,10 +78,10 @@ Link: [Component Diagram](https://www.plantuml.com/plantuml/svg/0/JK-x3i8m3Dpz5L
 
 ### Questions:
 
-1. Does the frontend communicate with the mobile? `(Yes/No)`
-2. Does the frontend communicate directly with the database? `(Yes/No)`
-3. How should the frontend display data from the database? `(Answer here)`
-4. How does the frontend communicate with backend? `(Answer here)`
+1. Does the frontend communicate with the mobile? `(No)`
+2. Does the frontend communicate directly with the database? `(No)`
+3. How should the frontend display data from the database? `(The frontend should display the data in the form of a table, allowing the user to view the data.)`
+4. How does the frontend communicate with backend? `(The frontend can send a HTTP request with an Ajax call to the appropriate API endpoints in the backend server. The backend server then processes the request, retrieving the appropriate data from the database and sending it back to the frontend in the HTTP response.)`
 
 ---
 
@@ -151,22 +153,22 @@ Links:
 
 Choose the correct API/Viewer to be used for each of the `???` steps in the diagram:
 
--   Q1. `[Insert/Result]` API (Delete one of the options)
--   Q2. `[Data/Result]` Viewer
--   Q3. `[Insert/Result]` API
--   Q4. `[Data/Result]` Viewer
--   Q5. `[Insert/Result]` API
+-   Q1. `[Insert]` API (Delete one of the options)
+-   Q2. `[Data]` Viewer
+-   Q3. `[Result]` API
+-   Q4. `[Result]` Viewer
+-   Q5. `[Result]` API
 
 There's a note that mentions
 
 ```
-how can frontend/mobile\nget data from backend?
+how can frontend get data from backend?
 ```
 
 Think about how you can do it and type your answer below:
 
 ```
-[Answer Here]
+[The frontend can send a HTTP request with an Ajax call to the appropriate API endpoints in the backend server. The backend server then processes the request, retrieving the appropriate data from the database and sending it back to the frontend in the HTTP response.]
 ```
 
 ---
