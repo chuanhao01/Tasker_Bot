@@ -42,6 +42,8 @@ const basicController = {
         // Bulk Insert API
         /**
          * @API
+         * POST /basic/insert
+         * 
          * This is the basic problem bulk insert API
          * As for this request, refer to api.md for more deatils.
          * 
@@ -131,6 +133,8 @@ const basicController = {
         // Get basic data
         /**
          * @API
+         * GET /basic/data
+         * 
          * This is the basic problem get data API for the basic data viewer
          * As for this request, refer to api.md for more deatils.
          * 
@@ -204,6 +208,8 @@ const basicController = {
         });
         /**
          * @API
+         * GET /basic/data/lastpage
+         * 
          * This is the basic problem api to get the number of the lastpage based on the optional query supplied
          * This api should be called with the above get data api
          * 
@@ -241,7 +247,7 @@ const basicController = {
             // Parse the query params to be used in the db call
             let queryConditions = utils.dbParser.all.getDataQueryParams(req.query);
             // Removing the last line, so that it removes the limit
-            queryConditions = queryConditions.replace(/\n.*$/, '');
+            queryConditions = queryConditions.replace(/\r?\n?[^\r\n]*$/, "");
             new Promise((resolve) => {
                 resolve(
                     model.basic.getData(queryConditions)

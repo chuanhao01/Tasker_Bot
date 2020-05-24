@@ -13,12 +13,25 @@ const scripts = require('./scripts');
 // );
             
 
-// const {Pool} = require('pg');
+// var types = require('pg').types
+// var Moment = require('moment');
+// var parseDate = function parseDate(val) {
+//     return val === null ? null : Moment(val)
+// };
 
-// let pool = new Pool({
-//     connectionString: process.env.PG_URL,
-//     max: 5,
+// var DATATYPE_DATE = 1082;
+// types.setTypeParser(DATATYPE_DATE, function(val) {
+//     return val === null ? null : parseDate(val)
 // });
+
+const {Pool} = require('pg');
+
+let pool = new Pool({
+    connectionString: process.env.PG_URL,
+    max: 5,
+});
+
+// scripts.db.dbInit(pool);
 
 // pool.query(`
 // SELECT * FROM TASKSBASIC
@@ -34,20 +47,20 @@ const scripts = require('./scripts');
 let tasks = [];
 
 const basic_tasks = {
-    "taskId": 1,
-    "projectId": 11,
+    "taskId": 11,
+    "projectId": 9,
     "dueDate": "1998/02/02",
     "dueTime": "0132",
-    "duration": 2,
+    "duration": 3,
 };
 
-for(let i=0; i<10; i++){
+for(let i=0; i<3; i++){
     let new_task = {};
     new_task.taskId = basic_tasks.taskId + i;
     new_task.projectId = basic_tasks.projectId;
     new_task.dueDate = basic_tasks.dueDate;
     new_task.dueTime = basic_tasks.dueTime;
-    new_task.duration = basic_tasks.duration;
+    new_task.duration = basic_tasks.duration + i;
     tasks.push(new_task);
 }
 
@@ -63,5 +76,12 @@ db.basic.insertTask(utils.dbParser.basic.bulkInsert(tasks))
 // .then(
 //     function(res){
 //         console.log(res.rows);
+//     }
+// );
+
+// db.basic.getData()
+// .then(
+//     function(res){
+//         console.log(res.rows[0].duedate);
 //     }
 // );
