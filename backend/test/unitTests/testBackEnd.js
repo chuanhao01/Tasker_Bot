@@ -15,8 +15,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-const assert = chai.assert;
-const should = chai.should();
 const expect = chai.expect;
 
 // Importing own modules

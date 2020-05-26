@@ -18,9 +18,8 @@ before('Making sure dotenv is loaded', function(){
     require('dotenv').config();
 });
 
-//  Importing libs needed to run the test
+// Importing libs needed to run the test
 const {Pool} = require('pg');
-const assert = require('chai').assert;
 const expect = require('chai').expect;
 
 // Define global var for pool
@@ -129,7 +128,7 @@ describe('DB unit test', function(){
                     }
                     ];
                     // Checking if the result is the same
-                    JSON.stringify(res.rows).should.equal(JSON.stringify(expected_result));
+                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expected_result));
                     done();
                 }
             )
@@ -192,7 +191,7 @@ describe('DB unit test', function(){
                     }
                     ];
                     // Checking if the result is as expected
-                    JSON.stringify(res.rows).should.be.equal(JSON.stringify(expected_result));
+                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expected_result));
                     done();
                 }
             )

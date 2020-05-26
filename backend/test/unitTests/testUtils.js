@@ -13,10 +13,8 @@
  */
 
 //  Importing libs needed to run the test
-const assert = require('chai').assert;
-const expect = require('chai').expect;
-const should = require('chai').should();
 const moment = require('moment');
+const expect = require('chai').expect;
 
 // Importing the custom utils to test
 const utils = require('../../utils/index');
@@ -120,7 +118,7 @@ describe('Utils test', function(){
                     ];
                     const result = utils.dbParser.basic.bulkInsert(test_tasks);
                     const expected_result = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
-                    JSON.stringify(result).should.be.equal(JSON.stringify(expected_result));
+                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expected_result));
                 });
             });
         });
