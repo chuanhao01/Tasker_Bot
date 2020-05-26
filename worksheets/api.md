@@ -48,7 +48,7 @@ The results returned by the API will depends on the supplied optional querys.
 | attribute   | value                |
 | ----------- | -----------          |
 | HTTP Method | GET                  |
-| Endpoint    | /basic/data/lastpage |
+| Endpoint    | /basic/data          |
 
 As this is a GET API endpoint, no request body is expected and only optional query parameters are expected.
 
@@ -102,7 +102,7 @@ GET /basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&p
 
 ```json
 {
-    "result": "successful",
+    "result": "success",
     "data": [
         {
             "taskId": 1234567890,
@@ -178,7 +178,7 @@ GET /basic/data/lastpage?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,tas
 
 ```json
 {
-    "result": "successful",
+    "result": "success",
     "data": {
         "lastPage": "1"
     }
