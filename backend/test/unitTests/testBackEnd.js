@@ -1,7 +1,7 @@
 /**
  * @fileoverview 
- * Mocha test for testing and checking normal db functions
- * Meant to run while db is in production already
+ * Unit test for backend functionailty
+ * Mainly testing if the api rejects and fails correctly
  * 
  * @author Lim Chuan Hao
  * 

@@ -5,9 +5,8 @@
  * 
  * @author Lim Chuan Hao
  * 
- * @requires NPM:pg
- * @requires NPM:chai
  * @requires NPM:moment
+ * @requires NPM:chai
  * @requires ../../utils/index
  * 
  */
