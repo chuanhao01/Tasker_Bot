@@ -146,7 +146,7 @@ Data for the problem
 | 1      | 1000000015     | 2100      | 2800      | 9        |
 | 1      | 1000000017     | 2800      | 3900      | 20       |
 
-Total lateness: 37
+Total lateness: 35
 
 # Advance
 
