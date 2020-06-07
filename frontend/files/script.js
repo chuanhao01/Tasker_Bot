@@ -40,9 +40,13 @@
     // Replacing the value in the object to the new filter attribute
     currentFilters[filterAttribute] = filterString;
 
+
+    // Reset currentPage to display 1st page after each filter
+    currentPage = 1;
+
     // Ajax calls
-    obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=1`, `pageNum=${pageNumType}`);
-    obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=1`, `pageNum=${pageNumType}`)
+    obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
+    obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`)
  };
 
 
@@ -82,7 +86,7 @@ function pagination(pageLinkId) {
     var paginationType;
     paginationType = pageLinkId.split('_')[1];
         
-    // In the event that the page-link clicked was not 'previous' or 'next'
+    // In the event that the page-link clicked is not 'previous' or 'next', i.e. is one of the numbered links
     if (paginationType != 'previous' && paginationType != 'next') {
         obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${paginationType}`, `pageNum=${pageNumType}`);
         obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${paginationType}`, `pageNum=${pageNumType}`);
@@ -90,19 +94,21 @@ function pagination(pageLinkId) {
         // Set the var currentPage to the new page
         currentPage = parseInt(paginationType);
     }
-    else if (paginationType == 'previous') {
-        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
-        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
 
+    else if (paginationType == 'previous') {
         // Set the var currentPage to the new page
         currentPage -= 1;
-    }
-    else if (paginationType == 'next') {
-        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
-        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
 
+        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+    }
+
+    else if (paginationType == 'next') {
         // Set the var currentPage to the new page
         currentPage += 1;
+        
+        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
     };
 };
 
