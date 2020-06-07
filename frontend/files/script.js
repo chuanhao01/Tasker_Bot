@@ -41,8 +41,8 @@
     currentFilters[filterAttribute] = filterString;
 
     // Ajax calls
-    obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
-    obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`)
+    obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=1`, `pageNum=${pageNumType}`);
+    obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=1`, `pageNum=${pageNumType}`)
  };
 
 
