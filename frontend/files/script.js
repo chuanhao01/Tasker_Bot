@@ -59,7 +59,7 @@ function sort(eventTarget) {
     // Obtain whether the column is already sorted in ascending order or descending order
     var currentSort = eventTarget.className.split(' ')[eventTarget.className.split(' ').length - 1];
 
-    // Obtain the id of the button that was clicked and obtain the column name
+    // Obtain the column name to be sorted by checking the id
     var sortType = eventTarget.id.split('_')[1];
 
     // Change the className of the button for further usage
