@@ -49,6 +49,22 @@
     obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`)
  };
 
+ /**
+  * @function Implementing filter reset functionality
+  */
+ function resetFilter() {
+     // Reset values in object to empty strings
+     currentFilters['duration'] = '';
+     currentFilters['projectId'] = '';
+
+     // Ensure that the user is brought back to the first page
+     currentPage = 1;
+
+     // Ajax call
+     obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
+     obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`)
+ };
+
 
 /**
  * @function Implementing sorting functionality in the basic data viewer table - not persistent
@@ -78,7 +94,7 @@ function sort(eventTarget) {
 
 
 /**
- * @function Implementing sorting functionality in the basic data viewer table
+ * @function Implementing pagination functionality in the basic data viewer table
  * 
  * @param {string} pageLinkId 
  */
@@ -114,7 +130,7 @@ function pagination(pageLinkId) {
 
 
 /**
- * @function Implementing sorting functionality in the basic data viewer table
+ * @function Implementing pageNum size change functionality in the basic data viewer table
  * 
  * @param {int} pageNumType 
  */
