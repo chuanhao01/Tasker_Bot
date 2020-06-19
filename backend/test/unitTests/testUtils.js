@@ -5,9 +5,8 @@
  * 
  * @author Lim Chuan Hao
  * 
- * @requires NPM:pg
- * @requires NPM:chai
  * @requires NPM:moment
+ * @requires NPM:chai
  * @requires ../../utils/index
  * 
  */
@@ -100,7 +99,7 @@ describe('Utils test', function(){
         describe('For the basic parser', function(){
             describe('Testing bulk insert', function(){
                 it('Functionality test', function(){
-                    const test_tasks = [
+                    const testTasks = [
                         {
                             "taskId": 11,
                             "projectId": 11,
@@ -116,9 +115,9 @@ describe('Utils test', function(){
                             "duration": 22,
                         }
                     ];
-                    const result = utils.dbParser.basic.bulkInsert(test_tasks);
-                    const expected_result = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
-                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expected_result));
+                    const result = utils.dbParser.basic.bulkInsert(testTasks);
+                    const expectedResult = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
+                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
             });
         });

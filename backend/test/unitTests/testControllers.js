@@ -1,7 +1,8 @@
 /**
  * @fileoverview 
- * Mocha test for testing and checking normal db functions
- * Meant to run while db is in production already
+ * Unit test for the backend controllers
+ * Mainly testing if the api controllers rejects and fails correctly
+ * Other Backend test, such as successful tests are part of the integrations test
  * 
  * @author Lim Chuan Hao
  * 
@@ -140,6 +141,37 @@ describe('Backend Test', function(){
                         'dueTime': '12:11',
                         'duration': 0,
                     }],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Invalid due time', function(done){
+                chai.request(app)
+                .post('/basic/insert')
+                .type('json')
+                .send({
+                    data: [
+                        {
+                            "taskId": 11,
+                            "projectId": 11,
+                            "dueDate": "1998/02/01",
+                            "dueTime": "2599",
+                            "duration": 2,
+                        },
+                    ],
                 })
                 .end(function(err, res){
                     if(err){
