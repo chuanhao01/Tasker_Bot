@@ -157,6 +157,37 @@ describe('Backend Test', function(){
                     done();
                 });
             });
+            it('Invalid due time', function(done){
+                chai.request(app)
+                .post('/basic/insert')
+                .type('json')
+                .send({
+                    data: [
+                        {
+                            "taskId": 11,
+                            "projectId": 11,
+                            "dueDate": "1998/02/01",
+                            "dueTime": "2599",
+                            "duration": 2,
+                        },
+                    ],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
             it('Duplicate taskId when doing bulk insert', function(done){
                 chai.request(app)
                 .post('/basic/insert')

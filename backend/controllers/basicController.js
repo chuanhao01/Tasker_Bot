@@ -90,7 +90,7 @@ const basicController = {
                 return;
             }
             const parsed_tasks = utils.dbParser.basic.bulkInsert(req.body.data);
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve(
                     model.basic.insertTask(parsed_tasks)
                     .catch(
