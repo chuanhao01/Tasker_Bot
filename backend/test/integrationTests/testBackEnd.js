@@ -82,7 +82,7 @@ describe('Integration testing for the whole backend server', function(){
             "(9, 11, '1998-02-02', '01:32:00', 2)",
             "(10, 11, '1998-02-02', '01:32:00', 2)"
         ];
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
             resolve(
                 model.basic.insertTask(dummyTasks)
                 .catch(
@@ -101,70 +101,50 @@ describe('Integration testing for the whole backend server', function(){
     });
     describe('Testing the API endpoints', function(){
         describe('For the Basic Problem', function(){
-            it('GET /basic/data', function(done){
-                chai.request(app)
-                .get('/basic/data?pageNum=3&page=2')
-                .send()
-                .end(function(err, res){
-                    if(err){
-                        done(err);
-                    }
-                    // Check res code
-                    expect(res).to.have.status(200);
-                    // Checking if there was a body with a response
-                    expect(res).to.have.property('body');
-                    expect(res.body).to.have.property('result');
-                    expect(res.body).to.have.property('data');
-                    // Checking the body specific data
-                    expect(res.body.result).to.equal('success');
-                    const expectedData = [
-                        {
-                            taskid: 4,
-                            duedate: '1998/02/02',
-                            duetime: '0132',
-                            duration: 2,
-                            projectid: 11
-                        },
-                        {
-                            taskid: 5,
-                            duedate: '1998/02/02',
-                            duetime: '0132',
-                            duration: 2,
-                            projectid: 11
-                        },
-                        {
-                            taskid: 6,
-                            duedate: '1998/02/02',
-                            duetime: '0132',
-                            duration: 2,
-                            projectid: 11
+            describe('GET /basic/data', function(){
+                it('Checking normal request', function(done){
+                    chai.request(app)
+                    .get('/basic/data?pageNum=3&page=1')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
                         }
-                    ];
-                    expect(JSON.stringify(res.body.data)).to.equal(JSON.stringify(expectedData));
-                    done();
-                });
-            });
-            it('GET /basic/data/lastpage', function(done){
-                chai.request(app)
-                .get('/basic/data/lastpage?pageNum=3')
-                .send()
-                .end(function(err, res){
-                    if(err){
-                        done(err);
-                    }
-                    // Check res code
-                    expect(res).to.have.status(200);
-                    // Checking if there was a body with a response
-                    expect(res).to.have.property('body');
-                    expect(res.body).to.have.property('result');
-                    expect(res.body).to.have.property('data');
-                    // Checking the body specific data
-                    expect(res.body.result).to.equal('success');
-                    expect(res.body.data).to.have.property('lastPage');
-                    // Checking the lastpage
-                    const expectedLastPage = 4;
-                    expect(res.body.data.lastPage).to.be.equal(expectedLastPage);
-                    done();
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 1,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 2,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 3,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            }
+                        ];
+                        const expectedLastPage = 4;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
                 });
             });
         });
