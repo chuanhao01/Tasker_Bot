@@ -1,7 +1,8 @@
 /**
  * @fileoverview 
- * Unit test for backend functionailty
- * Mainly testing if the api rejects and fails correctly
+ * Unit test for the backend controllers
+ * Mainly testing if the api controllers rejects and fails correctly
+ * Other Backend test, such as successful tests are part of the integrations test
  * 
  * @author Lim Chuan Hao
  * 
