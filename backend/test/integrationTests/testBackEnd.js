@@ -73,14 +73,24 @@ describe('Integration testing for the whole backend server', function(){
         const dummyTasks = [
             "(1, 11, '1998-02-02', '01:32:00', 2)",
             "(2, 11, '1998-02-02', '01:32:00', 2)",
-            "(3, 11, '1998-02-02', '01:32:00', 2)",
-            "(4, 11, '1998-02-02', '01:32:00', 2)",
-            "(5, 11, '1998-02-02', '01:32:00', 2)",
-            "(6, 11, '1998-02-02', '01:32:00', 2)",
+            "(3, 11, '1998-02-02', '01:32:00', 3)",
+            "(4, 11, '1998-02-02', '01:32:00', 3)",
+            "(5, 11, '1998-02-02', '01:32:00', 4)",
+            "(6, 11, '1998-02-02', '01:32:00', 4)",
             "(7, 11, '1998-02-02', '01:32:00', 2)",
             "(8, 11, '1998-02-02', '01:32:00', 2)",
             "(9, 11, '1998-02-02', '01:32:00', 2)",
-            "(10, 11, '1998-02-02', '01:32:00', 2)"
+            "(10, 12, '1998-02-02', '01:32:00', 2)",
+            "(11, 12, '1998-02-02', '01:32:00', 2)",
+            "(12, 12, '1998-02-02', '01:32:00', 2)",
+            "(13, 13, '1998-02-02', '01:32:00', 2)",
+            "(14, 14, '1998-02-02', '01:32:00', 5)",
+            "(15, 11, '1998-02-02', '01:32:00', 2)",
+            "(16, 11, '1998-02-02', '01:32:00', 2)",
+            "(17, 11, '1998-02-02', '01:32:00', 2)",
+            "(18, 11, '1998-02-02', '01:32:00', 2)",
+            "(19, 11, '1998-02-02', '01:32:00', 2)",
+            "(20, 11, '1998-02-02', '01:32:00', 2)"
         ];
         new Promise((resolve) => {
             resolve(
@@ -104,7 +114,7 @@ describe('Integration testing for the whole backend server', function(){
             describe('GET /basic/data', function(){
                 it('Checking normal request', function(done){
                     chai.request(app)
-                    .get('/basic/data?pageNum=3&page=1')
+                    .get('/basic/data')
                     .send()
                     .end(function(err, res){
                         if(err){
@@ -138,7 +148,56 @@ describe('Integration testing for the whole backend server', function(){
                                 duetime: '0132',
                                 duration: 2,
                                 projectid: 11
-                            }
+                            },
+                            {
+                                taskid: 4,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 5,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 6,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 7,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 8,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 9,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 10,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
                         ];
                         const expectedLastPage = 4;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
@@ -146,6 +205,11 @@ describe('Integration testing for the whole backend server', function(){
                         done();
                     });
                 });
+                it('Checking projectId filter');
+                it('Checking duration filter');
+                it('Checking both filters together');
+                it('Checking sort works');
+                it('Checking Pagination works');
             });
         });
     });
