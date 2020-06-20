@@ -76,7 +76,7 @@ describe('DB unit test', function(){
             "(9, 11, '1998-02-02', '01:32:00', 2)",
             "(10, 11, '1998-02-02', '01:32:00', 2)"
         ];
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
             resolve(
                 model.basic.insertTask(dummyTasks)
                 .catch(
@@ -142,7 +142,7 @@ describe('DB unit test', function(){
     describe('Checking basic model functions', function(){
         it('Checking the insert model of the basic db', function(done){
             const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve(
                     model.basic.insertTask(testTasks)
                     .catch(
@@ -203,7 +203,7 @@ describe('DB unit test', function(){
         });
         it('Checking the get data by query conditions', function(done){
             const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve(
                     model.basic.getData(queryCondition)
                     .catch(
@@ -256,7 +256,7 @@ describe('DB unit test', function(){
                             projectid: '11'
                         }
 
-                    ]
+                    ];
                     expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
                     done();
                 }
