@@ -33,6 +33,14 @@ let pool = new Pool({
 
 // scripts.db.dbInit(pool);
 
+// const queryConditions = `WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5`;
+// db.basic.getData(queryConditions)
+// .then(
+//     function(res){
+//         console.log(res[1].rows[0]);
+//     }
+// );
+
 // pool.query(`
 // SELECT * FROM TASKSBASIC
 // WHERE taskId IN (11, 21)
@@ -44,33 +52,33 @@ let pool = new Pool({
 //     console.log(res.rows);
 // });
 
-let tasks = [];
+// let tasks = [];
 
-const basic_tasks = {
-    "taskId": 11,
-    "projectId": 9,
-    "dueDate": "1998/02/02",
-    "dueTime": "0132",
-    "duration": 3,
-};
+// const basic_tasks = {
+//     "taskId": 11,
+//     "projectId": 9,
+//     "dueDate": "1998/02/02",
+//     "dueTime": "0132",
+//     "duration": 3,
+// };
 
-for(let i=0; i<3; i++){
-    let new_task = {};
-    new_task.taskId = basic_tasks.taskId + i;
-    new_task.projectId = basic_tasks.projectId;
-    new_task.dueDate = basic_tasks.dueDate;
-    new_task.dueTime = basic_tasks.dueTime;
-    new_task.duration = basic_tasks.duration + i;
-    tasks.push(new_task);
-}
+// for(let i=0; i<3; i++){
+//     let new_task = {};
+//     new_task.taskId = basic_tasks.taskId + i;
+//     new_task.projectId = basic_tasks.projectId;
+//     new_task.dueDate = basic_tasks.dueDate;
+//     new_task.dueTime = basic_tasks.dueTime;
+//     new_task.duration = basic_tasks.duration + i;
+//     tasks.push(new_task);
+// }
 
-console.log(utils.dbParser.basic.bulkInsert(tasks));
-db.basic.insertTask(utils.dbParser.basic.bulkInsert(tasks))
-.then(
-    function(res){
-        console.log(res.rows);
-    }
-);
+// console.log(utils.dbParser.basic.bulkInsert(tasks));
+// db.basic.insertTask(utils.dbParser.basic.bulkInsert(tasks))
+// .then(
+//     function(res){
+//         console.log(res.rows);
+//     }
+// );
 
 // scripts.db.dbInit(db.basic.pool)
 // .then(
