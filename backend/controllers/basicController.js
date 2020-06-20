@@ -194,7 +194,7 @@ const basicController = {
                 function(pgRes){
                     // Refer to docs for what each object in the pgRes arr are
                     // Calculating the last page number
-                    const rowCount = pgRes[1].rows[0].count;
+                    const rowCount = parseInt(pgRes[1].rows[0].count);
                     let lastPage;
                     if(req.query.pageNum){
                         lastPage = Math.ceil(rowCount/req.query.pageNum);

@@ -219,7 +219,7 @@ describe('DB unit test', function(){
                     Note of caution here, when stringfy the moment, although it is parsed to the correct date
                     The original string from db is somewhat wrong, that is why the stringfy is still wrong
                     */
-                    const expectedResult = [
+                    const expectedDataResult = [
                         {
                             taskid: '6',
                             duedate: '1998-02-01T16:00:00.000Z',
@@ -257,7 +257,11 @@ describe('DB unit test', function(){
                         }
 
                     ];
-                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                    const expectedCountResult = [{
+                        'count': '11'
+                    }];
+                    expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                    expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
                     done();
                 }
             )
