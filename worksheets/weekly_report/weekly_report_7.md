@@ -4,18 +4,13 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Together:  
+- Started on docs for result API
+- Minor fixes to docs and code
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+Refer to next week weekly report for details
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+NIL
