@@ -62,7 +62,7 @@
 
      // Ajax call
      obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
-     obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`)
+     obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
  };
 
 
