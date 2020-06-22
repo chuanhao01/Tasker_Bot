@@ -4,18 +4,25 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Chuan Hao:  
+- Changed basic GET /basic/data API to include lastpage
+- Added docs for GET /basic/data API
+- Fixed unit tests 
+- Fixed up minor errors and docs
+
+Together:  
+- More Minor fixes
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Finish the data viewer as bulk insert for the advanced problem statement
+  - Data Viewer for the data
+    - Functionality
+    - API
+    - Testing
+  - Bulk Insert API
+    - Functionality
+    - Testing
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+Want to change timeslot to Tuesday
