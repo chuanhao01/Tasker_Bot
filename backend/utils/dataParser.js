@@ -38,7 +38,6 @@ const dataParser = {
          */
         getData(data){
             // Defining helper function to add padding
-            function pad(n){return n<10 ? '0'+n : n}
             for(let i=0; i<data.length; i++){
                 // Getting the values
                 let dueDate = data[i].duedate.format('YYYY/MM/DD'),

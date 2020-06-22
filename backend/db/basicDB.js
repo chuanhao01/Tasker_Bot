@@ -65,18 +65,30 @@ const basic_db = {
      *
      * @param {String} queryConditions The string of the query conditions given when the query params from the API request is parsed
      * 
-     * @returns {Promise} A promise call to the db to get the data, resolves the pg res object
+     * @returns {Promise} A promise call to the db to get the data, resolves an array of pg res objects
+     * The objects are [{
+     * 'rows': data from db to be parsed
+     * }, {
+     * 'count': the total number of rows given the query condition
+     * }]
      * 
      * @throws {Promise.error} if there is any pg error
      * 
      */
     getData(queryConditions){
         return new Promise((resolve, reject) => {
+            // Removing the last line, so that it removes the limit for the total number of records
+            const queryConditionsNoLimit = queryConditions.replace(/\r?\n?[^\r\n]*$/, "");
             this.pool.query(`
             SELECT * FROM TASKSBASIC
-            ${queryConditions}
+            ${queryConditions};
+
+            SELECT COUNT(*) FROM(
+                SELECT * FROM TASKSBASIC
+                ${queryConditionsNoLimit}
+            ) total;
             `, function(err, res){
-                if(err){
+                if(err || res.length !== 2){
                     reject(err);
                 }
                 resolve(res);
