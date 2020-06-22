@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "unit": "mocha test/unitTests",
+    "int": "mocha test/integrationTests",
     "start": "nodemon app.js"
   },
   "keywords": [],

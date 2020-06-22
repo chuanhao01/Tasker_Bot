@@ -4,18 +4,31 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:  
+- Wireframe doc
+- pagination view + lastpage
+- Frontend readme
+- Changed file strucutre of frontend for test
+
+Chuan Hao:  
+- Updated backend readme
+- Problem worksheet
+- API docs touch up
+- db schema doc
+- statement doc touch up
+
+Together:  
+- Project worksheet document
+- project planning
+- Test for demo, CA1 and CA2
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Integration testing
+- Unit testing frontend
+- Result api
+- Api schema + algo + api endpoint
+- Plan for the 6 weeks
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+Nothing here
