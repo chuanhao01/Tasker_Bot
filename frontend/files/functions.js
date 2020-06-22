@@ -139,7 +139,7 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
 
             // Always append the first page to the pagination display
             var defaultPaginationHtml = `
-            <li class="page-item">
+            <li class="page-item" id="defaultPage">
                 <a class="page-link" id="page_1" href="#" onclick="changePage()">1</a>
             </li>
             `;
@@ -150,6 +150,7 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
             var lastPage = data.data.lastPage;
             var currentPage = parseInt(page.split('=')[1]);
 
+            
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
             var nextPageHtml = `
             <li class="page-item">
@@ -158,7 +159,7 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
             `;
 
             var currentPageHtml = `
-            <li class="page-item">
+            <li class="page-item active">
                 <a class="page-link" id="page_${currentPage}" href="#" onclick="changePage()">${currentPage}</a>
             </li>
             `;
@@ -181,6 +182,11 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
             </li>
             `;
 
+
+            // Adding default page indication when currentPage == 1
+            if (currentPage == 1) {
+                $('#page_1').parent().addClass("active");
+            }
 
             // Second page
             if (currentPage == 2) {
