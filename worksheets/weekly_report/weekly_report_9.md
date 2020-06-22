@@ -15,8 +15,14 @@ Together:
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Finish the data viewer as bulk insert for the advanced problem statement
+  - Data Viewer for the data
+    - Functionality
+    - API
+    - Testing
+  - Bulk Insert API
+    - Functionality
+    - Testing
 
 ## Additional Thoughts
+Want to change timeslot to Tuesday
