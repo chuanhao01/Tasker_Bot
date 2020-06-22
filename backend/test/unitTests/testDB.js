@@ -18,9 +18,8 @@ before('Making sure dotenv is loaded', function(){
     require('dotenv').config();
 });
 
-//  Importing libs needed to run the test
+// Importing libs needed to run the test
 const {Pool} = require('pg');
-const assert = require('chai').assert;
 const expect = require('chai').expect;
 
 // Define global var for pool
@@ -77,7 +76,7 @@ describe('DB unit test', function(){
             "(9, 11, '1998-02-02', '01:32:00', 2)",
             "(10, 11, '1998-02-02', '01:32:00', 2)"
         ];
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
             resolve(
                 model.basic.insertTask(dummyTasks)
                 .catch(
@@ -96,7 +95,7 @@ describe('DB unit test', function(){
     });
     describe('Checking if the initialized of DB is done properly', function(){
         it('Checking the initialized of the DB', function(done){
-            const check_query = `
+            const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
             c.relname as "Name",                                                                                                                                                                        
             CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 's' THEN 'special' WHEN 'f' THEN 'foreign ta
@@ -111,10 +110,10 @@ describe('DB unit test', function(){
             AND pg_catalog.pg_table_is_visible(c.oid)
             ORDER BY 1,2;
             `;
-            pool.query(check_query)
+            pool.query(checkQuery)
             .then(
                 function(res){
-                    const expected_result = [
+                    const expectedResult = [
                     {
                         Schema: 'public',
                         Name: 'tasksadvanced',
@@ -129,7 +128,7 @@ describe('DB unit test', function(){
                     }
                     ];
                     // Checking if the result is the same
-                    JSON.stringify(res.rows).should.equal(JSON.stringify(expected_result));
+                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
                     done();
                 }
             )
@@ -142,10 +141,10 @@ describe('DB unit test', function(){
     });
     describe('Checking basic model functions', function(){
         it('Checking the insert model of the basic db', function(done){
-            const test_tasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
-            new Promise((resolve, reject) => {
+            const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
+            new Promise((resolve) => {
                 resolve(
-                    model.basic.insertTask(test_tasks)
+                    model.basic.insertTask(testTasks)
                     .catch(
                         function(err){
                             done(err);
@@ -175,7 +174,7 @@ describe('DB unit test', function(){
             )
             .then(
                 function(res){
-                    const expected_result = [
+                    const expectedResult = [
                     {
                         taskid: '11',
                         duedate: '1998-01-31T16:00:00.000Z',
@@ -192,7 +191,7 @@ describe('DB unit test', function(){
                     }
                     ];
                     // Checking if the result is as expected
-                    JSON.stringify(res.rows).should.be.equal(JSON.stringify(expected_result));
+                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
                     done();
                 }
             )
@@ -204,7 +203,7 @@ describe('DB unit test', function(){
         });
         it('Checking the get data by query conditions', function(done){
             const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve(
                     model.basic.getData(queryCondition)
                     .catch(
@@ -220,7 +219,7 @@ describe('DB unit test', function(){
                     Note of caution here, when stringfy the moment, although it is parsed to the correct date
                     The original string from db is somewhat wrong, that is why the stringfy is still wrong
                     */
-                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify([
+                    const expectedDataResult = [
                         {
                             taskid: '6',
                             duedate: '1998-02-01T16:00:00.000Z',
@@ -256,7 +255,13 @@ describe('DB unit test', function(){
                             duration: 2,
                             projectid: '11'
                         }
-                    ]));
+
+                    ];
+                    const expectedCountResult = [{
+                        'count': '11'
+                    }];
+                    expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                    expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
                     done();
                 }
             )
