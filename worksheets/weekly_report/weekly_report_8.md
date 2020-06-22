@@ -4,18 +4,16 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:  
+- Minor fixes to basic data viewer (filter reset button, current page indication)
+
+Chuan Hao:
+- Minor fixes
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Work on the documentation
+- Plan for the next 6 weeks
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+Nothing here

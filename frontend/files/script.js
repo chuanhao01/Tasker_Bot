@@ -10,6 +10,11 @@
  var pageNumType = 10;
  var sortType = '';
 
+ let currentFilters = {
+     'projectId': '',
+     'duration': ''
+ };
+
  
 /**
  * @function Implementing filter functionality in the basic data viewer table
@@ -30,67 +35,47 @@
         filterOperation = '<'
     }
 
-    // Checking the status of the current filter
-    var currentFilter_duration = $('#sort_duration').attr('class').split(' ')[2];
-    var currentFilter_projectId = $('#sort_projectId').attr('class').split(' ')[2];
+    // Defining the string to input into tht url to filter
+    let filterString = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+    // Replacing the value in the object to the new filter attribute
+    currentFilters[filterAttribute] = filterString;
 
-    
-    // If the current filter attribute is projectId
-    if (filterAttribute == 'projectId') {
-        var filterType_projectId = `${filterAttribute}[${filterOperation}]=${filterInput}`;
 
-        // Check if there is already a filter being applied to projectId
-        if (currentFilter_projectId == 'filteredBy_no') {
-            // Change the className for projectId to reflect that it has already been filtered once
-            $('#sort_projectId').toggleClass('filteredBy_no filteredBy_yes');
-        };
-        /* In the event that there is already a filter for the projectId, the className in the column already reflects such and the current filter is replaced by the new filter. This is also true for duration */
-        
-        // Have not filtered by duration yet -> No need to pass in 2 arguments
-        if (currentFilter_duration == 'filteredBy_no') {
-            obtainData(`${filterType_projectId}`, "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-            obtainTotalPage(`${filterType_projectId}`, "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-        }
-        // Already filtered by duration -> Pass in 2 arguments
-        else {
-            obtainData(`${filterType_projectId}`, duration=`${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-            obtainTotalPage(`${filterType_projectId}`, duration=`${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-        };
-    }
+    // Reset currentPage to display 1st page after each filter
+    currentPage = 1;
 
-    // If the current filter attribute is duration
-    else {
-        var filterType_duration = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+    // Ajax calls
+    obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
+    obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`)
+ };
 
-        // Check if there is already a filter being applied to duration
-        if (currentFilter_duration == 'filteredBy_no') {
-            // Change the className for duration to reflect that it has already been filtered once
-            $('#sort_duration').toggleClass('filteredBy_no filteredBy_yes');
-        };
+ /**
+  * @function Implementing filter reset functionality
+  */
+ function resetFilter() {
+     // Reset values in object to empty strings
+     currentFilters['duration'] = '';
+     currentFilters['projectId'] = '';
 
-        // Have not filtered by projectId yet
-        if (currentFilter_projectId == 'filteredBy_no') {
-            obtainData("", `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-            obtainTotalPage("", `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-        }
-        else {
-            obtainData(`${filterType_projectId}`, `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-            obtainTotalPage(`${filterType_projectId}`, `${filterType_duration}`, "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-        }
-    };
+     // Ensure that the user is brought back to the first page
+     currentPage = 1;
+
+     // Ajax call
+     obtainData(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
+     obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], '', `page=${currentPage}`, `pageNum=${pageNumType}`);
  };
 
 
 /**
- * @function Implementing sorting functionality in the basic data viewer table
+ * @function Implementing sorting functionality in the basic data viewer table - not persistent
  * 
  * @param {object} eventTarget 
  */
 function sort(eventTarget) {
     // Obtain whether the column is already sorted in ascending order or descending order
-    var currentSort = eventTarget.className.split(' ')[1];
+    var currentSort = eventTarget.className.split(' ')[eventTarget.className.split(' ').length - 1];
 
-    // Obtain the id of the button that was clicked and obtain the column name
+    // Obtain the column name to be sorted by checking the id
     var sortType = eventTarget.id.split('_')[1];
 
     // Change the className of the button for further usage
@@ -104,12 +89,12 @@ function sort(eventTarget) {
         sortType += '.asc';
     };
     
-    obtainData("", "", `sortBy=${sortType}`, `${currentPage}`, `pageNum=${pageNumType}`);
+    obtainData(currentFilters['projectId'], currentFilters['duration'], `sortBy=${sortType}`, `page=${currentPage}`, `pageNum=${pageNumType}`);
 };
 
 
 /**
- * @function Implementing sorting functionality in the basic data viewer table
+ * @function Implementing pagination functionality in the basic data viewer table
  * 
  * @param {string} pageLinkId 
  */
@@ -117,37 +102,39 @@ function pagination(pageLinkId) {
     var paginationType;
     paginationType = pageLinkId.split('_')[1];
         
-    // In the event that the page-link clicked was not 'previous' or 'next'
+    // In the event that the page-link clicked is not 'previous' or 'next', i.e. is one of the numbered links
     if (paginationType != 'previous' && paginationType != 'next') {
-        obtainData("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
-        obtainTotalPage("", "", "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${paginationType}`, `pageNum=${pageNumType}`);
+        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${paginationType}`, `pageNum=${pageNumType}`);
 
         // Set the var currentPage to the new page
         currentPage = parseInt(paginationType);
     }
-    else if (paginationType == 'previous') {
-        obtainData("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
-        obtainTotalPage("", "", "", `page=${currentPage - 1}`, `pageNum=${pageNumType}`);
 
+    else if (paginationType == 'previous') {
         // Set the var currentPage to the new page
         currentPage -= 1;
-    }
-    else if (paginationType == 'next') {
-        obtainData("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
-        obtainTotalPage("", "", "", `page=${currentPage + 1}`, `pageNum=${pageNumType}`);
 
+        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+    }
+
+    else if (paginationType == 'next') {
         // Set the var currentPage to the new page
         currentPage += 1;
+        
+        obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+        obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
     };
 };
 
 
 /**
- * @function Implementing sorting functionality in the basic data viewer table
+ * @function Implementing pageNum size change functionality in the basic data viewer table
  * 
  * @param {int} pageNumType 
  */
 function pageNum(pageNumType) {
-    obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-    obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+    obtainData(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+    obtainTotalPage(currentFilters['projectId'], currentFilters['duration'], "", `page=${currentPage}`, `pageNum=${pageNumType}`);
 };
