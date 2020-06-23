@@ -16,7 +16,7 @@
 var types = require('pg').types;
 var moment = require('moment');
 types.setTypeParser(1082, function(val) {
-    return val === null ? null : moment(val);
+    return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
 
 //  Importing the pg lib
