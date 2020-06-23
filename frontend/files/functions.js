@@ -39,8 +39,8 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
 
 
 /**
- * @function Obtaining the data to be shown in the dataviewer table and appending it directly to the table. 
- *           This will handle SORTING, FILTERING and OBTAINING data
+ * @function Obtaining the data to be shown in the dataviewer table and appending it directly to the table as well as controlling the pagination view of the table
+ *           This will handle SORTING, FILTERING and OBTAINING data && Pagination
  * 
  * @params {string} projectId The project ID of the new task that is to be inserted
  * @params {string} duration The duration of the new task that is to be inserted
@@ -68,7 +68,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
             // Ensure that the data viewer table is empty before appending any data
             $('#tableBody').empty();
 
-            var allTaskData = data.data;
+            var allTaskData = data.result.data;
             // Appending each task to a row in the table
             allTaskData.forEach((task) => {
                 const taskHtml = `
@@ -89,51 +89,9 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
 
                 $('#tableBody').append(taskHtml);
             })
-        },
-
-        /**
-         * @function Handling the event in which the ajax request call has an error
-         * 
-         * @param xhr The XMLHttpRequest
-         * @param @param {string} textStatus A string stating whether the call was a success or failure
-         * @param err The error message / response sent back by the server
-         */
-        error: function(xhr, textStatus, err) {
-            console.log({
-                status: textStatus,
-                err: err
-            });
-            window.alert("An error occurred in: obtainData()");
-        }
-    }); // End of ajax call
-};
 
 
-/**
- * @function Obtain the total number of pages
- * 
- * @params {string} projectId The project ID of the new task that is to be inserted
- * @params {string} duration The duration of the new task that is to be inserted
- * @params {string} sortBy The column to be sorted by
- * @params {string} page The page number that we are on / navigating to
- * @params {string} pageNum The number of tasks displayed on each page
- */
-function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
-    var url = `http://localhost:3000/basic/data/lastpage?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-
-                /**
-         * @function Handling the event in which the ajax request call is a success
-         * 
-         * @param {JSON} data The task data that we are getting from the server
-         * @param {string} textStatus A string stating whether the call was a success or failure
-         * @param xhr The XMLHttpRequest 
-         */
-        success: function(data, textStatus, xhr) {
             // Clear the current pagination display
             $('#paginationDisplay').empty();
 
@@ -147,9 +105,10 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
 
 
             // Obtain the values of the lastPage (from the API endpoint) and the current page(argument)
-            var lastPage = data.data.lastPage;
+            var lastPage = data.result.lastPage;
+            console.log("Page:" + page)
             var currentPage = parseInt(page.split('=')[1]);
-
+            console.log(currentPage)
             
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
             var nextPageHtml = `
@@ -253,17 +212,16 @@ function obtainTotalPage(projectId, duration, sortBy, page, pageNum) {
                 status: textStatus,
                 err: err
             });
-            window.alert("An error occurred in: obtainTotalPage()");
+            window.alert("An error occurred in: obtainData()");
         }
-    });
+    }); // End of ajax call
 };
 
 
 const allFunctions = {
     edit_insertTask: edit_insertTask,
     deleteData: deleteData,
-    obtainData: obtainData,
-    obtainTotalPage: obtainTotalPage
+    obtainData: obtainData
 }
 
 module.exports = allFunctions;

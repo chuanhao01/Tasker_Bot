@@ -189,8 +189,7 @@
         var pageNumType = 10;
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
-        window.document.onload = obtainData("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
-        window.document.onload = obtainTotalPage("", "", "", `page=${currentPage}`, `pageNum=${pageNumType}`);
+        window.document.onload = obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
 
 
         // Allow for the column names in the data viewer to be clickable and,
