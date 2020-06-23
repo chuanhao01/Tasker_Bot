@@ -18,6 +18,7 @@ Each API should include
 ## Table of Contents
 - [API Documentation](#api-documentation)
   - [Table of Contents](#table-of-contents)
+- [Basic problem API endpoints](#basic-problem-api-endpoints)
   - [Basic GET data API](#basic-get-data-api)
     - [Query parameters](#query-parameters)
     - [Response Body](#response-body)
@@ -40,6 +41,17 @@ Each API should include
     - [Sample Request](#sample-request-2)
     - [Sample Response](#sample-response-2)
     - [Sample Error](#sample-error-2)
+- [Advanced problem API endpoints](#advanced-problem-api-endpoints)
+  - [Advacned Get data API](#advacned-get-data-api)
+    - [Query parameters](#query-parameters-2)
+    - [Response Body](#response-body-3)
+    - [Error](#error-3)
+    - [Sample Request](#sample-request-3)
+    - [Sample Response](#sample-response-3)
+    - [Sample Error](#sample-error-3)
+
+# Basic problem API endpoints
+Below will be the API endpoints related to the basic problem statement.
 
 ## Basic GET data API 
 
@@ -322,6 +334,93 @@ GET /basic/result?projectId=1234567890&startDate=2020/01/13&startTime=2130
 ```json
 {
 	"error": "Server Error",
+	"code": 500
+}
+```
+
+# Advanced problem API endpoints
+Below will be the API endpoints related to the advanced problem statement.
+
+## Advacned Get data API
+This is the API endpoint used to get the data to display on the advanced data viewer front-end.
+The results returned by the API will depends on the supplied optional querys.  
+
+This endpoint will return the requested `data` with the `lastPage` number.  
+
+| attribute   | value                |
+| ----------- | -----------          |
+| HTTP Method | GET                  |
+| Endpoint    | /advance/data        |
+
+As this is a GET API endpoint, no request body is expected and only optional query parameters are expected.
+
+### Query parameters
+
+As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
+
+| parameter | datatype                                        | example                    | Optional | Default Behaviour |
+|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
+
+### Response Body
+
+```json
+{
+    "result": {
+        "data": [
+            {
+                "projectId": number,
+                "taskId": number,
+                "duration": number
+            },
+            ...
+        ],
+        "lastPage": number
+    }
+}
+```
+
+### Error
+
+```json
+{
+	"error": string,
+	"code": number
+}
+```
+
+### Sample Request
+
+```http
+GET /advance/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&page=2&pageNum=3
+```
+
+### Sample Response
+
+```json
+{
+    "result": {
+        "data": [
+            {
+                "taskId": 1234567890,
+                "projectId": 1234567890,
+                "duration": 1,
+            }
+        ],
+        "lastPage": 2
+    }
+}
+```
+
+### Sample Error
+
+```json
+{
+	"error": "Database Error",
 	"code": 500
 }
 ```
