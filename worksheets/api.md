@@ -49,6 +49,13 @@ Each API should include
     - [Sample Request](#sample-request-3)
     - [Sample Response](#sample-response-3)
     - [Sample Error](#sample-error-3)
+  - [Advance Bulk Insert Data](#advance-bulk-insert-data)
+    - [Request body](#request-body-1)
+    - [Response Body](#response-body-4)
+    - [Error](#error-4)
+    - [Sample Request](#sample-request-4)
+    - [Sample Response](#sample-response-4)
+    - [Sample Error](#sample-error-4)
 
 # Basic problem API endpoints
 Below will be the API endpoints related to the basic problem statement.
@@ -421,6 +428,95 @@ GET /advance/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc
 ```json
 {
 	"error": "Database Error",
+	"code": 500
+}
+```
+
+## Advance Bulk Insert Data
+
+This API endpoint based on the required Bulk Insert API endpoint of the assignment.
+
+Short desc
+
+| attribute   | value           |
+| ----------- | --------------- |
+| HTTP Method | POST            |
+| Endpoint    | /advance/insert |
+
+For this request, as it is a post request, there are no optional query parameters and only a request body is expected
+
+### Request body
+
+| parameter | datatype         | example                                         | Optional | Default Behaviour |
+|-----------|------------------|-------------------------------------------------|----------|-------------------|
+| data      | Array of objects | {taskId, projectId, duration} | No       | NIL               |
+
+
+Table for insert objects  
+| parameter | datatype                                    | example    | Optional | Default Behaviour |
+|-----------|---------------------------------------------|------------|----------|-------------------|
+| taskId    | 10 digit number (int)                       | 0000000001 | No       | NIL               |
+| projectId | 10 digit number (int)                       | 0000000001 | No       | NIL               |
+| duration  | an integer(maximum of 10 digits) (int)      | 20         | No       | NIL               |
+
+
+
+### Response Body
+
+```json
+{
+    "result": "success"
+}
+```
+
+### Error
+
+```json
+{
+	"error": String,
+	"code": Int
+}
+```
+
+### Sample Request
+
+Sample endpoint
+```http
+POST /basic/insert
+```
+
+Sample body
+```json
+{
+    "data": [
+        {
+            "taskId": 1234567890,
+            "projectId": 1234567890,
+            "duration": 1,
+        },
+        {
+            "taskId": 1234567891,
+            "projectId": 1234567890,
+            "duration": 100,
+        }
+    ]
+}
+
+```
+
+### Sample Response
+
+```json
+{
+    "result": "success"
+}
+```
+
+### Sample Error
+
+```json
+{
+	"error": "Server Error",
 	"code": 500
 }
 ```
