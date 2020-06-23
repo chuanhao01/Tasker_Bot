@@ -440,4 +440,35 @@ describe('Backend Test', function(){
             });
         });
     });
+    describe('Testing for advanced Controllers', function(){
+        describe('POST /advance/insert', function(){
+            it('Empty data is rejected', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({})
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Empty data array');
+            it('Data Array with empty obj');
+            it('Data object with empty values');
+            it('Duplicate data is rejected');
+            it('Bounds of id are checked and rejected');
+            it('Successful inserted adta');
+        });
+    });
 });
