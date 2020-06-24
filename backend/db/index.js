@@ -32,13 +32,17 @@ const pool = new Pool({
 const basicDB = require('./basicDB');
 basicDB.init(pool);
 
+const advancedDB = require('./advancedDB');
+advancedDB.init(pool);
+
 /**
  * @module model 
  * This will be the main object holding all the models used for the DB
  * 
  */
 const model = {
-    basic: basicDB
+    basic: basicDB,
+    advanced: advancedDB,
 };
 
 module.exports = model;
