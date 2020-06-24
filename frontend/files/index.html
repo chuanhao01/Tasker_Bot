@@ -143,7 +143,7 @@
                 </div>
             </div>
         </div>
-    
+        <!-- End of basic Data Viewer -->
 
         <div class="advanced_dataViewer" hidden>
             <!-- Table containing data -->
@@ -163,28 +163,29 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        
 
-        <!-- pagination & page size display -->
-        <div class="row">
-            <!-- page -->
-            <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                <ul class="pagination" id="paginationDisplay">
-                </ul>
-            </nav>
+            <!-- pagination & page size display -->
+            <div class="row">
+                <!-- page -->
+                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
+                    <ul class="pagination" id="paginationDisplay">
+                    </ul>
+                </nav>
     
-            <!-- pageNum -->
-            <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
-                <div class="input-group row">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Show: </span>
+                <!-- pageNum -->
+                <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
+                    <div class="input-group row">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Show: </span>
+                        </div>
+                        <input type="text" class="form-control" id="input_pageNum">
                     </div>
-                    <input type="text" class="form-control" id="input_pageNum">
                 </div>
             </div>
-        </div>
+        </div> 
+        <!-- End of advanced data viewer -->
     </div>
-
 
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
     <div class="modal" id="insert_editModal" tabindex="1" aria-hidden="true">
