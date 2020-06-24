@@ -59,7 +59,7 @@ describe('Model Test Suite', function(){
         .catch(done);
     });
     // Populating with preset data
-    beforeEach('Placing in mock data', function(done){
+    beforeEach('Placing in mock data for Basic Problem Statement', function(done){
         const tasks_query = `
         (1, 11, '1998-02-02', '01:32:00', 2),
         (2, 11, '1998-02-02', '01:32:00', 2),
@@ -75,6 +75,31 @@ describe('Model Test Suite', function(){
         pool.query(`
         INSERT INTO TASKSBASIC
         (taskId, projectId, dueDate, dueTime, duration)
+        VALUES
+        ${tasks_query}
+        `, function(err){
+            if(err){
+                done(err);
+            }
+            done();
+        });
+    });
+    beforeEach('Placing in mock data for Advanced Problem Statement', function(done){
+        const tasks_query = `
+        (1, 11, 2),
+        (2, 11, 2),
+        (3, 11, 2),
+        (4, 11, 2),
+        (5, 11, 2),
+        (6, 11, 2),
+        (7, 11, 2),
+        (8, 11, 2),
+        (9, 11, 2),
+        (10, 11, 2)
+        `;
+        pool.query(`
+        INSERT INTO TASKSADVANCED
+        (taskId, projectId, duration)
         VALUES
         ${tasks_query}
         `, function(err){
@@ -246,6 +271,67 @@ describe('Model Test Suite', function(){
                             taskid: '21',
                             duedate: moment('1998-02-02', 'YYYY-MM-DD'),
                             duetime: '01:32:00',
+                            duration: 22,
+                            projectid: '11'
+                        }
+                        ];
+                        // Checking if the result is as expected
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
+        });
+    });
+    describe('Advanced Problem Statement Models', function(){
+        describe('Inserting data into the database', function(){
+            it('Basic Functionality', function(done){
+                const testTasks = ['(11, 11, 2)', '(21, 11, 22)'];
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.insertTask(testTasks)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(){
+                        return new Promise((resolve, reject) => {
+                            pool.query(`
+                            SELECT * FROM TASKSADVANCED
+                            WHERE taskId IN (11, 21)
+                            `, function(err, res){
+                                if(err){
+                                    reject(err);
+                                }
+                                resolve(res);
+                            });
+                        })
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        );
+                    }
+                )
+                .then(
+                    function(res){
+                        const expectedResult = [
+                        {
+                            taskid: '11',
+                            duration: 2,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '21',
                             duration: 22,
                             projectid: '11'
                         }
