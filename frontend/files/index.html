@@ -54,8 +54,16 @@
         </div>
     </header>
 
-    <!-- Table containing data -->
+    <!-- Table containing data ( Basic data viewer ) -->
     <div class="mr-4 ml-5">
+        <!-- Basic data viewer / Advanced data viewer selection -->
+        <div class="row d-flex justify-content-center mb-5">
+            <div class="btn-group" role="group" aria-label="select_basicAdvanced">
+                <button type="button" class="btn btn-primary border-dark">Basic</button>
+                <button type="button" class="btn btn-primary border-dark">Advanced</button>
+            </div>
+        </div>
+
         <div class="row">
             <!-- Input group above the table => inserting task and filtering data -->
             <div class="input-group p-2">
@@ -96,9 +104,9 @@
             </div>
         </div>
 
-        <div class="dataViewer">
+        <div class="basic_dataViewer">
             <!-- Table containing data -->
-            <div class="row table-responsive" id="dataViewerTable">
+            <div class="row table-responsive" id="basic_dataViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
@@ -115,27 +123,29 @@
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            <!-- pagination & page size display -->
-            <div class="row">
-                <!-- page -->
-                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                    <ul class="pagination" id="paginationDisplay">
-                    </ul>
-                </nav>
+
+        <!-- pagination & page size display -->
+        <div class="row">
+            <!-- page -->
+            <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
+                <ul class="pagination" id="paginationDisplay">
+                </ul>
+            </nav>
     
-                <!-- pageNum -->
-                <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
-                    <div class="input-group row">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Show: </span>
-                        </div>
-                        <input type="text" class="form-control" id="input_pageNum">
+            <!-- pageNum -->
+            <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
+                <div class="input-group row">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Show: </span>
                     </div>
+                    <input type="text" class="form-control" id="input_pageNum">
                 </div>
             </div>
         </div>
     </div>
+    
 
 
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
@@ -190,6 +200,10 @@
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
         window.document.onload = obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+
+        // // Defining the Basic data viewer as the default table
+        // document.querySelector('.basic_dataViewer').style.display = 'none';
+        // document.querySelector('.advanced_dataViewer').style.display = 'table';
 
 
         // Allow for the column names in the data viewer to be clickable and,
