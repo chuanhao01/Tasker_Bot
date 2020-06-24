@@ -125,6 +125,26 @@
             </div>
         </div>
 
+        <div class="advanced_dataViewer" hidden>
+            <!-- Table containing data -->
+            <div class="row table-responsive" id="advanced_dataViewerTable">
+                <table class="table border mb-1 text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="sortBtn asc" id="sort_taskId">Task ID &DownArrowUpArrow;</th>
+                            <th class="sortBtn filteredBy_no asc" id="sort_projectId">Project ID &DownArrowUpArrow;</th>
+                            <th class="sortBtn asc" id="sort_dueDate">Due Date &DownArrowUpArrow;</th>
+                            <th class="sortBtn asc" id="sort_dueTime">Due Time &DownArrowUpArrow;</th>
+                            <th class="sortBtn filteredBy_no asc" id="sort_duration">Duration (in Hrs) &DownArrowUpArrow;</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- pagination & page size display -->
         <div class="row">
