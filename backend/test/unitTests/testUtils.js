@@ -20,15 +20,6 @@ const utils = require('../../utils/index');
 
 // Tests below
 describe('Utils test', function(){
-    before('Checking env', function(){
-        if(process.env.NODE_ENV === 'UNIT_TEST'){
-            // Nothing to setup
-            return;
-        }
-        else{
-            this.skip();
-        }
-    });
     describe('Testing for dbPraser', function(){
         describe('Testing for the all/common parsers', function(){
             describe('Testing the get data query params parser', function(){
@@ -117,6 +108,27 @@ describe('Utils test', function(){
                     ];
                     const result = utils.dbParser.basic.bulkInsert(testTasks);
                     const expectedResult = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
+                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
+                });
+            });
+        });
+        describe('For the advacned parser', function(){
+            describe('Testing bulk insert parser', function(){
+                it('Functionality Test', function(){
+                    const testTasks = [
+                        {
+                            "taskId": 11,
+                            "projectId": 11,
+                            "duration": 2,
+                        },
+                        {
+                            "taskId": 21,
+                            "projectId": 11,
+                            "duration": 22,
+                        }
+                    ];
+                    const result = utils.dbParser.advanced.bulkInsert(testTasks);
+                    const expectedResult = [`(11, 11, 2)`, `(21, 11, 22)`];
                     expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
             });
