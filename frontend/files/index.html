@@ -54,7 +54,7 @@
         </div>
     </header>
 
-    <!-- Table containing data ( Basic data viewer ) -->
+    <!-- Table containing data -->
     <div class="mr-4 ml-5">
         <!-- Basic data viewer / Advanced data viewer selection -->
         <div class="row d-flex justify-content-center mb-5">
@@ -123,7 +123,27 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- pagination & page size display -->
+            <div class="row">
+                <!-- page -->
+                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
+                    <ul class="pagination" id="paginationDisplay">
+                    </ul>
+                </nav>
+    
+                <!-- pageNum -->
+                <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
+                    <div class="input-group row">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Show: </span>
+                        </div>
+                        <input type="text" class="form-control" id="input_pageNum">
+                    </div>
+                </div>
+            </div>
         </div>
+    
 
         <div class="advanced_dataViewer" hidden>
             <!-- Table containing data -->
@@ -164,7 +184,6 @@
             </div>
         </div>
     </div>
-    
 
 
     <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
