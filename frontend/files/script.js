@@ -45,7 +45,7 @@
     currentPage = 1;
 
     // Ajax calls
-    obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+    basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
  };
 
  /**
@@ -60,7 +60,7 @@
      currentPage = 1;
 
      // Ajax call
-     obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+     basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
  };
 
 
@@ -87,7 +87,7 @@ function sort(eventTarget) {
         sortType += '.asc';
     };
     
-    obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, `sortBy=${sortType}`);
+    basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, `sortBy=${sortType}`);
 };
 
 
@@ -102,7 +102,7 @@ function pagination(pageLinkId) {
         
     // In the event that the page-link clicked is not 'previous' or 'next', i.e. is one of the numbered links
     if (paginationType != 'previous' && paginationType != 'next') {
-        obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${paginationType}`, `pageNum=${pageNumType}`, "");
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${paginationType}`, `pageNum=${pageNumType}`, "");
 
         // Set the var currentPage to the new page
         currentPage = parseInt(paginationType);
@@ -112,14 +112,14 @@ function pagination(pageLinkId) {
         // Set the var currentPage to the new page
         currentPage -= 1;
 
-        obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
     }
 
     else if (paginationType == 'next') {
         // Set the var currentPage to the new page
         currentPage += 1;
         
-        obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
     };
 };
 
@@ -130,5 +130,5 @@ function pagination(pageLinkId) {
  * @param {int} pageNumType 
  */
 function pageNum(pageNumType) {
-    obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+    basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
 };

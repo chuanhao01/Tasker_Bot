@@ -48,7 +48,7 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
  * @params {string} page The page number that we are on / navigating to
  * @params {string} pageNum The number of tasks displayed on each page
  */
-function obtainData(projectId, duration, page, pageNum, sortBy) {
+function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
     var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
@@ -66,7 +66,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
          */
         success: function(data, textStatus, xhr) {
             // Ensure that the data viewer table is empty before appending any data
-            $('#tableBody').empty();
+            $('#basic_tableBody').empty();
 
             var allTaskData = data.result.data;
             // Appending each task to a row in the table
@@ -87,7 +87,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
                 </tr>
                 `
 
-                $('#tableBody').append(taskHtml);
+                $('#basic_tableBody').append(taskHtml);
             })
 
 
@@ -221,7 +221,7 @@ function obtainData(projectId, duration, page, pageNum, sortBy) {
 const allFunctions = {
     edit_insertTask: edit_insertTask,
     deleteData: deleteData,
-    obtainData: obtainData
+    basic_obtainData: basic_obtainData
 }
 
 module.exports = allFunctions;

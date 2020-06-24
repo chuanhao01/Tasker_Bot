@@ -119,7 +119,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody">
+                    <tbody id="basic_tableBody">
                     </tbody>
                 </table>
             </div>
@@ -140,7 +140,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody">
+                    <tbody id="advanced_tableBody">
                     </tbody>
                 </table>
             </div>
@@ -219,7 +219,7 @@
         var pageNumType = 10;
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
-        window.document.onload = obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+        window.document.onload = basic_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
 
         // // Defining the Basic data viewer as the default table
         // document.querySelector('.basic_dataViewer').style.display = 'none';
