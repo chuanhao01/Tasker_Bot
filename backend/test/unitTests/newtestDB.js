@@ -14,6 +14,13 @@
  * 
  */
 
+// Setting up date parser for pg
+var types = require('pg').types;
+var moment = require('moment');
+types.setTypeParser(1082, function(val) {
+    return val === null ? null : moment(val, 'YYYY-MM-DD');
+});
+
 // Importing libs needed to run the test
 const {Pool} = require('pg');
 const expect = require('chai').expect;
@@ -29,7 +36,8 @@ let pool;
 const scripts = require('../../scripts/index');
 
 describe('Model Test Suite', function(){
-    before('Init the db', function(done){
+    // Init the testing db
+    beforeEach('Init the db', function(done){
         // Init the pool used for the test
         pool = new Pool({
             connectionString: process.env.PG_URL,
@@ -50,7 +58,8 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    before('Placing in mock data', function(done){
+    // Populating with preset data
+    beforeEach('Placing in mock data', function(done){
         const tasks_query = `
         (1, 11, '1998-02-02', '01:32:00', 2),
         (2, 11, '1998-02-02', '01:32:00', 2),
@@ -119,6 +128,139 @@ describe('Model Test Suite', function(){
                     done(err);
                 }
             );
+        });
+    });
+    describe('Basic Problem Statement Models', function(){
+        describe('Query and Get Data from the database', function(){
+            it('Basic Functionality', function(done){
+                const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getData(queryCondition)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(res){
+                        const expectedDataResult = [
+                            {
+                                taskid: '6',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '7',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '8',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '9',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '10',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            }
+
+                        ];
+                        const expectedCountResult = [{
+                            'count': '10'
+                        }];
+                        expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
+        });
+        describe('Inserting data into the database', function(){
+            it('Basic Functionality', function(done){
+                const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.insertTask(testTasks)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(){
+                        return new Promise((resolve, reject) => {
+                            pool.query(`
+                            SELECT * FROM TASKSBASIC
+                            WHERE taskId IN (11, 21)
+                            `, function(err, res){
+                                if(err){
+                                    reject(err);
+                                }
+                                resolve(res);
+                            });
+                        })
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        );
+                    }
+                )
+                .then(
+                    function(res){
+                        const expectedResult = [
+                        {
+                            taskid: '11',
+                            duedate: moment('1998-02-01', 'YYYY-MM-DD'),
+                            duetime: '13:07:00',
+                            duration: 2,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '21',
+                            duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                            duetime: '01:32:00',
+                            duration: 22,
+                            projectid: '11'
+                        }
+                        ];
+                        // Checking if the result is as expected
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
         });
     });
 });
