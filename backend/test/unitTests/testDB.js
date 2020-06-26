@@ -37,7 +37,7 @@ const scripts = require('../../scripts/index');
 
 describe('Model Test Suite', function(){
     // Init the testing db
-    beforeEach('Init the db', function(done){
+    before('Setting up the pool for the db test', function(){
         // Init the pool used for the test
         pool = new Pool({
             connectionString: process.env.PG_URL,
@@ -48,6 +48,8 @@ describe('Model Test Suite', function(){
         model.__set__({
             'pool': pool
         });
+    });
+    beforeEach('Init the db', function(done){
 
         // Using the script to set up the db with the test db setup
         scripts.db.dbInit(pool)
