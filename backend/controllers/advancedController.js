@@ -73,15 +73,52 @@ const advancedController = {
             // Check the validation
             const validationError = validationResult(req);
             if(!validationError.isEmpty()){
-                // console.log(validationError.mapped());
                 res.status(400).send({
                     'error': 'Invalid data format',
                     'code': 400
                 });
                 return;
             }
-            res.send();
-            return;
+            const parsedTasks = utils.dbParser.advanced.bulkInsert(req.body.data);
+            new Promise((resolve) => {
+                resolve(
+                    model.advanced.insertTask(parsedTasks)
+                    .catch(
+                        function(err){
+                            // Handle custom errors
+                            if(err.code === '23505'){
+                                // Duplicate entry error code
+                                res.status(409).send({
+                                    'error': 'Duplicate entries',
+                                    'code': 409
+                                });
+                                throw(err);
+                            }
+                            // If the db has an error
+                            res.status(500).send({
+                                'error': 'Database error',
+                                'code': 500
+                            });
+                            throw(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(){
+                    // If bulk insert of data is successful
+                    res.status(200).send({
+                        'result': 'success',
+                    });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    // console.log(err);
+                    return;
+                }
+            );
         });
     }
 };
