@@ -151,7 +151,6 @@
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th class="sortBtn asc" id="sort_attribute">Attribute &DownArrowUpArrow;</th>
                             <th class="sortBtn asc" id="sort_taskId">Task ID &DownArrowUpArrow;</th>
                             <th class="sortBtn filteredBy_no asc" id="sort_projectId">Project ID &DownArrowUpArrow;</th>
                             <th class="sortBtn filteredBy_no asc" id="sort_duration">Duration (in Hrs) &DownArrowUpArrow;</th>
@@ -239,6 +238,7 @@
 
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
         window.document.onload = basic_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+        // window.document.onload = advanced_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "") -> uncomment this once the advanced dataViewer backend is set up
 
         // Toggling between basic data viewer and advanced data viewer
         document.querySelector('#btn_basicData').addEventListener('click', function() {
@@ -249,6 +249,9 @@
         document.querySelector('#btn_advancedData').addEventListener('click', function() {
             document.querySelector('.basic_dataViewer').setAttributeNode(document.createAttribute("hidden"));
             document.querySelector('.advanced_dataViewer').removeAttribute("hidden");
+
+            // Remove this once the advanced dataViewer backend is set up
+            window.document.onload = advanced_obtainData("", "", "", "", "")
         })
 
 
