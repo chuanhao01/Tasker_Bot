@@ -251,7 +251,7 @@
             document.querySelector('.advanced_dataViewer').removeAttribute("hidden");
 
             // Remove this once the advanced dataViewer backend is set up
-            window.document.onload = advanced_obtainData("", "", "", "", "")
+            window.document.onload = advanced_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "")
         })
 
 
