@@ -229,7 +229,8 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
  * @params {string} pageNum The number of tasks displayed on each page
  */
 function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/advanced/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+    // Change the url back to advanced
+    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
         type: 'GET',
