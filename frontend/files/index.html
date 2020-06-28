@@ -250,7 +250,11 @@
             document.querySelector('.basic_dataViewer').setAttributeNode(document.createAttribute("hidden"));
             document.querySelector('.advanced_dataViewer').removeAttribute("hidden");
 
-            // Remove this once the advanced dataViewer backend is set up
+            // Reset the pageNum and pageNum type variables -> REMOVE THIS ONCE THE ADVANCED DATA VIEWER IS SET UP
+            var currentPage = 1;
+            var pageNumType = 10;
+
+            // REMOVE THIS ONCE THE ADVANCED DATA VIEWER IS SET UP
             window.document.onload = advanced_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "")
         })
 
