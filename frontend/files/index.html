@@ -59,8 +59,8 @@
         <!-- Basic data viewer / Advanced data viewer selection -->
         <div class="row d-flex justify-content-center mb-5">
             <div class="btn-group" role="group" aria-label="select_basicAdvanced">
-                <button type="button" class="btn btn-primary border-dark" id="btn_basicData">Basic</button>
-                <button type="button" class="btn btn-primary border-dark" id="btn_advancedData">Advanced</button>
+                <button type="button" class="btn btn-dark border-dark disabled" id="btn_basicData">Basic</button>
+                <button type="button" class="btn btn-light border-dark" id="btn_advancedData">Advanced</button>
             </div>
         </div>
 
@@ -244,6 +244,10 @@
         document.querySelector('#btn_basicData').addEventListener('click', function() {
             document.querySelector('.basic_dataViewer').removeAttribute("hidden");
             document.querySelector('.advanced_dataViewer').setAttributeNode(document.createAttribute("hidden"));
+
+            // Switch out the toggle button indication -> btn-dark v btn-light
+            $('#btn_basicData').toggleClass('btn-light btn-dark')
+            $('#btn_advancedData').toggleClass('btn-dark btn-light')
         })
 
         document.querySelector('#btn_advancedData').addEventListener('click', function() {
@@ -255,7 +259,11 @@
             var pageNumType = 10;
 
             // REMOVE THIS ONCE THE ADVANCED DATA VIEWER IS SET UP
-            window.document.onload = advanced_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "")
+            window.document.onload = basic_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "")
+
+            // Switch out the toggle button indication -> btn-dark v btn-light
+            $('#btn_basicData').toggleClass('btn-light btn-dark')
+            $('#btn_advancedData').toggleClass('btn-light btn-dark')
         })
 
 
