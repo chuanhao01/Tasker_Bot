@@ -51,7 +51,7 @@ describe("Load the basic data and result viewer", () => {
 });
 
 
-describe("Check ajax call", () => {
+describe("Test ajax call for basic data viewer", () => {
     it("Perform an ajax call and respond with mock data", () => {
         // Enabling response stubbing
         cy.server();
@@ -60,12 +60,18 @@ describe("Check ajax call", () => {
         cy.fixture('data').then((data) => {
             cy.route({
                 method: 'GET',
-                url: '/basic/data?*',
+                url: '/basic/*',
                 data  
-            })
+            }).as('basicData')
         });
 
         // Use a random functionality that will perform an ajax call
         cy.get('#page_2').click()
-    })
-})
+
+        // Wait for the backend routing to finish and provide assertions for the expected data
+        cy.wait('@basicData').its('responseBody')
+          .should('be.an', 'object')
+          .and('not.empty')
+    });
+});
+
