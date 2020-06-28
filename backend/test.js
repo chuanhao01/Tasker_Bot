@@ -4,6 +4,12 @@ const db = require('./db/index');
 const utils = require('./utils');
 const scripts = require('./scripts');
 
+// db.pool.query(`
+// SELECT * FROM TASKSBASIC
+// `, function(err, res){
+//     console.log(res);
+// });
+
 // const arr = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 21, \'1998-02-02\', \'01:32:00\', 22)'];
 // db.basic.insertTask(arr)
 // .then(
@@ -24,12 +30,50 @@ const scripts = require('./scripts');
 //     return val === null ? null : parseDate(val)
 // });
 
+// var types = require('pg').types;
+// var moment = require('moment');
+// types.setTypeParser(1082, function(val) {
+//     return val === null ? null : moment(val, 'YYYY-MM-DD');
+// });
+
 const {Pool} = require('pg');
 
-let pool = new Pool({
-    connectionString: process.env.PG_URL,
-    max: 5,
-});
+// let pool = new Pool({
+//     connectionString: process.env.PG_URL,
+//     max: 5,
+// });
+// let a = [
+//     "(1, 11, '1998-02-02', '01:32:00', 2)",
+//     "(2, 11, '1998-02-02', '01:32:00', 2)",
+//     "(3, 11, '1998-02-02', '01:32:00', 3)",
+//     "(4, 11, '1998-02-02', '01:32:00', 3)",
+//     "(5, 11, '1998-02-02', '01:32:00', 4)",
+//     "(6, 11, '1998-02-02', '01:32:00', 4)",
+//     "(7, 11, '1998-02-02', '01:32:00', 2)",
+//     "(8, 11, '1998-02-02', '01:32:00', 2)",
+//     "(9, 11, '1998-02-02', '01:32:00', 2)",
+//     "(10, 12, '1998-02-02', '01:32:00', 2)",
+//     "(11, 12, '1998-02-02', '01:32:00', 2)",
+//     "(12, 12, '1998-02-02', '01:32:00', 2)",
+//     "(13, 13, '1998-02-02', '01:32:00', 2)",
+//     "(14, 14, '1998-02-02', '01:32:00', 5)",
+//     "(15, 11, '1998-02-02', '01:32:00', 2)",
+//     "(16, 11, '1998-02-02', '01:32:00', 2)",
+//     "(17, 11, '1998-02-02', '01:32:00', 2)",
+//     "(18, 11, '1998-02-02', '01:32:00', 2)",
+//     "(19, 11, '1998-02-02', '01:32:00', 2)",
+//     "(20, 11, '1998-02-02', '01:32:00', 2)"
+// ];
+
+// console.log(a.join(',\n'));
+
+// pool.query(`
+//     SELECT duedate, duetime FROM tasksbasic
+// `, function(err, res){
+//     let row = res.rows[0];
+//     // console.log(typeof(row.duedate));
+//     console.log(row.duedate.toDate());
+// });
 
 // scripts.db.dbInit(pool);
 

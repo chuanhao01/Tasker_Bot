@@ -16,7 +16,7 @@
  * Note: You are not supposed to directly access this property or call it
  * 
  */
-const basic_db = {
+const basicDB= {
     /**
      * @function
      * Constructor  
@@ -97,4 +97,4 @@ const basic_db = {
     }
 };
 
-module.exports = basic_db;
+module.exports = basicDB;
