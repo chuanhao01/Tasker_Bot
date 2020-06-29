@@ -13,10 +13,10 @@
  */
 
 // Setting up date parser for pg
-var types = require('pg').types
+var types = require('pg').types;
 var moment = require('moment');
 types.setTypeParser(1082, function(val) {
-    return val === null ? null : moment(val);
+    return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
 
 //  Importing the pg lib
@@ -29,8 +29,11 @@ const pool = new Pool({
 });
 
 // Importing all the custom models for basic and advanced
-const basic_db = require('./basicDB');
-basic_db.init(pool);
+const basicDB = require('./basicDB');
+basicDB.init(pool);
+
+const advancedDB = require('./advancedDB');
+advancedDB.init(pool);
 
 /**
  * @module model 
@@ -38,7 +41,8 @@ basic_db.init(pool);
  * 
  */
 const model = {
-    basic: basic_db
+    basic: basicDB,
+    advanced: advancedDB,
 };
 
 module.exports = model;

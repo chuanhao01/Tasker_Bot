@@ -11,6 +11,7 @@
 
 // Importing all the api endpoints modules
 const basicController = require('./basicController');
+const advancedController = require('./advancedController');
 
 /**
  * This is the module that will hold all the controllers and run all the api endpoints for the server
@@ -28,6 +29,7 @@ const controllers = {
      */
     init(app){
         basicController.init(app);
+        advancedController.init(app);
     }
 };
 
