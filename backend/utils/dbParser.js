@@ -128,6 +128,35 @@ const dbParser = {
             }
             return new_tasks;
         },
+    },
+    advanced: {
+        /**
+         * @function
+         * Parsing the tasks objects for the advanced problem statement into the insert statement needed for postgresql
+         * 
+         * @param {Array} tasks an array of tasks objects, taken from the body of an API POST request
+         * {
+         * taskId : int,
+         * projectId: int,
+         * duration: int
+         * }
+         * Example: 
+         * [{
+         * "taskId": 1234567890,
+         * "projectId": 1234567890,
+         * "duration": 1,
+         * }, ...]
+         * 
+         * @returns {Array} An array of strings to be used in the model
+         * 
+         */
+        bulkInsert(tasks){
+            let new_tasks = [];
+            for(let task of tasks){
+                new_tasks.push(`(${task.taskId}, ${task.projectId}, ${task.duration})`);
+            }
+            return new_tasks;
+        }
     }
 };
 
