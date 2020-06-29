@@ -4,18 +4,21 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:
+- Advance data viewer design and set up in index.html
+- Toggle buttons between basic and advanced data viewer
+- Mock backend testing using Cypress
+- Looked at github hosting
+
+Chuan Hao:  
+- 
+
+Together:  
+- 
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Finish both basic & advanced data viewer testing using mock backend
+- Update wireframe docs to accomodate toggling between basic and advanced
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
