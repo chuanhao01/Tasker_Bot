@@ -259,54 +259,54 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 1,
+                                taskid: '1',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 2,
+                                taskid: '2',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 3,
+                                taskid: '3',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 4,
+                                taskid: '4',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 5,
+                                taskid: '5',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 6,
+                                taskid: '6',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 7,
+                                taskid: '7',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 8,
+                                taskid: '8',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 9,
+                                taskid: '9',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '1'
                             },
                             {
-                                taskid: 10,
+                                taskid: '10',
                                 duration: 3,
-                                projectid: 1
+                                projectid: '11'
                             }
                         ];
                         const expectedLastPage = 3;
