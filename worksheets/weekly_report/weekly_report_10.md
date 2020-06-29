@@ -11,14 +11,20 @@ Sherisse:
 - Looked at github hosting
 
 Chuan Hao:  
-- 
-
-Together:  
-- 
+- Finished with the bulk insert API for the advanced problem statement
+  - Test
+  - DB model
+  - API endpoint
+  - Data parsing
+- Added API docs for POST /advance/insert
+- Added API docs for GET /advance/data
 
 ## What do I plan to do next week
 
 - Finish both basic & advanced data viewer testing using mock backend
 - Update wireframe docs to accomodate toggling between basic and advanced
+- Fully add GET /advance/data
+- Start working on basic result API
 
 ## Additional Thoughts
+- Started on GET /advance/data but not adding it in this release as it is still unstable
