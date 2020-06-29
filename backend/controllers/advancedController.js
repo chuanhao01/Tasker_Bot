@@ -120,6 +120,37 @@ const advancedController = {
                 }
             );
         });
+        app.get('/advance/data', [
+            query('projectId').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.idMin, max: configs.idMax});}),
+            query('duration').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '=', '>=', '<='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.durationMin});}),
+            query('page').optional()
+                .isInt({min: 1}),
+            query('pageNum').optional()
+                .isInt({min: 1}),
+            query('sortBy').optional()
+                .custom((value) => {return utils.v.basic.getSortByQuery(value);}),
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
+                return;
+            }
+            res.send();
+        });
     }
 };
 
