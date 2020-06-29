@@ -149,7 +149,49 @@ const advancedController = {
                 });
                 return;
             }
-            res.send();
+            const queryConditions = utils.dbParser.all.getDataQueryParams(req.query);
+            new Promise((resolve) => {
+                resolve(
+                    model.advanced.getData(queryConditions)
+                    .catch(
+                        function(err){
+                            // If the db has an error
+                            res.status(500).send({
+                                'error': 'Database error',
+                                'code': 500
+                            });
+                            throw(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    // Refer to docs for what each object in the pgRes arr are
+                    // Calculating the last page number
+                    const rowCount = parseInt(pgRes[1].rows[0].count);
+                    let lastPage;
+                    if(req.query.pageNum){
+                        lastPage = Math.ceil(rowCount/req.query.pageNum);
+                    }
+                    else{
+                        lastPage = Math.ceil(rowCount/10);
+                    }
+                    res.status(200).send({
+                        'result': {
+                            'data': pgRes[0].rows,
+                            'lastPage': lastPage
+                        }
+                    });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    console.log(err);
+                    return;
+                }
+            );
         });
     }
 };
