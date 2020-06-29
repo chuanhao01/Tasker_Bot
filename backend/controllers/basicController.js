@@ -89,10 +89,10 @@ const basicController = {
                 });
                 return;
             }
-            const parsed_tasks = utils.dbParser.basic.bulkInsert(req.body.data);
+            const parsedTasks = utils.dbParser.basic.bulkInsert(req.body.data);
             new Promise((resolve) => {
                 resolve(
-                    model.basic.insertTask(parsed_tasks)
+                    model.basic.insertTask(parsedTasks)
                     .catch(
                         function(err){
                             // Handle custom errors
