@@ -1,6 +1,6 @@
-## Template
-
 For `API.md`
+
+## Template
 
 | attribute   | value       |
 | ----------- | ----------- |

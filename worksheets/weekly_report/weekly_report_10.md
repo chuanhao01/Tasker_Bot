@@ -4,18 +4,27 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:
+- Advance data viewer design and set up in index.html
+- Toggle buttons between basic and advanced data viewer
+- Mock backend testing using Cypress
+- Looked at github hosting
+
+Chuan Hao:  
+- Finished with the bulk insert API for the advanced problem statement
+  - Test
+  - DB model
+  - API endpoint
+  - Data parsing
+- Added API docs for POST /advance/insert
+- Added API docs for GET /advance/data
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Finish both basic & advanced data viewer testing using mock backend
+- Update wireframe docs to accomodate toggling between basic and advanced
+- Fully add GET /advance/data
+- Start working on basic result API
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
+- Started on GET /advance/data but not adding it in this release as it is still unstable
