@@ -22,15 +22,6 @@ const expect = chai.expect;
 const app = require('../../app');
 
 describe('Backend Test', function(){
-    before('Checking env', function(){
-        if(process.env.NODE_ENV === 'UNIT_TEST'){
-            // Nothing to setup
-            return;
-        }
-        else{
-            this.skip();
-        }
-    });
     describe('Testing for basic controllers', function(){
         describe('Testing the validation of bulk insert', function(){
             it('Empty data', function(done){
@@ -434,6 +425,174 @@ describe('Backend Test', function(){
                     expect(res.body).to.have.property('code');
                     // Checking the error string and code
                     expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+        });
+    });
+    describe('Testing for advanced Controllers', function(){
+        describe('POST /advance/insert', function(){
+            it('Empty data is rejected', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({})
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Empty data array', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({
+                    data: [],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Data Array with empty obj', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({
+                    data: [{}],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Data object with empty values', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({
+                    data: [
+                        {
+                            "taskId": null,
+                            "projectId": null,
+                            "duration": null,
+                        }
+                    ],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Duplicate data is rejected', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({
+                    data: [
+                        {
+                            "taskId": 1,
+                            "projectId": 1,
+                            "duration": 2,
+                        },
+                        {
+                            "taskId": 1,
+                            "projectId": 1,
+                            "duration": 2,
+                        }
+                    ],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(409);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Duplicate entries');
+                    expect(res.body.code).to.equal(409);
+                    done();
+                });
+            });
+            it('Bounds of id are checked and rejected', function(done){
+                chai.request(app)
+                .post('/advance/insert')
+                .type('json')
+                .send({
+                    data: [
+                        {
+                            "taskId": -1,
+                            "projectId": -1,
+                            "duration": 2,
+                        },
+                        {
+                            "taskId": 10000000000,
+                            "projectId": 10000000000,
+                            "duration": 2,
+                        }
+                    ],
+                })
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Invalid data format');
                     expect(res.body.code).to.equal(400);
                     done();
                 });

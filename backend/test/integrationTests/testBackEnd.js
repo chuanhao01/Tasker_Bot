@@ -10,7 +10,6 @@
  * @requires NPM:pg
  * @requires ../../app.js
  * @requires ../../scripts/index.js
- * @requires ../../db/index.js
  * 
  */
 
@@ -32,77 +31,68 @@ let pool;
 // Importing the custom model lib to test
 const app = require('../../app');
 const scripts = require('../../scripts/index');
-const model = require('../../db/index');
 
 describe('Integration testing for the whole backend server', function(){
-    before('Checking env', function(){
-        if(process.env.NODE_ENV === 'INT_TEST'){
-            // If the test env is set up, continue to do normal setup
-            // Generating the pool obj to connect to the database
-            pool = new Pool({
-                connectionString: process.env.PG_URL,
-                max: 5,
-            });
-            return;
-        }
-        else{
-            this.skip();
-        }
+    before('Generating the pool for the db used in the test', function(){
+        pool = new Pool({
+            connectionString: process.env.PG_URL,
+            max: 5,
+        });
+        return;
     });
-    before('Init the db', function(done){
+    beforeEach('Init the db', function(done){
         // For async calls to be done before the test
-        // Need to check if this should be passed along with the whole test suite
-        if(process.env.NODE_ENV !== 'INT_TEST'){
-            this.skip();
-        }
-        // If the env is set up properly, run the init script
+        // Making sure the db is initialized
         scripts.db.dbInit(pool)
         .then(
+            // Inserting dummy basic tasks
             function(){
-                done();
+                return new Promise((resolve, reject) => {
+                    const dummyBasicTasks = `(1, 11, '1998-02-02', '01:32:00', 2),
+                    (2, 11, '1998-02-02', '01:32:00', 2),
+                    (3, 11, '1998-02-02', '01:32:00', 3),
+                    (4, 11, '1998-02-02', '01:32:00', 3),
+                    (5, 11, '1998-02-02', '01:32:00', 4),
+                    (6, 11, '1998-02-02', '01:32:00', 4),
+                    (7, 11, '1998-02-02', '01:32:00', 2),
+                    (8, 11, '1998-02-02', '01:32:00', 2),
+                    (9, 11, '1998-02-02', '01:32:00', 2),
+                    (10, 12, '1998-02-02', '01:32:00', 2),
+                    (11, 12, '1998-02-02', '01:32:00', 2),
+                    (12, 12, '1998-02-02', '01:32:00', 2),
+                    (13, 13, '1998-02-02', '01:32:00', 2),
+                    (14, 14, '1998-02-02', '01:32:00', 5),
+                    (15, 11, '1998-02-02', '01:32:00', 2),
+                    (16, 11, '1998-02-02', '01:32:00', 2),
+                    (17, 11, '1998-02-02', '01:32:00', 2),
+                    (18, 11, '1998-02-02', '01:32:00', 2),
+                    (19, 11, '1998-02-02', '01:32:00', 2),
+                    (20, 11, '1998-02-02', '01:32:00', 2)
+                    `;
+                    pool.query(`
+                    INSERT INTO TASKSBASIC
+                    (taskID, projectId, dueDate, dueTime, duration)
+                    VALUES
+                    ${dummyBasicTasks}
+                    `, function(err){
+                        if(err){
+                            reject(err);
+                            return;
+                        }
+                        resolve();
+                        return;
+                    });
+                });
             }
         )
-        .catch(done);
-    });
-    before('Placing in mock data', function(done){
-        // For async calls to be done before the test
-        // Need to check if this should be passed along with the whole test suite
-        if(process.env.NODE_ENV !== 'INT_TEST'){
-            this.skip();
-        }
-        const dummyTasks = [
-            "(1, 11, '1998-02-02', '01:32:00', 2)",
-            "(2, 11, '1998-02-02', '01:32:00', 2)",
-            "(3, 11, '1998-02-02', '01:32:00', 3)",
-            "(4, 11, '1998-02-02', '01:32:00', 3)",
-            "(5, 11, '1998-02-02', '01:32:00', 4)",
-            "(6, 11, '1998-02-02', '01:32:00', 4)",
-            "(7, 11, '1998-02-02', '01:32:00', 2)",
-            "(8, 11, '1998-02-02', '01:32:00', 2)",
-            "(9, 11, '1998-02-02', '01:32:00', 2)",
-            "(10, 12, '1998-02-02', '01:32:00', 2)",
-            "(11, 12, '1998-02-02', '01:32:00', 2)",
-            "(12, 12, '1998-02-02', '01:32:00', 2)",
-            "(13, 13, '1998-02-02', '01:32:00', 2)",
-            "(14, 14, '1998-02-02', '01:32:00', 5)",
-            "(15, 11, '1998-02-02', '01:32:00', 2)",
-            "(16, 11, '1998-02-02', '01:32:00', 2)",
-            "(17, 11, '1998-02-02', '01:32:00', 2)",
-            "(18, 11, '1998-02-02', '01:32:00', 2)",
-            "(19, 11, '1998-02-02', '01:32:00', 2)",
-            "(20, 11, '1998-02-02', '01:32:00', 2)"
-        ];
-        new Promise((resolve) => {
-            resolve(
-                model.basic.insertTask(dummyTasks)
-                .catch(
-                    function(err){
-                        done(err);
-                    }
-                )
-            );
-        })
         .then(
+            // Inserting dummy advanced tasks
+            function(){
+                return;
+            }
+        )
+        .then(
+            // If everything is set up properly
             function(){
                 done();
             }
@@ -146,28 +136,28 @@ describe('Integration testing for the whole backend server', function(){
                                 taskid: 3,
                                 duedate: '1998/02/02',
                                 duetime: '0132',
-                                duration: 2,
+                                duration: 3,
                                 projectid: 11
                             },
                             {
                                 taskid: 4,
                                 duedate: '1998/02/02',
                                 duetime: '0132',
-                                duration: 2,
+                                duration: 3,
                                 projectid: 11
                             },
                             {
                                 taskid: 5,
                                 duedate: '1998/02/02',
                                 duetime: '0132',
-                                duration: 2,
+                                duration: 4,
                                 projectid: 11
                             },
                             {
                                 taskid: 6,
                                 duedate: '1998/02/02',
                                 duetime: '0132',
-                                duration: 2,
+                                duration: 4,
                                 projectid: 11
                             },
                             {
@@ -196,10 +186,10 @@ describe('Integration testing for the whole backend server', function(){
                                 duedate: '1998/02/02',
                                 duetime: '0132',
                                 duration: 2,
-                                projectid: 11
+                                projectid: 12
                             },
                         ];
-                        const expectedLastPage = 4;
+                        const expectedLastPage = 2;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();

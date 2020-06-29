@@ -8,48 +8,50 @@
  * @requires NPM:pg
  * @requires NPM:chai
  * @requires dotenv
+ * @require rewire
  * @requires ../../db/index.js
  * @requires ../../scripts/index.js
  * 
  */
 
-// Loading dotenv for the test
-before('Making sure dotenv is loaded', function(){
-    require('dotenv').config();
+// Setting up date parser for pg
+var types = require('pg').types;
+var moment = require('moment');
+types.setTypeParser(1082, function(val) {
+    return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
 
 // Importing libs needed to run the test
 const {Pool} = require('pg');
 const expect = require('chai').expect;
+const rewire = require('rewire');
+
+// Importing the db/model to test
+const model = rewire('../../db/index');
 
 // Define global var for pool
 let pool;
 
-// Importing the custom model lib to test
-const model = require('../../db/index');
+// Importing the script to run and test as well
 const scripts = require('../../scripts/index');
 
-describe('DB unit test', function(){
-    before('Checking env and setting pool accordingly', function(){
-        if(process.env.NODE_ENV === 'UNIT_TEST'){
-            // If the test env is set up, continue to do normal setup
-            // Generating the pool obj to connect to the database
-            pool = new Pool({
-                connectionString: process.env.PG_URL,
-                max: 5,
-            });
-        }
-        else{
-            this.skip();
-        }
+describe('Model Test Suite', function(){
+    // Init the testing db
+    before('Setting up the pool for the db test', function(){
+        // Init the pool used for the test
+        pool = new Pool({
+            connectionString: process.env.PG_URL,
+            max: 5,
+        });
+
+        // Monkey patching and mocking the pool used in the model module
+        model.__set__({
+            'pool': pool
+        });
     });
-    before('Init the db', function(done){
-        // For async calls to be done before the test
-        // Need to check if this should be passed along with the whole test suite
-        if(process.env.NODE_ENV !== 'UNIT_TEST'){
-            this.skip();
-        }
-        // If the env is set up properly, run the init script
+    beforeEach('Init the db', function(done){
+
+        // Using the script to set up the db with the test db setup
         scripts.db.dbInit(pool)
         .then(
             function(){
@@ -58,43 +60,59 @@ describe('DB unit test', function(){
         )
         .catch(done);
     });
-    before('Placing in mock data', function(done){
-        // For async calls to be done before the test
-        // Need to check if this should be passed along with the whole test suite
-        if(process.env.NODE_ENV !== 'UNIT_TEST'){
-            this.skip();
-        }
-        const dummyTasks = [
-            "(1, 11, '1998-02-02', '01:32:00', 2)",
-            "(2, 11, '1998-02-02', '01:32:00', 2)",
-            "(3, 11, '1998-02-02', '01:32:00', 2)",
-            "(4, 11, '1998-02-02', '01:32:00', 2)",
-            "(5, 11, '1998-02-02', '01:32:00', 2)",
-            "(6, 11, '1998-02-02', '01:32:00', 2)",
-            "(7, 11, '1998-02-02', '01:32:00', 2)",
-            "(8, 11, '1998-02-02', '01:32:00', 2)",
-            "(9, 11, '1998-02-02', '01:32:00', 2)",
-            "(10, 11, '1998-02-02', '01:32:00', 2)"
-        ];
-        new Promise((resolve) => {
-            resolve(
-                model.basic.insertTask(dummyTasks)
-                .catch(
-                    function(err){
-                        done(err);
-                    }
-                )
-            );
-        })
-        .then(
-            function(){
-                done();
+    // Populating with preset data
+    beforeEach('Placing in mock data for Basic Problem Statement', function(done){
+        const tasks_query = `
+        (1, 11, '1998-02-02', '01:32:00', 2),
+        (2, 11, '1998-02-02', '01:32:00', 2),
+        (3, 11, '1998-02-02', '01:32:00', 2),
+        (4, 11, '1998-02-02', '01:32:00', 2),
+        (5, 11, '1998-02-02', '01:32:00', 2),
+        (6, 11, '1998-02-02', '01:32:00', 2),
+        (7, 11, '1998-02-02', '01:32:00', 2),
+        (8, 11, '1998-02-02', '01:32:00', 2),
+        (9, 11, '1998-02-02', '01:32:00', 2),
+        (10, 11, '1998-02-02', '01:32:00', 2)
+        `;
+        pool.query(`
+        INSERT INTO TASKSBASIC
+        (taskId, projectId, dueDate, dueTime, duration)
+        VALUES
+        ${tasks_query}
+        `, function(err){
+            if(err){
+                done(err);
             }
-        )
-        .catch(done);
+            done();
+        });
     });
-    describe('Checking if the initialized of DB is done properly', function(){
-        it('Checking the initialized of the DB', function(done){
+    beforeEach('Placing in mock data for Advanced Problem Statement', function(done){
+        const tasks_query = `
+        (1, 11, 2),
+        (2, 11, 2),
+        (3, 11, 2),
+        (4, 11, 2),
+        (5, 11, 2),
+        (6, 11, 2),
+        (7, 11, 2),
+        (8, 11, 2),
+        (9, 11, 2),
+        (10, 11, 2)
+        `;
+        pool.query(`
+        INSERT INTO TASKSADVANCED
+        (taskId, projectId, duration)
+        VALUES
+        ${tasks_query}
+        `, function(err){
+            if(err){
+                done(err);
+            }
+            done();
+        });
+    });
+    describe('Checking DB scripts', function(){
+        it('Checking if DB initialized properly ', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
             c.relname as "Name",                                                                                                                                                                        
@@ -139,138 +157,198 @@ describe('DB unit test', function(){
             );
         });
     });
-    describe('Checking basic model functions', function(){
-        it('Checking the insert model of the basic db', function(done){
-            const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
-            new Promise((resolve) => {
-                resolve(
-                    model.basic.insertTask(testTasks)
-                    .catch(
-                        function(err){
-                            done(err);
-                        }
-                    )
-                );
-            })
-            .then(
-                function(res){
-                    return new Promise((resolve, reject) => {
-                        pool.query(`
-                        SELECT * FROM TASKSBASIC
-                        WHERE taskId IN (11, 21)
-                        `, function(err, res){
-                            if(err){
-                                reject(err);
+    describe('Basic Problem Statement Models', function(){
+        describe('Query and Get Data from the database', function(){
+            it('Basic Functionality', function(done){
+                const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getData(queryCondition)
+                        .catch(
+                            function(err){
+                                done(err);
                             }
-                            resolve(res);
-                        });
-                    })
-                    .catch(
-                        function(err){
-                            done(err);
-                        }
+                        )
                     );
-                }
-            )
-            .then(
-                function(res){
-                    const expectedResult = [
-                    {
-                        taskid: '11',
-                        duedate: '1998-01-31T16:00:00.000Z',
-                        duetime: '13:07:00',
-                        duration: 2,
-                        projectid: '11'
-                    },
-                    {
-                        taskid: '21',
-                        duedate: '1998-02-01T16:00:00.000Z',
-                        duetime: '01:32:00',
-                        duration: 22,
-                        projectid: '11'
-                    }
-                    ];
-                    // Checking if the result is as expected
-                    expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
-                    done();
-                }
-            )
-            .catch(
-                function(err){
-                    done(err);
-                }
-            );
-        });
-        it('Checking the get data by query conditions', function(done){
-            const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
-            new Promise((resolve) => {
-                resolve(
-                    model.basic.getData(queryCondition)
-                    .catch(
-                        function(err){
-                            done(err);
-                        }
-                    )
-                );
-            })
-            .then(
-                function(res){
-                    /*
-                    Note of caution here, when stringfy the moment, although it is parsed to the correct date
-                    The original string from db is somewhat wrong, that is why the stringfy is still wrong
-                    */
-                    const expectedDataResult = [
-                        {
-                            taskid: '6',
-                            duedate: '1998-02-01T16:00:00.000Z',
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
-                        },
-                        {
-                            taskid: '7',
-                            duedate: '1998-02-01T16:00:00.000Z',
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
-                        },
-                        {
-                            taskid: '8',
-                            duedate: '1998-02-01T16:00:00.000Z',
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
-                        },
-                        {
-                            taskid: '9',
-                            duedate: '1998-02-01T16:00:00.000Z',
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
-                        },
-                        {
-                            taskid: '10',
-                            duedate: '1998-02-01T16:00:00.000Z',
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
-                        }
+                })
+                .then(
+                    function(res){
+                        const expectedDataResult = [
+                            {
+                                taskid: '6',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '7',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '8',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '9',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '10',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            }
 
-                    ];
-                    const expectedCountResult = [{
-                        'count': '11'
-                    }];
-                    expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
-                    expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
-                    done();
-                }
-            )
-            .catch(
-                function(err){
-                    done(err);
-                }
-            );
+                        ];
+                        const expectedCountResult = [{
+                            'count': '10'
+                        }];
+                        expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
+        });
+        describe('Inserting data into the database', function(){
+            it('Basic Functionality', function(done){
+                const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.insertTask(testTasks)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(){
+                        return new Promise((resolve, reject) => {
+                            pool.query(`
+                            SELECT * FROM TASKSBASIC
+                            WHERE taskId IN (11, 21)
+                            `, function(err, res){
+                                if(err){
+                                    reject(err);
+                                }
+                                resolve(res);
+                            });
+                        })
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        );
+                    }
+                )
+                .then(
+                    function(res){
+                        const expectedResult = [
+                        {
+                            taskid: '11',
+                            duedate: moment('1998-02-01', 'YYYY-MM-DD'),
+                            duetime: '13:07:00',
+                            duration: 2,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '21',
+                            duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                            duetime: '01:32:00',
+                            duration: 22,
+                            projectid: '11'
+                        }
+                        ];
+                        // Checking if the result is as expected
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
+        });
+    });
+    describe('Advanced Problem Statement Models', function(){
+        describe('Inserting data into the database', function(){
+            it('Basic Functionality', function(done){
+                const testTasks = ['(11, 11, 2)', '(21, 11, 22)'];
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.insertTask(testTasks)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(){
+                        return new Promise((resolve, reject) => {
+                            pool.query(`
+                            SELECT * FROM TASKSADVANCED
+                            WHERE taskId IN (11, 21)
+                            `, function(err, res){
+                                if(err){
+                                    reject(err);
+                                }
+                                resolve(res);
+                            });
+                        })
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        );
+                    }
+                )
+                .then(
+                    function(res){
+                        const expectedResult = [
+                        {
+                            taskid: '11',
+                            duration: 2,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '21',
+                            duration: 22,
+                            projectid: '11'
+                        }
+                        ];
+                        // Checking if the result is as expected
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
         });
     });
 });
-

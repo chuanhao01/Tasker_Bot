@@ -1,5 +1,5 @@
 /**
- * @fileoverview This file is the code for Cypress unit testing. 
+ * @fileoverview This file is the code for Cypress integration testing with the actual backend
  * 
  * @author Sherisse Tan
  * 
