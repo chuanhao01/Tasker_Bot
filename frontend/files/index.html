@@ -192,6 +192,8 @@
         Buttons which require onclick() events will also be handled here for easy readability
     -->
     <script>
+        var viewerType = 'basicData'
+
         // Define all the default starting variables needed for the API -> This will be updated as the user performs actions in the website
         var currentPage = 1;
         var pageNumType = 10;
@@ -205,19 +207,19 @@
         let sortBtnArr = document.querySelectorAll('.sortBtn');
         sortBtnArr.forEach((sortBtn) => {
             sortBtn.addEventListener("click", function() {
-                sort(event.target);
+                sort(event.target, viewerType);
             });
         });
 
         
         // Filtering data
         document.querySelector('#filterBtn').addEventListener('click', function() {
-            filter()
+            filter(viewerType)
         });
 
         // Resetting filter attributes 
         document.querySelector('#resetBtn').addEventListener('click', function() {
-            resetFilter();
+            resetFilter(viewerType);
         });
         
 
@@ -225,7 +227,7 @@
         function changePage() {
             // Determining the id of the DOM element that triggered this function
             pageLinkId = event.target.id;
-            pagination(pageLinkId);
+            pagination(pageLinkId, viewerType);
         };
 
 
@@ -234,7 +236,7 @@
         document.querySelector('#input_pageNum').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 pageNumType = parseInt($(this).val().trim());
-                pageNum(pageNumType);
+                pageNum(pageNumType, viewerType);
             };
         });
     </script>
