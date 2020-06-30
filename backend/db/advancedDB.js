@@ -57,6 +57,26 @@ const advancedDB = {
             });
         });
     },
+    getData(queryConditions){
+        return new Promise((resolve, reject) => {
+            // Removing the last line, so that it removes the limit for the total number of records
+            const queryConditionsNoLimit = queryConditions.replace(/\r?\n?[^\r\n]*$/, "");
+            this.pool.query(`
+            SELECT * FROM TASKSADVANCED
+            ${queryConditions};
+
+            SELECT COUNT(*) FROM(
+                SELECT * FROM TASKSADVANCED
+                ${queryConditionsNoLimit}
+            ) total;
+            `, function(err, res){
+                if(err || res.length !== 2){
+                    reject(err);
+                }
+                resolve(res);
+            });
+        });
+    }
 };
 
 module.exports = advancedDB;

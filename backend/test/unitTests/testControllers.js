@@ -21,9 +21,9 @@ const expect = chai.expect;
 // Importing own modules
 const app = require('../../app');
 
-describe('Backend Test', function(){
+describe('Controllers Test', function(){
     describe('Testing for basic controllers', function(){
-        describe('Testing the validation of bulk insert', function(){
+        describe('POST /basic/insert bulk insert', function(){
             it('Empty data', function(done){
                 chai.request(app)
                 .post('/basic/insert')
@@ -219,7 +219,7 @@ describe('Backend Test', function(){
                 });
             });
         });
-        describe('Testing get data query params', function(){
+        describe('GET /basic/data query params', function(){
             it('Testing filters type', function(done){
                 chai.request(app)
                 .get('/basic/data?projectId=11&taskId=11')
@@ -593,6 +593,217 @@ describe('Backend Test', function(){
                     expect(res.body).to.have.property('code');
                     // Checking the error string and code
                     expect(res.body.error).to.equal('Invalid data format');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+        });
+        describe('GET /advance/data query params', function(){
+            it('Testing filters type', function(done){
+                chai.request(app)
+                .get('/advance/data?projectId=11&taskId=11')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing filters missing values', function(done){
+                chai.request(app)
+                .get('/advance/data?projectId[>]=&taskId[=]=')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing filters value overflow', function(done){
+                chai.request(app)
+                .get('/advance/data?projectId[>]=10000000000&taskId[=]=-1')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing page and pageNum non int', function(done){
+                chai.request(app)
+                .get('/advance/data?page=a&pageNum=a')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing page and pageNum negative', function(done){
+                chai.request(app)
+                .get('/advance/data?page=0&pageNum=-1')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing sortBy param exists', function(done){
+                chai.request(app)
+                .get('/advance/data?sortBy=')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing sortBy param wrong attribute', function(done){
+                chai.request(app)
+                .get('/advance/data?sortBy=wrongattr.asc')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing sortBy param wrong order', function(done){
+                chai.request(app)
+                .get('/advance/data?sortBy=projectId.whatOrder')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing sortBy param only correct attribute', function(done){
+                chai.request(app)
+                .get('/advance/data?sortBy=projectId.')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing sortBy param only correct order', function(done){
+                chai.request(app)
+                .get('/advance/data?sortBy=.asc')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
+                    expect(res.body.code).to.equal(400);
+                    done();
+                });
+            });
+            it('Testing sortBy param second empty', function(done){
+                chai.request(app)
+                .get('/advance/data?sortBy=projectId.asc,')
+                .end(function(err, res){
+                    if(err){
+                        done(err);
+                    }
+                    // Check res code
+                    expect(res).to.have.status(400);
+                    // Checking if there was a body with a response
+                    expect(res).to.have.property('body');
+                    expect(res.body).to.have.property('error');
+                    expect(res.body).to.have.property('code');
+                    // Checking the error string and code
+                    expect(res.body.error).to.equal('Wrong syntax for query params');
                     expect(res.body.code).to.equal(400);
                     done();
                 });
