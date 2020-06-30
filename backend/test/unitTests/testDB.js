@@ -50,7 +50,6 @@ describe('Model Test Suite', function(){
         });
     });
     beforeEach('Init the db', function(done){
-
         // Using the script to set up the db with the test db setup
         scripts.db.dbInit(pool)
         .then(
@@ -59,57 +58,6 @@ describe('Model Test Suite', function(){
             }
         )
         .catch(done);
-    });
-    // Populating with preset data
-    beforeEach('Placing in mock data for Basic Problem Statement', function(done){
-        const tasks_query = `
-        (1, 11, '1998-02-02', '01:32:00', 2),
-        (2, 11, '1998-02-02', '01:32:00', 2),
-        (3, 11, '1998-02-02', '01:32:00', 2),
-        (4, 11, '1998-02-02', '01:32:00', 2),
-        (5, 11, '1998-02-02', '01:32:00', 2),
-        (6, 11, '1998-02-02', '01:32:00', 2),
-        (7, 11, '1998-02-02', '01:32:00', 2),
-        (8, 11, '1998-02-02', '01:32:00', 2),
-        (9, 11, '1998-02-02', '01:32:00', 2),
-        (10, 11, '1998-02-02', '01:32:00', 2)
-        `;
-        pool.query(`
-        INSERT INTO TASKSBASIC
-        (taskId, projectId, dueDate, dueTime, duration)
-        VALUES
-        ${tasks_query}
-        `, function(err){
-            if(err){
-                done(err);
-            }
-            done();
-        });
-    });
-    beforeEach('Placing in mock data for Advanced Problem Statement', function(done){
-        const tasks_query = `
-        (1, 11, 2),
-        (2, 11, 2),
-        (3, 11, 2),
-        (4, 11, 2),
-        (5, 11, 2),
-        (6, 11, 2),
-        (7, 11, 2),
-        (8, 11, 2),
-        (9, 11, 2),
-        (10, 11, 2)
-        `;
-        pool.query(`
-        INSERT INTO TASKSADVANCED
-        (taskId, projectId, duration)
-        VALUES
-        ${tasks_query}
-        `, function(err){
-            if(err){
-                done(err);
-            }
-            done();
-        });
     });
     describe('Checking DB scripts', function(){
         it('Checking if DB initialized properly ', function(done){
@@ -158,6 +106,32 @@ describe('Model Test Suite', function(){
         });
     });
     describe('Basic Problem Statement Models', function(){
+        // Populating with preset data
+        beforeEach('Placing in mock data for Basic Problem Statement', function(done){
+            const tasks_query = `
+            (1, 11, '1998-02-02', '01:32:00', 2),
+            (2, 11, '1998-02-02', '01:32:00', 2),
+            (3, 11, '1998-02-02', '01:32:00', 2),
+            (4, 11, '1998-02-02', '01:32:00', 2),
+            (5, 11, '1998-02-02', '01:32:00', 2),
+            (6, 11, '1998-02-02', '01:32:00', 2),
+            (7, 11, '1998-02-02', '01:32:00', 2),
+            (8, 11, '1998-02-02', '01:32:00', 2),
+            (9, 11, '1998-02-02', '01:32:00', 2),
+            (10, 11, '1998-02-02', '01:32:00', 2)
+            `;
+            pool.query(`
+            INSERT INTO TASKSBASIC
+            (taskId, projectId, dueDate, dueTime, duration)
+            VALUES
+            ${tasks_query}
+            `, function(err){
+                if(err){
+                    done(err);
+                }
+                done();
+            });
+        });
         describe('Query and Get Data from the database', function(){
             it('Basic Functionality', function(done){
                 const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
@@ -214,6 +188,7 @@ describe('Model Test Suite', function(){
                         const expectedCountResult = [{
                             'count': '10'
                         }];
+                        expect(res).to.be.lengthOf(2);
                         expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
                         expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
                         done();
@@ -291,6 +266,31 @@ describe('Model Test Suite', function(){
         });
     });
     describe('Advanced Problem Statement Models', function(){
+        beforeEach('Placing in mock data for Advanced Problem Statement', function(done){
+            const tasks_query = `
+            (1, 11, 2),
+            (2, 11, 2),
+            (3, 11, 2),
+            (4, 11, 2),
+            (5, 11, 2),
+            (6, 11, 2),
+            (7, 11, 2),
+            (8, 11, 2),
+            (9, 11, 2),
+            (10, 11, 2)
+            `;
+            pool.query(`
+            INSERT INTO TASKSADVANCED
+            (taskId, projectId, duration)
+            VALUES
+            ${tasks_query}
+            `, function(err){
+                if(err){
+                    done(err);
+                }
+                done();
+            });
+        });
         describe('Inserting data into the database', function(){
             it('Basic Functionality', function(done){
                 const testTasks = ['(11, 11, 2)', '(21, 11, 22)'];
@@ -348,6 +348,51 @@ describe('Model Test Suite', function(){
                         done(err);
                     }
                 );
+            });
+        });
+        describe('Query and get data from the database', function(){
+            it('Basic Functionality', function(done){
+                const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
+                model.advanced.getData(queryCondition)
+                .then(
+                    function(pgRes){
+                        const expectedDataResult = [
+                            {
+                                'taskid': '6',
+                                'duration': 2,
+                                'projectid': '11',
+                            },
+                            {
+                                'taskid': '7',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '8',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '9',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '10',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                        ];
+                        const expectedCountResult = [{
+                            'count': '10'
+                        }];
+                        expect(pgRes).to.have.lengthOf(2);
+                        expect(JSON.stringify(pgRes[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(pgRes[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(done);
             });
         });
     });
