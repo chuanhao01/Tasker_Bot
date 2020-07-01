@@ -34,7 +34,6 @@ Each API should include
     - [Sample Response](#sample-response-1)
     - [Sample Error](#sample-error-1)
   - [Basic GET Result API](#basic-get-result-api)
-- [Note need to rmb to check this after update from tcher](#note-need-to-rmb-to-check-this-after-update-from-tcher)
     - [Query parameters](#query-parameters-1)
     - [Response Body](#response-body-2)
     - [Error](#error-2)
@@ -247,8 +246,6 @@ Sample body
 
 ## Basic GET Result API
 
-# Note need to rmb to check this after update from tcher
-
 This is the API endpoint to get the result for the basic problem statement
 
 | attribute   | value         |
@@ -268,27 +265,36 @@ This is the API endpoint to get the result for the basic problem statement
 
 For the `result` attribute in the response body:  
 
-| parameter | datatype         | example                                         | Remarks |
-|-----------|------------------|-------------------------------------------------|----------|
-| data      | Array of objects | {taskId, projectId, dueDate, dueTime, duration, lateness} | ADD SOMETHING HERE|
-| totalLateness | Number | 1 |   |
+| parameter     | datatype         | example                                                   | Remarks                                                                 |
+|---------------|------------------|-----------------------------------------------------------|-------------------------------------------------------------------------|
+| result        | Array of objects | {taskId, projectId, dueDate, dueTime, duration, lateness} | Refer below to description of the attributes                            |
+| totalLateness | Hour             | 1, 0.012, 1.123, 0                                        | Calculated total minimum lateness of all the tasks given in the project |
+
+
+For the attributes in the `data`:  
+| parameter | datatype                                    | example            | Remarks                                                                                                                    |
+|-----------|---------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------|
+| taskId    | 10 digit number (int)                       | 0000000001         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| projectId | 10 digit number (int)                       | 0000000001         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| dueDate   | a date in the format oe yyyy/mm/dd (string) | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| dueTime   | a 24H time in the format of HHMM (string)   | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| duration  | an integer(maximum of 10 digits) (int)      | 20                 | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| lateness  | Hour                                        | 1, 0.012, 1.123, 0 | Minimum number of hours of lateness (rounded to 3dp) of the tasks completion compared to the given startTime and startDate |
 
 ```json
 {
-    "result": {
-        "data": [
-            {
-                "taskId": IDENTIFIER, 
-                "fromDate": DATE,
-                "fromTime": TIME, 
-                "toDate": DATE,
-                "toTime": TIME, 
-                "lateness": number
-            },
-            ...
-        ],
-        "totalLateness": number
-    }
+    "result": [
+        {
+            "taskId": IDENTIFIER, 
+            "fromDate": DATE,
+            "fromTime": TIME, 
+            "toDate": DATE,
+            "toTime": TIME, 
+            "lateness": HOUR
+        },
+        ...
+    ],
+    "totalLateness": HOUR
 }
 ```
 
@@ -311,27 +317,25 @@ GET /basic/result?projectId=1234567890&startDate=2020/01/13&startTime=2130
 
 ```json
 {
-    "result": {
-        "data": [
-            {
-                "lectureId": 1234567890, 
-                "fromDate": "2020/01/13",
-                "fromTime": "2130", 
-                "toDate": "2020/01/13",
-                "toTime": "2230",
-                "lateness": 0.5
-            },
-            {
-                "lectureId": 1234567891, 
-                "fromDate": "2020/01/13",
-                "fromTime": "2230", 
-                "toDate": "2020/01/13",
-                "toTime": "2330",
-                "lateness": 0.5
-            }
-        ],
-        "totalLateness": 1
-    }
+    "result": [
+        {
+            "taskId": 1234567890, 
+            "fromDate": "2020/01/13",
+            "fromTime": "2130", 
+            "toDate": "2020/01/13",
+            "toTime": "2230",
+            "lateness": 0.5
+        },
+        {
+            "taskId": 1234567891, 
+            "fromDate": "2020/01/13",
+            "fromTime": "2230", 
+            "toDate": "2020/01/13",
+            "toTime": "2330",
+            "lateness": 0.5
+        }
+    ],
+    "totalLateness": 1
 }
 
 ```
