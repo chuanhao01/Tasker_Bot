@@ -233,7 +233,43 @@ describe('Integration testing for the whole backend server', function(){
                         done();
                     });
                 });
-                it('Checking projectId filter');
+                it('Checking projectId filter', function(done){
+                    chai.request(app)
+                    .get('/basic/data?projectId[>]=12')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 13,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 13
+                            },
+                            {
+                                taskid: 14,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 5,
+                                projectid: 14
+                            },
+                        ];
+                        const expectedLastPage = 1;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
                 it('Checking duration filter');
                 it('Checking both filters together');
                 it('Checking sort works');
