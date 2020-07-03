@@ -94,6 +94,39 @@ const basicDB= {
                 resolve(res);
             });
         });
+    },
+    /**
+     * @function
+     * This model call is to get the tasks associated to a projectId to calculate the basic result needed
+     *
+     * @param {number} projectId the projectId number of the project you want to calculate the basic result for
+     * 
+     * @returns {Promise} A promise call to the db to get the tasks associated with the projectId to calculate the basic result later on
+     * Note that the tasks are already sorted
+     * 
+     * @throws {Promise.error} if there is any pg error
+     * 
+     */
+    getResults(projectId){
+        return new Promise((resolve, reject) => {
+            this.pool.query(`
+            SELECT * FROM TASKSBASIC
+            WHERE
+                projectId = ${projectId}
+            ORDER BY
+                dueDate ASC, dueTime ASC; 
+            `, function(err, res){
+                if(err){
+                    reject(err);
+                }
+                if(res.length === 0){
+                    err = new Error('projectId does not exists or no tasks are associated with this projectId');
+                    err.code = 'PROID';
+                    reject(err);
+                }
+                resolve(res);
+            });
+        });
     }
 };
 
