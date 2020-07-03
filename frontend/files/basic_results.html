@@ -220,9 +220,6 @@
                     stacked: true
                 }]
             },
-            legend:{
-                display: true
-            },
     
             animation: {
                 onComplete: function () {
@@ -244,6 +241,11 @@
                 labels: ['Task 1', 'Task 2','Task 3', 'Task 4'],
                 
                 datasets: [{
+                    label: 'Blank',
+                    data: [10, 0, 20, 30],
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    hoverBackgroundColor: "rgba(255, 255, 255, 1)"
+                }, {
                     label: 'Projected time taken',
                     data: [0, 15, 10, 30],
                     backgroundColor: "rgba(63,103,126,1)",
@@ -256,7 +258,7 @@
                 }]
             },
 
-            options: barOptions_stacked,
+            options: barOptions_stacked
         });
     </script>
 </body>
