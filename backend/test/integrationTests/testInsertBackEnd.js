@@ -238,6 +238,64 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                         done();
                     });
                 });
+                it('id type validation', function(done){
+                    chai.request(app)
+                    .post('/advance/insert')
+                    .type('json')
+                    .send({
+                        'data':[
+                            {
+                                "taskId": '3',
+                                "projectId": '1',
+                                "duration": 2,
+                            },
+                        ]
+                    })
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(400);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('error');
+                        expect(res.body).to.have.property('code');
+                        // Checking the error string and code
+                        expect(res.body.error).to.equal('Invalid data format');
+                        expect(res.body.code).to.equal(400);
+                        done();
+                    });
+                });
+                it('duration type validation', function(done){
+                    chai.request(app)
+                    .post('/advance/insert')
+                    .type('json')
+                    .send({
+                        'data':[
+                            {
+                                "taskId": 3,
+                                "projectId": 1,
+                                "duration": '2',
+                            },
+                        ]
+                    })
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(400);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('error');
+                        expect(res.body).to.have.property('code');
+                        // Checking the error string and code
+                        expect(res.body.error).to.equal('Invalid data format');
+                        expect(res.body.code).to.equal(400);
+                        done();
+                    });
+                });
             });
         });
     });
