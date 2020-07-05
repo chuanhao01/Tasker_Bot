@@ -334,6 +334,23 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
+            it('ProjectId does not exists', function(done){
+                const projectId = 123;
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getResults(projectId)
+                    );
+                })
+                .then(
+                    function(){
+                        done('Should not resolve');
+                    }
+                )
+                .catch((err) => {
+                    expect(err.code).to.be.equal('PROID');
+                    done();
+                });
+            });
         });
     });
     describe('Advanced Problem Statement Models', function(){

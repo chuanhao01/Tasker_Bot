@@ -118,13 +118,16 @@ const basicDB= {
             `, function(err, res){
                 if(err){
                     reject(err);
+                    return;
                 }
-                if(res.length === 0){
+                if(res.rows.length === 0){
                     err = new Error('projectId does not exists or no tasks are associated with this projectId');
                     err.code = 'PROID';
                     reject(err);
+                    return;
                 }
                 resolve(res);
+                return;
             });
         });
     }
