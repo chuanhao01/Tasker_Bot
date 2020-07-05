@@ -1,7 +1,7 @@
 /**
  * @fileoverview 
- * Mocha test for testing and checking normal db functions
- * Meant to run while db is in production already
+ * Mocha test for testing and checking the algos to calcualte the results
+ * This is for both the basic and advanced problem statement
  * 
  * @author Lim Chuan Hao
  * 
@@ -53,10 +53,10 @@ describe('Algo Test Suite', function(){
             ];
             const startDate = '2020/01/01', startTime = '0900';
             const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
-            const expectedResult = {
+            const expectedResults = {
                 'data': [
                     {
-                        "taskid":'1000000001',
+                        "taskId":'1000000001',
                         'fromDate': '2020/01/01',
                         'fromTime': '0900',
                         'toDate': '2020/01/01',
@@ -64,7 +64,7 @@ describe('Algo Test Suite', function(){
                         'lateness': 0
                     },
                     {
-                        "taskid":'1000000002',
+                        "taskId":'1000000002',
                         'fromDate': '2020/01/01',
                         'fromTime': '1000',
                         'toDate': '2020/01/01',
@@ -72,7 +72,7 @@ describe('Algo Test Suite', function(){
                         'lateness': 0
                     },
                     {
-                        "taskid":'1000000003',
+                        "taskId":'1000000003',
                         'fromDate': '2020/01/01',
                         'fromTime': '1100',
                         'toDate': '2020/01/01',
@@ -80,7 +80,7 @@ describe('Algo Test Suite', function(){
                         'lateness': 1
                     },
                     {
-                        "taskid":'1000000004',
+                        "taskId":'1000000004',
                         'fromDate': '2020/01/01',
                         'fromTime': '1200',
                         'toDate': '2020/01/01',
@@ -90,6 +90,7 @@ describe('Algo Test Suite', function(){
                 ],
                 'totalLateness': 3
             };
+            expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
         });
     });
 });
