@@ -4,14 +4,14 @@ const db = require('./db/index');
 const utils = require('./utils');
 const scripts = require('./scripts');
 
-db.basic.getResults('1100000003')
+db.basic.getResults('1100000004')
 .then(
     function(pgRes){
         const tasks = [];
         for(let task of pgRes.rows){
             let newTask = {
                 'taskid': task.taskid,
-                'duedate': `moment(${task.duedate.format('YYYY/MM/DD')}, "YYYY/MM/DD")`,
+                'duedate': `moment("${task.duedate.format('YYYY/MM/DD')}", "YYYY/MM/DD")`,
                 'duetime': task.duetime,
                 'duration': task.duration,
                 'projectid': task.projectid
