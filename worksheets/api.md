@@ -265,20 +265,19 @@ This is the API endpoint to get the result for the basic problem statement
 
 For the `result` attribute in the response body:  
 
-| parameter     | datatype         | example                                                   | Remarks                                                                 |
-|---------------|------------------|-----------------------------------------------------------|-------------------------------------------------------------------------|
-| result        | Array of objects | {taskId, projectId, dueDate, dueTime, duration, lateness} | Refer below to description of the attributes                            |
-| totalLateness | Hour             | 1, 0.012, 1.123, 0                                        | Calculated total minimum lateness of all the tasks given in the project |
-
+| parameter     | datatype         | example                                                | Remarks                                                                 |
+|---------------|------------------|--------------------------------------------------------|-------------------------------------------------------------------------|
+| result        | Array of objects | {taskId, fromDate, fromTime, toDate, toTime, lateness} | Refer below to description of the attributes                            |
+| totalLateness | Hour             | 1, 0.012, 1.123, 0                                     | Calculated total minimum lateness of all the tasks given in the project |
 
 For the attributes in the `data`:  
 | parameter | datatype                                    | example            | Remarks                                                                                                                    |
 |-----------|---------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------|
 | taskId    | 10 digit number (int)                       | 0000000001         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| projectId | 10 digit number (int)                       | 0000000001         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| dueDate   | a date in the format oe yyyy/mm/dd (string) | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| dueTime   | a 24H time in the format of HHMM (string)   | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| duration  | an integer(maximum of 10 digits) (int)      | 20                 | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| fromDate  | a date in the format oe yyyy/mm/dd (string) | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| fromTime  | a 24H time in the format of HHMM (string)   | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| toDate    | a date in the format oe yyyy/mm/dd (string) | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| toTime    | a 24H time in the format of HHMM (string)   | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
 | lateness  | Hour                                        | 1, 0.012, 1.123, 0 | Minimum number of hours of lateness (rounded to 3dp) of the tasks completion compared to the given startTime and startDate |
 
 ```json
