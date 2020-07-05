@@ -164,6 +164,93 @@ describe('Algo Test Suite', function(){
             };
             expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
         });
+        it('Testing normal functionality 3', function(){
+            const tasks = [
+                {
+                    taskid: '1000000013',
+                    duedate: moment("2020/01/01", "YYYY/MM/DD"),
+                    duetime: '12:00:00',
+                    duration: 1,
+                    projectid: '1100000004'
+                },
+                {
+                    taskid: '1000000014',
+                    duedate: moment("2020/01/01", "YYYY/MM/DD"),
+                    duetime: '14:00:00',
+                    duration: 4,
+                    projectid: '1100000004'
+                },
+                {
+                    taskid: '1000000016',
+                    duedate: moment("2020/01/01", "YYYY/MM/DD"),
+                    duetime: '15:00:00',
+                    duration: 7,
+                    projectid: '1100000004'
+                },
+                {
+                    taskid: '1000000015',
+                    duedate: moment("2020/01/01", "YYYY/MM/DD"),
+                    duetime: '19:00:00',
+                    duration: 7,
+                    projectid: '1100000004'
+                },
+                {
+                    taskid: '1000000017',
+                    duedate: moment("2020/01/01", "YYYY/MM/DD"),
+                    duetime: '19:00:00',
+                    duration: 11,
+                    projectid: '1100000004'
+                }
+            ];
+            const startDate = '2020/01/01', startTime = '0900';
+            const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
+            const expectedResults = {
+                'data': [
+                    {
+                        taskId: '1000000013',
+                        fromDate: '2020/01/01',
+                        fromTime: '0900',
+                        toDate: '2020/01/01',
+                        toTime: '1000',
+                        lateness: 0
+                    },
+                    {
+                        taskId: '1000000014',
+                        fromDate: '2020/01/01',
+                        fromTime: '1000',
+                        toDate: '2020/01/01',
+                        toTime: '1400',
+                        lateness: 0
+                    },
+                    {
+                        taskId: '1000000016',
+                        fromDate: '2020/01/01',
+                        fromTime: '1400',
+                        toDate: '2020/01/01',
+                        toTime: '2100',
+                        lateness: 6
+                    },
+                    {
+                        taskId: '1000000015',
+                        fromDate: '2020/01/01',
+                        fromTime: '2100',
+                        toDate: '2020/01/02',
+                        toTime: '0400',
+                        lateness: 9
+                    },
+                    {
+                        taskId: '1000000017',
+                        fromDate: '2020/01/02',
+                        fromTime: '0400',
+                        toDate: '2020/01/02',
+                        toTime: '1500',
+                        lateness: 20
+                    }
+                ],
+                'totalLateness': 35
+            };
+            expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
+        });
     });
 });
 
