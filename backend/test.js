@@ -4,6 +4,24 @@ const db = require('./db/index');
 const utils = require('./utils');
 const scripts = require('./scripts');
 
+db.basic.getResults('1100000003')
+.then(
+    function(pgRes){
+        const tasks = [];
+        for(let task of pgRes.rows){
+            let newTask = {
+                'taskid': task.taskid,
+                'duedate': `moment(${task.duedate.format('YYYY/MM/DD')}, "YYYY/MM/DD")`,
+                'duetime': task.duetime,
+                'duration': task.duration,
+                'projectid': task.projectid
+            };
+            tasks.push(newTask);
+        }
+        console.log(tasks);
+    }
+);
+
 // let tasks = [
 //     {"taskId":1000000001,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
 //     {"taskId":1000000002,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},

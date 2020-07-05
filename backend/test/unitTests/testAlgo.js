@@ -96,28 +96,28 @@ describe('Algo Test Suite', function(){
             const tasks = [
                 {
                     taskid: '1000000009',
-                    duedate: moment(2020/01/01, "YYYY/MM/DD"),
+                    duedate: moment('2020/01/01', "YYYY/MM/DD"),
                     duetime: '11:00:00',
                     duration: 1,
                     projectid: '1100000003'
                 },
                 {
                     taskid: '1000000010',
-                    duedate: moment(2020/01/01, "YYYY/MM/DD"),
+                    duedate: moment('2020/01/01', "YYYY/MM/DD"),
                     duetime: '13:00:00',
                     duration: 3,
                     projectid: '1100000003'
                 },
                 {
                     taskid: '1000000011',
-                    duedate: moment(2020/01/01, "YYYY/MM/DD"),
+                    duedate: moment('2020/01/01', "YYYY/MM/DD"),
                     duetime: '15:00:00',
                     duration: 5,
                     projectid: '1100000003'
                 },
                 {
                     taskid: '1000000012',
-                    duedate: moment(2020/01/01, "YYYY/MM/DD"),
+                    duedate: moment('2020/01/01', "YYYY/MM/DD"),
                     duetime: '17:00:00',
                     duration: 7,
                     projectid: '1100000003'
