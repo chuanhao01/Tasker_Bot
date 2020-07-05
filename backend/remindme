@@ -1,0 +1,6 @@
+stopped at adding more test to algo
+	Need to add test to check for 3dp
+	Have not started on the controller
+
+Stopped because past bulk insert does not accept decimal input
+But now since HOURS is 3dp dk what to do
