@@ -4,6 +4,29 @@ const db = require('./db/index');
 const utils = require('./utils');
 const scripts = require('./scripts');
 
+// let tasks = [
+//     {"taskId":1000000001,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
+//     {"taskId":1000000002,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
+//     {"taskId":1000000003,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
+//     {"taskId":1000000004,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
+//     {"taskId":1000000005,"projectId":1100000002,"dueDate":"2020/01/01","dueTime":"1400","duration":1},
+//     {"taskId":1000000006,"projectId":1100000002,"dueDate":"2020/01/01","dueTime":"1400","duration":2},
+//     {"taskId":1000000007,"projectId":1100000002,"dueDate":"2020/01/01","dueTime":"1400","duration":3},
+//     {"taskId":1000000008,"projectId":1100000002,"dueDate":"2020/01/01","dueTime":"1400","duration":4},
+//     {"taskId":1000000009,"projectId":1100000003,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
+//     {"taskId":1000000010,"projectId":1100000003,"dueDate":"2020/01/01","dueTime":"1300","duration":3},
+//     {"taskId":1000000011,"projectId":1100000003,"dueDate":"2020/01/01","dueTime":"1500","duration":5},
+//     {"taskId":1000000012,"projectId":1100000003,"dueDate":"2020/01/01","dueTime":"1700","duration":7},
+//     {"taskId":1000000013,"projectId":1100000004,"dueDate":"2020/01/01","dueTime":"1200","duration":1},
+//     {"taskId":1000000014,"projectId":1100000004,"dueDate":"2020/01/01","dueTime":"1400","duration":4},
+//     {"taskId":1000000015,"projectId":1100000004,"dueDate":"2020/01/01","dueTime":"1900","duration":7},
+//     {"taskId":1000000016,"projectId":1100000004,"dueDate":"2020/01/01","dueTime":"1500","duration":7},
+//     {"taskId":1000000017,"projectId":1100000004,"dueDate":"2020/01/01","dueTime":"1900","duration":11}
+// ];
+
+// tasks = utils.dbParser.basic.bulkInsert(tasks);
+// console.log(tasks.join(',\n'));
+
 // db.pool.query(`
 // SELECT * FROM TASKSBASIC
 // `, function(err, res){
@@ -36,8 +59,8 @@ const scripts = require('./scripts');
 //     return val === null ? null : moment(val, 'YYYY-MM-DD');
 // });
 
-const {Pool} = require('pg');
-const { util } = require('chai');
+// const {Pool} = require('pg');
+// const { util } = require('chai');
 
 // let pool = new Pool({
 //     connectionString: process.env.PG_URL,
@@ -97,25 +120,25 @@ const { util } = require('chai');
 //     console.log(res.rows);
 // });
 
-let tasks = [];
+// let tasks = [];
 
-const basic_tasks = {
-    "taskId": 1,
-    "projectId": 1,
-    "duration": 3,
-};
+// const basic_tasks = {
+//     "taskId": 1,
+//     "projectId": 1,
+//     "duration": 3,
+// };
 
-for(let i=0; i<20; i++){
-    let new_task = {};
-    new_task.taskId = basic_tasks.taskId + i;
-    new_task.projectId = basic_tasks.projectId;
-    new_task.duration = basic_tasks.duration;
-    tasks.push(new_task);
-}
+// for(let i=0; i<20; i++){
+//     let new_task = {};
+//     new_task.taskId = basic_tasks.taskId + i;
+//     new_task.projectId = basic_tasks.projectId;
+//     new_task.duration = basic_tasks.duration;
+//     tasks.push(new_task);
+// }
 
-tasks = utils.dbParser.advanced.bulkInsert(tasks);
+// tasks = utils.dbParser.advanced.bulkInsert(tasks);
 
-console.log(tasks.join(',\n'));
+// console.log(tasks.join(',\n'));
 
 // console.log(utils.dbParser.basic.bulkInsert(tasks));
 // db.basic.insertTask(utils.dbParser.basic.bulkInsert(tasks))
