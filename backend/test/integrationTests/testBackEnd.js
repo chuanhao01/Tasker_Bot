@@ -67,7 +67,8 @@ describe('Integration testing for the whole backend server', function(){
                     (17, 11, '1998-02-02', '01:32:00', 2),
                     (18, 11, '1998-02-02', '01:32:00', 2),
                     (19, 11, '1998-02-02', '01:32:00', 2),
-                    (20, 11, '1998-02-02', '01:32:00', 2)
+                    (20, 11, '1998-02-02', '01:32:00', 2),
+                    (21, 11, '1998-02-02', '01:32:00', 2)
                     `;
                     pool.query(`
                     INSERT INTO TASKSBASIC
@@ -88,6 +89,43 @@ describe('Integration testing for the whole backend server', function(){
         .then(
             // Inserting dummy advanced tasks
             function(){
+                new Promise((resolve, reject) => {
+                    const dummyAdvancedTasks = `(1, 1, 3),
+                    (2, 1, 3),
+                    (3, 1, 3),
+                    (4, 1, 3),
+                    (5, 1, 3),
+                    (6, 1, 3),
+                    (7, 1, 3),
+                    (8, 1, 3),
+                    (9, 1, 3),
+                    (10, 11, 3),
+                    (11, 11, 3),
+                    (12, 12, 3),
+                    (13, 12, 3),
+                    (14, 12, 3),
+                    (15, 12, 3),
+                    (16, 13, 3),
+                    (17, 14, 3),
+                    (18, 1, 4),
+                    (19, 1, 4),
+                    (20, 1, 5),
+                    (21, 1, 3)
+                    `;
+                    pool.query(`
+                    INSERT INTO TASKSADVANCED
+                    (taskId, projectId, duration)
+                    VALUES
+                    ${dummyAdvancedTasks}
+                    `, function(err){
+                        if(err){
+                            reject(err);
+                            return;
+                        }
+                        resolve();
+                        return;
+                    });
+                });
                 return;
             }
         )
@@ -189,17 +227,302 @@ describe('Integration testing for the whole backend server', function(){
                                 projectid: 12
                             },
                         ];
-                        const expectedLastPage = 2;
+                        const expectedLastPage = 3;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();
                     });
                 });
-                it('Checking projectId filter');
-                it('Checking duration filter');
-                it('Checking both filters together');
-                it('Checking sort works');
-                it('Checking Pagination works');
+                it('Checking Pagination works', function(done){
+                    chai.request(app)
+                    .get('/basic/data?pageNum=3&page=2')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 4,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 3,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 5,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 4,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 6,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 4,
+                                projectid: 11
+                            },
+                        ];
+                        const expectedLastPage = 7;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
+                it('Checking projectId filter', function(done){
+                    chai.request(app)
+                    .get('/basic/data?projectId[>]=12')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 13,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 13
+                            },
+                            {
+                                taskid: 14,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 5,
+                                projectid: 14
+                            },
+                        ];
+                        const expectedLastPage = 1;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
+                it('Checking duration filter', function(done){
+                    chai.request(app)
+                    .get('/basic/data?duration[>]=2')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 3,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 3,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 4,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 3,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 5,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 4,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 6,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 4,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 14,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 5,
+                                projectid: 14
+                            }
+                        ];
+                        const expectedLastPage = 1;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
+                it('Checking both filters together', function(done){
+                    chai.request(app)
+                    .get('/basic/data?duration[>]=2&projectId[>]=12')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 14,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 5,
+                                projectid: 14
+                            }
+                        ];
+                        const expectedLastPage = 1;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
+                it('Checking sort works', function(done){
+                    chai.request(app)
+                    .get('/basic/data?pageNum=3&sortBy=taskId.desc')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: 21,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 20,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            },
+                            {
+                                taskid: 19,
+                                duedate: '1998/02/02',
+                                duetime: '0132',
+                                duration: 2,
+                                projectid: 11
+                            }
+                        ];
+                        const expectedLastPage = 7;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
+            });
+        });
+        describe('For the Advanced Problem', function(){
+            describe('GET /advance/data', function(){
+                it('Checking normal request', function(done){
+                    chai.request(app)
+                    .get('/advance/data')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedData = [
+                            {
+                                taskid: '1',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '2',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '3',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '4',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '5',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '6',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '7',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '8',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '9',
+                                duration: 3,
+                                projectid: '1'
+                            },
+                            {
+                                taskid: '10',
+                                duration: 3,
+                                projectid: '11'
+                            }
+                        ];
+                        const expectedLastPage = 3;
+                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
+                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        done();
+                    });
+                });
             });
         });
     });
