@@ -28,7 +28,7 @@
     <script src="./functions.js"></script>
     <script src="./script.js"></script>
 
-    <title>JiBaBoom Result Viewer</title>
+    <title>JiBaBoom Basic Result Viewer</title>
 </head>
 <body>
     <header>
@@ -42,11 +42,19 @@
                 <ul class="nav nav-pills mr-auto">
                     <nav class="navbar fixed-top justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html" id="homeNav">Home</a>
+                            <a class="nav-link" href="index.html" id="basicDataNav">Basic Data Viewer</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="advanced_data.html" id="advanceDataNav">Advanced Data Viewer</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="basic_results.html" id="basicResultNav">Basic Result Viewer</a>
                         </li>
                     
                         <li class="nav-item">
-                            <a class="nav-link" href='results.html' id="resultNav">Result</a>
+                            <a class="nav-link" href='advanced_results.html' id="advanceResultNav">Advanced Result Viewer</a>
                         </li>
                     </nav>
                 </ul>
@@ -92,11 +100,10 @@
                     <thead class="thead-light">
                         <tr>
                             <th id="sortBtn">Task ID &#9660;</th>
-                            <th id="sortBtn">Project ID &#9660;</th>
-                            <th id="sortBtn">Start date &#9660;</th>
-                            <th id="sortBtn">Start time &#9660;</th>
-                            <th id="sortBtn">End date &#9660;</th>
-                            <th id="sortBtn">End time &#9660;</th>
+                            <th id="sortBtn">From date &#9660;</th>
+                            <th id="sortBtn">To date &#9660;</th>
+                            <th id="sortBtn">From time &#9660;</th>
+                            <th id="sortBtn">To time &#9660;</th>
                             <th id="sortBtn">Lateness (in Hrs) &#9660;</th>
                         </tr>
                     </thead>
@@ -107,7 +114,6 @@
                             <th>29/03/2020</th>
                             <th>29/05/2020</th>
                             <th>1300</th>
-                            <th>0000</th>
                             <th>4</th>
                         </tr>
     
@@ -116,7 +122,6 @@
                             <th>2</th>
                             <th>05/04/2020</th>
                             <th>10/04/2020</th>
-                            <th>0000</th>
                             <th>0000</th>
                             <th>0</th>
                         </tr>
@@ -127,7 +132,6 @@
                             <th>30/03/2020</th>
                             <th>18/04/2020</th>
                             <th>1500</th>
-                            <th>1200</th>
                             <th>1</th>
                         </tr>
     
@@ -137,42 +141,10 @@
                             <th>01/04/2020</th>
                             <th>02/04/2020</th>
                             <th>0000</th>
-                            <th>0000</th>
                             <th>1</th>
                         </tr>   
                     </tbody>
                 </table>
-            </div>
-
-            <div class="row">
-                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-    
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-    
-                        <li class="page-item">
-                            <a class="page-link" href="#!" aria-label="Next">
-                              <span aria-hidden="true">&raquo;</span>
-                              <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-    
-                <div class="ml-auto p-2 col-lg-6 col-md-6 col-sm-6 text-right">
-                    <h6 class="lead">1 of 1 pages (4 items)</h6>
-                </div>
             </div>
         </div>
     </div>
@@ -217,9 +189,6 @@
                     stacked: true
                 }]
             },
-            legend:{
-                display: true
-            },
     
             animation: {
                 onComplete: function () {
@@ -241,29 +210,24 @@
                 labels: ['Task 1', 'Task 2','Task 3', 'Task 4'],
                 
                 datasets: [{
-                    label: 'Wireframe',
+                    label: 'Blank',
+                    data: [10, 0, 20, 30],
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    hoverBackgroundColor: "rgba(255, 255, 255, 1)"
+                }, {
+                    label: 'Projected time taken',
                     data: [0, 15, 10, 30],
                     backgroundColor: "rgba(63,103,126,1)",
                     hoverBackgroundColor: "rgba(50,90,100,1)"
                 }, {
-                    label: 'API',
+                    label: 'Lateness',
                     data: [10, 0, 20, 30],
-                    backgroundColor: "rgba(163,103,126,1)",
-                    hoverBackgroundColor: "rgba(140,85,100,1)"
-                }, {
-                    label: 'Database',
-                    data: [10, 15, 0, 50],
-                    backgroundColor: "rgba(63,203,226,1)",
-                    hoverBackgroundColor: "rgba(46,185,235,1)"
-                }, {
-                    label: 'Code',
-                    data: [10, 15, 60, 0],
-                    backgroundColor: "rgba(30, 130, 76, 1)",
-                    hoverBackgroundColor: "rgba(20, 110, 95, 1)"
+                    backgroundColor: "rgba(255, 100, 100, 1)",
+                    hoverBackgroundColor: "rgba(255, 110, 110, 1)"
                 }]
             },
 
-            options: barOptions_stacked,
+            options: barOptions_stacked
         });
     </script>
 </body>
