@@ -4,7 +4,6 @@
  * @author Sherisse Tan
  */
 
-
  // Define all the default starting variables needed for the API -> This will be updated as the user performs actions in the website
  var currentPage = 1;
  var pageNumType = 10;
@@ -18,8 +17,10 @@
  
 /**
  * @function Implementing filter functionality in the basic data viewer table
+ * 
+ * @param {string} viewerType The data / result viewer type that is calling the function
  */
- function filter() {
+ function filter(viewerType) {
     let filterAttribute = $('#filterAttribute option:selected').text();
     let filterOperation = $('#filterOperation option:selected').text();
     let filterInput = $('#filterInput').val();
@@ -45,13 +46,20 @@
     currentPage = 1;
 
     // Ajax calls
-    basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+    if (viewerType == 'basicData') {
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+    }
+    else if (viewerType == 'advanceData') {
+        advanced_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '')
+    }
  };
 
  /**
   * @function Implementing filter reset functionality
+  * 
+  * @param {string} viewerType The data / result viewer type that is calling the function
   */
- function resetFilter() {
+ function resetFilter(viewerType) {
      // Reset values in object to empty strings
      currentFilters['duration'] = '';
      currentFilters['projectId'] = '';
@@ -60,7 +68,12 @@
      currentPage = 1;
 
      // Ajax call
-     basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+     if (viewerType == 'basicData') {
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+     }
+     else if (viewerType == 'advanceData') {
+        advanced_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, '');
+     }
  };
 
 
@@ -68,8 +81,9 @@
  * @function Implementing sorting functionality in the basic data viewer table - not persistent
  * 
  * @param {object} eventTarget 
+ * @param {string} viewerType The data / result viewer type that is calling the function
  */
-function sort(eventTarget) {
+function sort(eventTarget, viewerType) {
     // Obtain whether the column is already sorted in ascending order or descending order
     var currentSort = eventTarget.className.split(' ')[eventTarget.className.split(' ').length - 1];
 
@@ -87,7 +101,13 @@ function sort(eventTarget) {
         sortType += '.asc';
     };
     
-    basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, `sortBy=${sortType}`);
+
+    if (viewerType == 'basicData') {
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, `sortBy=${sortType}`);
+     }
+     else if (viewerType == 'advanceData') {
+        advanced_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, `sortBy=${sortType}`);
+     }
 };
 
 
@@ -95,15 +115,14 @@ function sort(eventTarget) {
  * @function Implementing pagination functionality in the basic data viewer table
  * 
  * @param {string} pageLinkId 
+ * @param {string} viewerType The data / result viewer type that is calling the function
  */
-function pagination(pageLinkId) {
+function pagination(pageLinkId, viewerType) {
     var paginationType;
     paginationType = pageLinkId.split('_')[1];
         
     // In the event that the page-link clicked is not 'previous' or 'next', i.e. is one of the numbered links
     if (paginationType != 'previous' && paginationType != 'next') {
-        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${paginationType}`, `pageNum=${pageNumType}`, "");
-
         // Set the var currentPage to the new page
         currentPage = parseInt(paginationType);
     }
@@ -111,24 +130,35 @@ function pagination(pageLinkId) {
     else if (paginationType == 'previous') {
         // Set the var currentPage to the new page
         currentPage -= 1;
-
-        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
     }
 
     else if (paginationType == 'next') {
         // Set the var currentPage to the new page
         currentPage += 1;
-        
-        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
     };
-};
+
+    if (viewerType == 'basicData') {
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+    }
+    else if (viewerType == 'advanceData') {
+        advanced_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+    };
+}
 
 
 /**
  * @function Implementing pageNum size change functionality in the basic data viewer table
  * 
  * @param {int} pageNumType 
+ * @param {string} viewerType The data / result viewer type that is calling the function
  */
-function pageNum(pageNumType) {
-    basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+function pageNum(pageNumVal, viewerType) {
+    pageNumType = pageNumVal
+
+    if (viewerType == 'basicData') {
+        basic_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+    }
+    else if (viewerType == 'advanceData') {
+        advanced_obtainData(currentFilters['projectId'], currentFilters['duration'], `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+    };
 };
