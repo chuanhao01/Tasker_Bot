@@ -63,11 +63,14 @@ const advancedController = {
                 .custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
             body('data.*.taskId').exists()
+                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             // Same for projectId
             body('data.*.projectId').exists()
+                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             body('data.*.duration').exists()
+                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.durationMin}),
         ], function(req, res){
             // Check the validation
@@ -116,6 +119,79 @@ const advancedController = {
                 function(err){
                     // For debugging err in api chain
                     // console.log(err);
+                    return;
+                }
+            );
+        });
+        app.get('/advance/data', [
+            query('projectId').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.idMin, max: configs.idMax});}),
+            query('duration').optional()
+                .custom((value) => {return Object.keys(value).length == 1;})
+                .custom((value) => {return ['>', '<', '=', '>=', '<='].includes(Object.keys(value)[0]);})
+                .custom((value) => {return Object.values(value).length == 1;})
+                .custom((value) => {return Object.values(value)[0] != '';})
+                .custom((value) => {return v.isInt(Object.values(value)[0], {min: configs.durationMin});}),
+            query('page').optional()
+                .isInt({min: 1}),
+            query('pageNum').optional()
+                .isInt({min: 1}),
+            query('sortBy').optional()
+                .custom((value) => {return utils.v.basic.getSortByQuery(value);}),
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
+                return;
+            }
+            const queryConditions = utils.dbParser.all.getDataQueryParams(req.query);
+            new Promise((resolve) => {
+                resolve(
+                    model.advanced.getData(queryConditions)
+                    .catch(
+                        function(err){
+                            // If the db has an error
+                            res.status(500).send({
+                                'error': 'Database error',
+                                'code': 500
+                            });
+                            throw(err);
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    // Refer to docs for what each object in the pgRes arr are
+                    // Calculating the last page number
+                    const rowCount = parseInt(pgRes[1].rows[0].count);
+                    let lastPage;
+                    if(req.query.pageNum){
+                        lastPage = Math.ceil(rowCount/req.query.pageNum);
+                    }
+                    else{
+                        lastPage = Math.ceil(rowCount/10);
+                    }
+                    res.status(200).send({
+                        'result': {
+                            'data': pgRes[0].rows,
+                            'lastPage': lastPage
+                        }
+                    });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    console.log(err);
                     return;
                 }
             );
