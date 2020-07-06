@@ -230,7 +230,7 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
  */
 function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
     // Change the url back to advanced
-    var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+    var url = `http://localhost:3000/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
         type: 'GET',
@@ -245,6 +245,7 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
+            console.log(data)
             // Clear the previous data from the table
             $('#advanced_tableBody').empty();
 

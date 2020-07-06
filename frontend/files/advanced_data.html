@@ -25,7 +25,7 @@
     <script src="./functions.js"></script>
     <script src="./script.js"></script>
 
-    <title>JiBaBoom Basic Data Viewer</title>
+    <title>JiBaBoom Advanced Data Viewer</title>
 </head>
 <body>
     <header>
@@ -58,7 +58,7 @@
             </div>
         </nav>
         <div class="jumbotron jumbotron fluid">
-            <h2 class="text-center">FSP Basic Data Viewer</h2>
+            <h2 class="text-center">FSP Advanced Data Viewer</h2>
         </div>
     </header>
 
@@ -104,102 +104,57 @@
             </div>
         </div>
 
-        <div class="basic_dataViewer">
-            <!-- Table containing data -->
-            <div class="row table-responsive" id="basic_dataViewerTable">
-                <table class="table border mb-1 text-center">
-                    <thead class="thead-light">
-                        <tr>
-                            <th class="sortBtn asc" id="sort_taskId">Task ID &DownArrowUpArrow;</th>
-                            <th class="sortBtn filteredBy_no asc" id="sort_projectId">Project ID &DownArrowUpArrow;</th>
-                            <th class="sortBtn asc" id="sort_dueDate">Due Date &DownArrowUpArrow;</th>
-                            <th class="sortBtn asc" id="sort_dueTime">Due Time &DownArrowUpArrow;</th>
-                            <th class="sortBtn filteredBy_no asc" id="sort_duration">Duration (in Hrs) &DownArrowUpArrow;</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="basic_tableBody">
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- pagination & page size display -->
-            <div class="row">
-                <!-- page -->
-                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                    <ul class="pagination" id="paginationDisplay">
-                    </ul>
-                </nav>
+    <div class="advanced_dataViewer">
+        <!-- Table containing data -->
+        <div class="row table-responsive" id="advanced_dataViewerTable">
+            <table class="table border mb-1 text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="sortBtn asc" id="sort_taskId">Task ID &DownArrowUpArrow;</th>
+                        <th class="sortBtn filteredBy_no asc" id="sort_projectId">Project ID &DownArrowUpArrow;</th>
+                        <th class="sortBtn filteredBy_no asc" id="sort_duration">Duration (in Hrs) &DownArrowUpArrow;</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="advanced_tableBody">
+                </tbody>
+            </table>
+        </div>
     
-                <!-- pageNum -->
-                <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
-                    <div class="input-group row">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Show: </span>
-                        </div>
-                        <input type="text" class="form-control" id="input_pageNum">
+
+        <!-- pagination & page size display -->
+        <div class="row">
+            <!-- page -->
+            <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
+                <ul class="pagination" id="paginationDisplay">
+                </ul>
+            </nav>
+
+            <!-- pageNum -->
+            <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
+                <div class="input-group row">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Show: </span>
                     </div>
+                    <input type="text" class="form-control" id="input_pageNum">
                 </div>
             </div>
         </div>
-        <!-- End of basic Data Viewer -->
+    </div> 
+    <!-- End of advanced data viewer -->
     </div>
 
-    <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
-    <div class="modal" id="insert_editModal" tabindex="1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" id="addNewTask_closeBtn">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <label for="taskID">Task ID</label>
-                            <input type="text" class="form-control" id="taskID" placeholder="1">
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <label for="projectID">Project ID</label>
-                            <input type="text" class="form-control" id="projectID" placeholder="1">
-                        </div>
-                    </div>
-
-                    <label for="dueDate">Due Date</label>
-                    <input type="text" class="form-control" id="dueDate" placeholder="YYYY/MM/DD">
-
-                    <label for="dueTime">Due Time</label>
-                    <input type="text" class="form-control" id="dueTime" placeholder="0000">
-
-                    <label for="duration">Duration (in Hours)</label>
-                    <input type="text" class="form-control" id='duration' placeholder="4">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="insertData">Insert</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-    <!-- 
-        This script will handle any event listeners that may be needed
-        Buttons which require onclick() events will also be handled here for easy readability
-    -->
     <script>
-        var viewerType = 'basicData'
+        var viewerType = 'advanceData'
 
         // Define all the default starting variables needed for the API -> This will be updated as the user performs actions in the website
         var currentPage = 1;
         var pageNumType = 10;
 
+
         // Obtain all the data in the data viewer table everytime the page is loaded with the default values above
-        window.document.onload = basic_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
+        window.document.onload = advanced_obtainData("", "", `page=${currentPage}`, `pageNum=${pageNumType}`, "");
 
 
         // Allow for the column names in the data viewer to be clickable and,
@@ -239,6 +194,7 @@
                 pageNum(pageNumType, viewerType);
             };
         });
+    </script>
     </script>
 </body>
 </html>
