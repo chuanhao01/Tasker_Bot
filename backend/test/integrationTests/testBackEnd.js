@@ -311,21 +311,77 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 13,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 13
+                                "taskid":13,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":2,
+                                "projectid":13
                             },
                             {
-                                taskid: 14,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 5,
-                                projectid: 14
+                                "taskid":14,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":5,
+                                "projectid":14
                             },
+                            {
+                                "taskid":1000000001,
+                                "duedate":"2020/01/01",
+                                "duetime":"1100",
+                                "duration":1,
+                                "projectid":1100000001
+                            },
+                            {
+                                "taskid":1000000002,
+                                "duedate":"2020/01/01",
+                                "duetime":"1100",
+                                "duration":1,
+                                "projectid":1100000001
+                            },
+                            {
+                                "taskid":1000000003,
+                                "duedate":"2020/01/01",
+                                "duetime":"1100",
+                                "duration":1,
+                                "projectid":1100000001
+                            },
+                            {
+                                "taskid":1000000004,
+                                "duedate":"2020/01/01",
+                                "duetime":"1100",
+                                "duration":1,
+                                "projectid":1100000001
+                            },
+                            {
+                                "taskid":1000000005,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":1,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000006,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":2,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000007,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":3,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000008,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":4,
+                                "projectid":1100000002
+                            }
                         ];
-                        const expectedLastPage = 1;
+                        const expectedLastPage = 2;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();
