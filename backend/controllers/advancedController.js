@@ -63,14 +63,11 @@ const advancedController = {
                 .custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
             body('data.*.taskId').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             // Same for projectId
             body('data.*.projectId').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             body('data.*.duration').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.durationMin}),
         ], function(req, res){
             // Check the validation

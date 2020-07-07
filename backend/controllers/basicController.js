@@ -64,11 +64,9 @@ const basicController = {
                 .custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
             body('data.*.taskId').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             // Same for projectId
             body('data.*.projectId').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             // Checking if date given is following format and is valid
             body('data.*.dueDate').exists()
@@ -81,7 +79,6 @@ const basicController = {
                 .custom((value) => {return !(value == '2400');})
                 .custom((value) => {return moment(value, 'HHmm').isValid();}),
             body('data.*.duration').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.durationMin}),
         ], function(req, res){
             // Check the validation
