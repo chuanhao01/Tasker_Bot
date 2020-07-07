@@ -97,7 +97,8 @@ const basicDB= {
     },
     /**
      * @function
-     * This model call is to get the tasks associated to a projectId to calculate the basic result needed
+     * This model call is to get the tasks associated to a projectId sorted by due date then due time
+     * This is usually to calculate the basic problem statement later
      *
      * @param {number} projectId the projectId number of the project you want to calculate the basic result for
      * 
