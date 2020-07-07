@@ -67,7 +67,10 @@ const dataParser = {
          * 
          */
         getResults(results){
-            return;
+            for(let result of results){ 
+                result['lateness'] = result['lateness'].toFixed(3);
+            }
+            return results;
         }
     }
 };

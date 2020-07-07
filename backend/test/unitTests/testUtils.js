@@ -303,7 +303,7 @@ describe('Utils test', function(){
                             fromTime: '0900',
                             toDate: '2020/01/01',
                             toTime: '1000',
-                            lateness: 1.333
+                            lateness: '1.333'
                         },
                         {
                             taskId:'1000000002',
@@ -311,7 +311,7 @@ describe('Utils test', function(){
                             fromTime: '1000',
                             toDate: '2020/01/01',
                             toTime: '1100',
-                            lateness: 0.123
+                            lateness: '0.123'
                         },
                         {
                             taskId:'1000000003',
@@ -319,7 +319,7 @@ describe('Utils test', function(){
                             fromTime: '1100',
                             toDate: '2020/01/01',
                             toTime: '1200',
-                            lateness: 5.000
+                            lateness: '5.000'
                         },
                         {
                             taskId:'1000000004',
@@ -327,7 +327,7 @@ describe('Utils test', function(){
                             fromTime: '1200',
                             toDate: '2020/01/01',
                             toTime: '1300',
-                            lateness: 10.235
+                            lateness: '10.235'
                         }
                     ];
                     expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
