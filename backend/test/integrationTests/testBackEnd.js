@@ -68,7 +68,24 @@ describe('Integration testing for the whole backend server', function(){
                     (18, 11, '1998-02-02', '01:32:00', 2),
                     (19, 11, '1998-02-02', '01:32:00', 2),
                     (20, 11, '1998-02-02', '01:32:00', 2),
-                    (21, 11, '1998-02-02', '01:32:00', 2)
+                    (21, 11, '1998-02-02', '01:32:00', 2),
+                    (1000000001, 1100000001, '2020-01-01', '11:00:00', 1),
+                    (1000000002, 1100000001, '2020-01-01', '11:00:00', 1),
+                    (1000000003, 1100000001, '2020-01-01', '11:00:00', 1),
+                    (1000000004, 1100000001, '2020-01-01', '11:00:00', 1),
+                    (1000000005, 1100000002, '2020-01-01', '14:00:00', 1),
+                    (1000000006, 1100000002, '2020-01-01', '14:00:00', 2),
+                    (1000000007, 1100000002, '2020-01-01', '14:00:00', 3),
+                    (1000000008, 1100000002, '2020-01-01', '14:00:00', 4),
+                    (1000000009, 1100000003, '2020-01-01', '11:00:00', 1),
+                    (1000000010, 1100000003, '2020-01-01', '13:00:00', 3),
+                    (1000000011, 1100000003, '2020-01-01', '15:00:00', 5),
+                    (1000000012, 1100000003, '2020-01-01', '17:00:00', 7),
+                    (1000000013, 1100000004, '2020-01-01', '12:00:00', 1),
+                    (1000000014, 1100000004, '2020-01-01', '14:00:00', 4),
+                    (1000000015, 1100000004, '2020-01-01', '19:00:00', 7),
+                    (1000000016, 1100000004, '2020-01-01', '15:00:00', 7),
+                    (1000000017, 1100000004, '2020-01-01', '19:00:00', 11)
                     `;
                     pool.query(`
                     INSERT INTO TASKSBASIC
@@ -227,7 +244,7 @@ describe('Integration testing for the whole backend server', function(){
                                 projectid: 12
                             },
                         ];
-                        const expectedLastPage = 3;
+                        const expectedLastPage = 4;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();
@@ -271,7 +288,7 @@ describe('Integration testing for the whole backend server', function(){
                                 projectid: 11
                             },
                         ];
-                        const expectedLastPage = 7;
+                        const expectedLastPage = 13;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();
@@ -331,39 +348,74 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 3,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 3,
-                                projectid: 11
+                                "taskid":3,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":3,
+                                "projectid":11
                             },
                             {
-                                taskid: 4,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 3,
-                                projectid: 11
+                                "taskid":4,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":3,
+                                "projectid":11
                             },
                             {
-                                taskid: 5,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 4,
-                                projectid: 11
+                                "taskid":5,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":4,
+                                "projectid":11
                             },
                             {
-                                taskid: 6,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 4,
-                                projectid: 11
+                                "taskid":6,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":4,
+                                "projectid":11
                             },
                             {
-                                taskid: 14,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 5,
-                                projectid: 14
+                                "taskid":14,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":5,
+                                "projectid":14
+                            },
+                            {
+                                "taskid":1000000007,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":3,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000008,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":4,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000010,
+                                "duedate":"2020/01/01",
+                                "duetime":"1300",
+                                "duration":3,
+                                "projectid":1100000003
+                            },
+                            {
+                                "taskid":1000000011,
+                                "duedate":"2020/01/01",
+                                "duetime":"1500",
+                                "duration":5,
+                                "projectid":1100000003
+                            },
+                            {
+                                "taskid":1000000012,
+                                "duedate":"2020/01/01",
+                                "duetime":"1700",
+                                "duration":7,
+                                "projectid":1100000003
                             }
                         ];
                         const expectedLastPage = 1;
