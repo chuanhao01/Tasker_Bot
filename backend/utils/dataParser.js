@@ -57,6 +57,18 @@ const dataParser = {
             }
             return data;
         },
+        /**
+         * @function
+         * This is to parse the results for the basic problem statement
+         * 
+         * @param {Array} results refer to the array of data returned after the algorithms calculates the latesness
+         * 
+         * @returns {Array} Returns an array of parsed data that cen be sent by the API
+         * 
+         */
+        getResults(results){
+            return;
+        }
     }
 };
 
