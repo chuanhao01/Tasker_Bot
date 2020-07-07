@@ -618,6 +618,29 @@ describe('Integration testing for the whole backend server', function(){
                     });
                 });
             });
+            describe('GET /basic/result', function(){
+                describe('Checking errors', function(){
+                    it('Making sure query params are required', function(done){
+                        chai.request(app)
+                        .get('/basic/result')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            // Checking the body specific data
+                            done();
+                        });
+                    });
+                });
+            });
         });
         describe('For the Advanced Problem', function(){
             describe('GET /advance/data', function(){

@@ -220,6 +220,30 @@ const basicController = {
                 }
             );
         });
+        app.get('/basic/result', [
+            query('projectId').exists()
+                .isInt({min: configs.idMin, max: configs.idMax}),
+            query('startDate').exists()
+                .isString()
+                .custom((value) => {return /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/g.test(value);})
+                .custom((value) => {return moment(value, 'YYYY/MM/DD').isValid();}),
+            query('startTime').exists()
+                .isString()
+                .custom((value) => {return !(value == '2400');})
+                .custom((value) => {return moment(value, 'HHmm').isValid();}),
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                // console.log(validationError.mapped());
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
+                return;
+            }
+
+        });
     }
 };
 

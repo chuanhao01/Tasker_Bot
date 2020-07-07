@@ -1,6 +1,8 @@
-stopped at adding more test to algo
-	Need to add test to check for 3dp
-	Have not started on the controller
+Stopped at:
+	Was working on the GET /basic/result API
+		- Did validation
+		- Stopped at adding test to check if validation was correct
 
+Need to be done:
 Stopped because past bulk insert does not accept decimal input
 But now since HOURS is 3dp dk what to do
