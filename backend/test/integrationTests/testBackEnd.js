@@ -474,7 +474,7 @@ describe('Integration testing for the whole backend server', function(){
                                 "projectid":1100000003
                             }
                         ];
-                        const expectedLastPage = 1;
+                        const expectedLastPage = 2;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();
@@ -497,11 +497,74 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 14,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 5,
-                                projectid: 14
+                                "taskid":14,
+                                "duedate":"1998/02/02",
+                                "duetime":"0132",
+                                "duration":5,
+                                "projectid":14
+                            },
+                            {
+                                "taskid":1000000007,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":3,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000008,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":4,
+                                "projectid":1100000002
+                            },
+                            {
+                                "taskid":1000000010,
+                                "duedate":"2020/01/01",
+                                "duetime":"1300",
+                                "duration":3,
+                                "projectid":1100000003
+                            },
+                            {
+                                "taskid":1000000011,
+                                "duedate":"2020/01/01",
+                                "duetime":"1500",
+                                "duration":5,
+                                "projectid":1100000003
+                            },
+                            {
+                                "taskid":1000000012,
+                                "duedate":"2020/01/01",
+                                "duetime":"1700",
+                                "duration":7,
+                                "projectid":1100000003
+                            },
+                            {
+                                "taskid":1000000014,
+                                "duedate":"2020/01/01",
+                                "duetime":"1400",
+                                "duration":4,
+                                "projectid":1100000004
+                            },
+                            {
+                                "taskid":1000000015,
+                                "duedate":"2020/01/01",
+                                "duetime":"1900",
+                                "duration":7,
+                                "projectid":1100000004
+                            },
+                            {
+                                "taskid":1000000016,
+                                "duedate":"2020/01/01",
+                                "duetime":"1500",
+                                "duration":7,
+                                "projectid":1100000004
+                            },
+                            {
+                                "taskid":1000000017,
+                                "duedate":"2020/01/01",
+                                "duetime":"1900",
+                                "duration":11,
+                                "projectid":1100000004
                             }
                         ];
                         const expectedLastPage = 1;
