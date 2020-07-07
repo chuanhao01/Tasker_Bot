@@ -590,28 +590,28 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 21,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                "taskid":1000000017,
+                                "duedate":"2020/01/01",
+                                "duetime":"1900",
+                                "duration":11,
+                                "projectid":1100000004
                             },
                             {
-                                taskid: 20,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                "taskid":1000000016,
+                                "duedate":"2020/01/01",
+                                "duetime":"1500",
+                                "duration":7,
+                                "projectid":1100000004
                             },
                             {
-                                taskid: 19,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                "taskid":1000000015,
+                                "duedate":"2020/01/01",
+                                "duetime":"1900",
+                                "duration":7,
+                                "projectid":1100000004
                             }
                         ];
-                        const expectedLastPage = 7;
+                        const expectedLastPage = 13;
                         expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
                         expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
                         done();
