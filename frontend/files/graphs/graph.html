@@ -22,13 +22,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <!-- Highcharts -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/gantt/modules/gantt.js"></script>
-    <script src="https://code.highcharts.com/gantt/modules/exporting.js"></script>
-
-
-    <!-- External Scripts -->
-    <script src='./graph.js'></script>
+    <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
 
     <title>Testing resultViewer graph design</title>
 </head>
@@ -38,33 +32,42 @@
 
     <script>
         Highcharts.ganttChart('container', {
-            title: {
-                text: 'Simple Gantt Chart'
+            xAxis: {
+                min: Date.UTC(2014, 10, 17),
+                max: Date.UTC(2014, 10, 31),
+                showFirstLabel: false
             },
-        
             series: [{
                 name: 'Project 1',
                 data: [{
         		    id: 's',
-                    name: 'Start prototype',
+                    name: 'Task 1',
                     start: Date.UTC(2014, 10, 18),
-                    end: Date.UTC(2014, 10, 20)
+                    end: Date.UTC(2014, 10, 20),
+                    completed: 0.50
                 }, {
         		    id: 'b',
-                    name: 'Develop',
+                    name: 'Task 2',
                     start: Date.UTC(2014, 10, 20),
                     end: Date.UTC(2014, 10, 25),
-                    dependency: 's'
+                    completed: 0.90
                 }, {
         		    id: 'a',
-                    name: 'Run acceptance tests',
+                    name: 'Task 3',
                     start: Date.UTC(2014, 10, 23),
-                    end: Date.UTC(2014, 10, 26)
+                    end: Date.UTC(2014, 10, 26),
+                    completed: 1.00
                 }, {
-                    name: 'Test prototype',
+                    name: 'Task 4',
                     start: Date.UTC(2014, 10, 27),
                     end: Date.UTC(2014, 10, 29),
-                    dependency: ['a', 'b']
+                    completed: 0.10
+                },
+                {
+                    name: 'FINISHED',
+                    start: Date.UTC(2014, 10, 30),
+                    end: Date.UTC(2014, 10, 31),
+                    milestone: true
                 }]
             }]
         });
