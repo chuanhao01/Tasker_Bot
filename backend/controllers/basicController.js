@@ -77,6 +77,7 @@ const basicController = {
             body('data.*.dueTime').exists()
                 .isString()
                 .custom((value) => {return !(value == '2400');})
+                .custom((value) => {return /^[0-9]{4}/g.test(value);})
                 .custom((value) => {return moment(value, 'HHmm').isValid();}),
             body('data.*.duration').exists()
                 .isInt({min: configs.durationMin}),
