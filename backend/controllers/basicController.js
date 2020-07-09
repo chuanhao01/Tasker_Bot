@@ -231,6 +231,7 @@ const basicController = {
             query('startTime').exists()
                 .isString()
                 .custom((value) => {return !(value == '2400');})
+                .custom((value) => {return /^[0-9]{4}/g.test(value);})
                 .custom((value) => {return moment(value, 'HHmm').isValid();}),
         ], function(req, res){
             // Check the validation

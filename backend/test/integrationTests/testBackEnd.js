@@ -40,7 +40,7 @@ describe('Integration testing for the whole backend server', function(){
         });
         return;
     });
-    beforeEach('Init the db', function(done){
+    before('Init the db', function(done){
         // For async calls to be done before the test
         // Making sure the db is initialized
         scripts.db.dbInit(pool)
@@ -634,8 +634,141 @@ describe('Integration testing for the whole backend server', function(){
                             expect(res).to.have.property('body');
                             expect(res.body).to.have.property('error');
                             expect(res.body).to.have.property('code');
-                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
-                            // Checking the body specific data
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking projectId cannot be missing', function(done){
+                        chai.request(app)
+                        .get('/basic/result?startTime=2130&startDate=2020/01/01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking startTime cannot be missing', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=1000000001&startDate=2020/01/01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking startDate cannot be empty', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=1000000001&startTime=2130')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking the startDate format', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=1000000001&startTime=2130&startDate=2020-01-01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking the startTime format', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=1000000001&startTime=21:30&startDate=2020/01/01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking the projectId bounds, Over 10 digits', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=10000000001&startTime=2130&startDate=2020/01/01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
+                            done();
+                        });
+                    });
+                    it('Checking the projectId bounds, Negative', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=-1&startTime=2130&startDate=2020/01/01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(400);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('error');
+                            expect(res.body).to.have.property('code');
+                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                            expect(res.body.code).to.be.equal(400);
                             done();
                         });
                     });
