@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+    crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+    crossorigin="anonymous"></script>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/gantt/modules/gantt.js"></script>
+    <script src="https://code.highcharts.com/gantt/modules/exporting.js"></script>
+
+
+    <!-- External Scripts -->
+    <script src='./graph.js'></script>
+
+    <title>Testing resultViewer graph design</title>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script>
+        Highcharts.ganttChart('container', {
+            title: {
+                text: 'Simple Gantt Chart'
+            },
+        
+            series: [{
+                name: 'Project 1',
+                data: [{
+        		    id: 's',
+                    name: 'Start prototype',
+                    start: Date.UTC(2014, 10, 18),
+                    end: Date.UTC(2014, 10, 20)
+                }, {
+        		    id: 'b',
+                    name: 'Develop',
+                    start: Date.UTC(2014, 10, 20),
+                    end: Date.UTC(2014, 10, 25),
+                    dependency: 's'
+                }, {
+        		    id: 'a',
+                    name: 'Run acceptance tests',
+                    start: Date.UTC(2014, 10, 23),
+                    end: Date.UTC(2014, 10, 26)
+                }, {
+                    name: 'Test prototype',
+                    start: Date.UTC(2014, 10, 27),
+                    end: Date.UTC(2014, 10, 29),
+                    dependency: ['a', 'b']
+                }]
+            }]
+        });
+    </script>
+</body>
+</html>
