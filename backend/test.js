@@ -4,23 +4,25 @@ const db = require('./db/index');
 const utils = require('./utils');
 const scripts = require('./scripts');
 
-db.basic.getResults('1100000004')
-.then(
-    function(pgRes){
-        const tasks = [];
-        for(let task of pgRes.rows){
-            let newTask = {
-                'taskid': task.taskid,
-                'duedate': `moment("${task.duedate.format('YYYY/MM/DD')}", "YYYY/MM/DD")`,
-                'duetime': task.duetime,
-                'duration': task.duration,
-                'projectid': task.projectid
-            };
-            tasks.push(newTask);
-        }
-        console.log(tasks);
-    }
-);
+console.log(1.33333333333333333 + 0.123333333333333 + 4.999999999999999 + 10.23451111111111);
+
+// db.basic.getResults('1100000004')
+// .then(
+//     function(pgRes){
+//         const tasks = [];
+//         for(let task of pgRes.rows){
+//             let newTask = {
+//                 'taskid': task.taskid,
+//                 'duedate': `moment("${task.duedate.format('YYYY/MM/DD')}", "YYYY/MM/DD")`,
+//                 'duetime': task.duetime,
+//                 'duration': task.duration,
+//                 'projectid': task.projectid
+//             };
+//             tasks.push(newTask);
+//         }
+//         console.log(tasks);
+//     }
+// );
 
 // let tasks = [
 //     {"taskId":1000000001,"projectId":1100000001,"dueDate":"2020/01/01","dueTime":"1100","duration":1},
