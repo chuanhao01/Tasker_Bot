@@ -61,16 +61,21 @@ const dataParser = {
          * @function
          * This is to parse the results for the basic problem statement
          * 
-         * @param {Array} results refer to the array of data returned after the algorithms calculates the latesness
+         * @param {Array} results refer to the object returned after the algorithms calculates the latesness
          * 
          * @returns {Array} Returns an array of parsed data that cen be sent by the API
          * 
          */
-        getResults(results){
-            for(let result of results){ 
-                result['lateness'] = result['lateness'].toFixed(3);
+        getResults(result){
+            for(let task of result.data){ 
+                task['lateness'] = (Math.round((task['lateness'] + Number.EPSILON) * 1000) / 1000).toString(10);
             }
-            return results;
+            result.totalLateness = (Math.round((result.totalLateness + Number.EPSILON) * 1000) / 1000).toString(10);
+            const parsedResult = {
+                'result': result.data,
+                'totalLateness': result.totalLateness
+            };
+            return parsedResult;
         }
     }
 };

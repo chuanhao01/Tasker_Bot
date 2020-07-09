@@ -222,114 +222,159 @@ describe('Utils test', function(){
             });
             describe('Parsing the calculated results', function(){
                 it('Basic Functionality', function(){
-                    const testResults = [
-                        {
-                            taskId:'1000000001',
-                            fromDate: '2020/01/01',
-                            fromTime: '0900',
-                            toDate: '2020/01/01',
-                            toTime: '1000',
-                            lateness: 0
-                        },
-                        {
-                            taskId:'1000000002',
-                            fromDate: '2020/01/01',
-                            fromTime: '1000',
-                            toDate: '2020/01/01',
-                            toTime: '1100',
-                            lateness: 0
-                        },
-                        {
-                            taskId:'1000000003',
-                            fromDate: '2020/01/01',
-                            fromTime: '1100',
-                            toDate: '2020/01/01',
-                            toTime: '1200',
-                            lateness: 1
-                        },
-                        {
-                            taskId:'1000000004',
-                            fromDate: '2020/01/01',
-                            fromTime: '1200',
-                            toDate: '2020/01/01',
-                            toTime: '1300',
-                            lateness: 2
-                        }
-                    ];
+                    const testResults = {
+                        'data': [
+                            {
+                                taskId:'1000000001',
+                                fromDate: '2020/01/01',
+                                fromTime: '0900',
+                                toDate: '2020/01/01',
+                                toTime: '1000',
+                                lateness: 0
+                            },
+                            {
+                                taskId:'1000000002',
+                                fromDate: '2020/01/01',
+                                fromTime: '1000',
+                                toDate: '2020/01/01',
+                                toTime: '1100',
+                                lateness: 0
+                            },
+                            {
+                                taskId:'1000000003',
+                                fromDate: '2020/01/01',
+                                fromTime: '1100',
+                                toDate: '2020/01/01',
+                                toTime: '1200',
+                                lateness: 1
+                            },
+                            {
+                                taskId:'1000000004',
+                                fromDate: '2020/01/01',
+                                fromTime: '1200',
+                                toDate: '2020/01/01',
+                                toTime: '1300',
+                                lateness: 2
+                            }
+                        ],
+                        'totalLateness': 3
+                    };
                     const data = utils.dataParser.basic.getResults(testResults);
-                    const expectedData = testResults;
+                    const expectedData = {
+                        'result': [
+                            {
+                                taskId:'1000000001',
+                                fromDate: '2020/01/01',
+                                fromTime: '0900',
+                                toDate: '2020/01/01',
+                                toTime: '1000',
+                                lateness: '0'
+                            },
+                            {
+                                taskId:'1000000002',
+                                fromDate: '2020/01/01',
+                                fromTime: '1000',
+                                toDate: '2020/01/01',
+                                toTime: '1100',
+                                lateness: '0'
+                            },
+                            {
+                                taskId:'1000000003',
+                                fromDate: '2020/01/01',
+                                fromTime: '1100',
+                                toDate: '2020/01/01',
+                                toTime: '1200',
+                                lateness: '1'
+                            },
+                            {
+                                taskId:'1000000004',
+                                fromDate: '2020/01/01',
+                                fromTime: '1200',
+                                toDate: '2020/01/01',
+                                toTime: '1300',
+                                lateness: '2'
+                            }
+                        ],
+                        'totalLateness': '3'
+                    };
                     expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
                 });
                 it('3dp rounding functionality', function(){
-                    const testResults = [
-                        {
-                            taskId:'1000000001',
-                            fromDate: '2020/01/01',
-                            fromTime: '0900',
-                            toDate: '2020/01/01',
-                            toTime: '1000',
-                            lateness: 1.33333333333333333
-                        },
-                        {
-                            taskId:'1000000002',
-                            fromDate: '2020/01/01',
-                            fromTime: '1000',
-                            toDate: '2020/01/01',
-                            toTime: '1100',
-                            lateness: 0.123333333333333
-                        },
-                        {
-                            taskId:'1000000003',
-                            fromDate: '2020/01/01',
-                            fromTime: '1100',
-                            toDate: '2020/01/01',
-                            toTime: '1200',
-                            lateness: 4.999999999999999
-                        },
-                        {
-                            taskId:'1000000004',
-                            fromDate: '2020/01/01',
-                            fromTime: '1200',
-                            toDate: '2020/01/01',
-                            toTime: '1300',
-                            lateness: 10.23451111111111
-                        }
-                    ];
+                    const testResults = {
+                        'data': [
+                            {
+                                taskId:'1000000001',
+                                fromDate: '2020/01/01',
+                                fromTime: '0900',
+                                toDate: '2020/01/01',
+                                toTime: '1000',
+                                lateness: 1.33333333333333333
+                            },
+                            {
+                                taskId:'1000000002',
+                                fromDate: '2020/01/01',
+                                fromTime: '1000',
+                                toDate: '2020/01/01',
+                                toTime: '1100',
+                                lateness: 0.123333333333333
+                            },
+                            {
+                                taskId:'1000000003',
+                                fromDate: '2020/01/01',
+                                fromTime: '1100',
+                                toDate: '2020/01/01',
+                                toTime: '1200',
+                                lateness: 4.999999999999999
+                            },
+                            {
+                                taskId:'1000000004',
+                                fromDate: '2020/01/01',
+                                fromTime: '1200',
+                                toDate: '2020/01/01',
+                                toTime: '1300',
+                                lateness: 10.23451111111111
+                            }
+                        ],
+                        'totalLateness': 16.691177777777774
+                    };
                     const data = utils.dataParser.basic.getResults(testResults);
-                    const expectedData = [
-                        {
-                            taskId:'1000000001',
-                            fromDate: '2020/01/01',
-                            fromTime: '0900',
-                            toDate: '2020/01/01',
-                            toTime: '1000',
-                            lateness: '1.333'
-                        },
-                        {
-                            taskId:'1000000002',
-                            fromDate: '2020/01/01',
-                            fromTime: '1000',
-                            toDate: '2020/01/01',
-                            toTime: '1100',
-                            lateness: '0.123'
-                        },
-                        {
-                            taskId:'1000000003',
-                            fromDate: '2020/01/01',
-                            fromTime: '1100',
-                            toDate: '2020/01/01',
-                            toTime: '1200',
-                            lateness: '5.000'
-                        },
-                        {
-                            taskId:'1000000004',
-                            fromDate: '2020/01/01',
-                            fromTime: '1200',
-                            toDate: '2020/01/01',
-                            toTime: '1300',
-                            lateness: '10.235'
-                        }
-                    ];
+                    const expectedData = {
+                        'result': [
+                            {
+                                taskId:'1000000001',
+                                fromDate: '2020/01/01',
+                                fromTime: '0900',
+                                toDate: '2020/01/01',
+                                toTime: '1000',
+                                lateness: '1.333'
+                            },
+                            {
+                                taskId:'1000000002',
+                                fromDate: '2020/01/01',
+                                fromTime: '1000',
+                                toDate: '2020/01/01',
+                                toTime: '1100',
+                                lateness: '0.123'
+                            },
+                            {
+                                taskId:'1000000003',
+                                fromDate: '2020/01/01',
+                                fromTime: '1100',
+                                toDate: '2020/01/01',
+                                toTime: '1200',
+                                lateness: '5'
+                            },
+                            {
+                                taskId:'1000000004',
+                                fromDate: '2020/01/01',
+                                fromTime: '1200',
+                                toDate: '2020/01/01',
+                                toTime: '1300',
+                                lateness: '10.235'
+                            }
+                        ],
+                        'totalLateness': '16.691'
+                    };
                     expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
                 });
             });
