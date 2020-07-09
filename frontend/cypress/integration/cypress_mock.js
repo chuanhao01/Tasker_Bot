@@ -19,13 +19,20 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe("Test ajax call for basic data viewer", () => {
     it("Perform an ajax call and respond with mock data", () => {
-        cy.stubBackend("http://127.0.0.1:8080/index.html", "basic", "data")
+        cy.stubBackend("http://127.0.0.1:8080/index.html", "basic", "data");
     });
 });
 
 
 describe("Test ajax call for advanced data viewer", () => {
     it("Perform an ajax call and respond with mock data", () => {
-        cy.stubBackend("http://127.0.0.1:8080/advanced_data.html", "advance", "data")
+        cy.stubBackend("http://127.0.0.1:8080/advanced_data.html", "advance", "data");
     });
 });
+
+
+describe("Test ajax call for filter feature", () => {
+    it("Uses a cypress command to ensure that the filter feature is working as intended (url)", () => {
+        cy.checkFilterFeature("http://127.0.0.1:8080/index.html", "basic", "data", "projectId", "Equal to", "19999999");
+    })
+})
