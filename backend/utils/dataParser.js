@@ -61,9 +61,9 @@ const dataParser = {
          * @function
          * This is to parse the results for the basic problem statement
          * 
-         * @param {Array} results refer to the object returned after the algorithms calculates the latesness
+         * @param {Object} results refer to the object returned after the algorithms calculates the latesness
          * 
-         * @returns {Array} Returns an array of parsed data that cen be sent by the API
+         * @returns {Object} Returns an object of parsed data that can be sent in the response
          * 
          */
         getResults(result){
