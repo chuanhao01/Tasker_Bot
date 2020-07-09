@@ -17,6 +17,7 @@ const v = require('validator');
 // Importing the custom libs
 const utils = require('../utils/index');
 const model = require('../db/index');
+const algo = require('../algo');
 
 const configs = {
     idMin: 0,
@@ -244,7 +245,49 @@ const basicController = {
                 });
                 return;
             }
-
+            const projectId = req.query.projectId,
+            startDate = req.query.startDate,
+            startTime = req.query.startTime;
+            new Promise((resolve) => {
+                resolve(
+                    model.basic.getResults(projectId)
+                    .catch(
+                        function(err){
+                            // Process and send error response
+                            if(err.code === 'PROID'){
+                                // projectId not found
+                                res.status(404).send({
+                                    'error': 'ProjectId not found',
+                                    'code': 404
+                                });
+                            }
+                            else{
+                                // If the db has an error
+                                res.status(500).send({
+                                    'error': 'Database error',
+                                    'code': 500
+                                });
+                            }
+                            throw err;
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    const tasks = pgRes.rows;
+                    const result = algo.basic.calculateResults(tasks, startDate, startTime);
+                    const parsedResult = utils.dataParser.basic.getResults(result);
+                    res.status(200).send(parsedResult);
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    // console.log(err);
+                    return;
+                }
+            );
         });
     }
 };

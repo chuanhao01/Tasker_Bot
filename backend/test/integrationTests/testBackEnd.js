@@ -772,6 +772,61 @@ describe('Integration testing for the whole backend server', function(){
                             done();
                         });
                     });
+                    it('Basic Functionality', function(done){
+                        chai.request(app)
+                        .get('/basic/result?projectId=1100000001&startTime=0900&startDate=2020/01/01')
+                        .send()
+                        .end(function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body).to.have.property('totalLateness');
+                            const expectedBody = {
+                                'result': [
+                                    {
+                                        taskId:'1000000001',
+                                        fromDate: '2020/01/01',
+                                        fromTime: '0900',
+                                        toDate: '2020/01/01',
+                                        toTime: '1000',
+                                        lateness: '0'
+                                    },
+                                    {
+                                        taskId:'1000000002',
+                                        fromDate: '2020/01/01',
+                                        fromTime: '1000',
+                                        toDate: '2020/01/01',
+                                        toTime: '1100',
+                                        lateness: '0'
+                                    },
+                                    {
+                                        taskId:'1000000003',
+                                        fromDate: '2020/01/01',
+                                        fromTime: '1100',
+                                        toDate: '2020/01/01',
+                                        toTime: '1200',
+                                        lateness: '1'
+                                    },
+                                    {
+                                        taskId:'1000000004',
+                                        fromDate: '2020/01/01',
+                                        fromTime: '1200',
+                                        toDate: '2020/01/01',
+                                        toTime: '1300',
+                                        lateness: '2'
+                                    }
+                                ],
+                                'totalLateness': '3'
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        });
+                    });
                 });
             });
         });
