@@ -1,3 +1,17 @@
+/**
+ * @fileoverview This file contains all the Cypress Commands that will be used in either cypress_mock.js or cypress_spec.js
+ * 
+ * @author Sherisse Tan
+ * 
+ * @requires NPM:Cypress
+ */
+
+
+/**
+ * @param {string} url  A string containing the url of the html page that will automatically perform an ajax call when navigated to
+ * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
+ * @param {string} dataResult   A string that contains either 'data' or 'result'
+ */
 Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult) => {
     // Enable response stubbing
     cy.server()
@@ -14,4 +28,4 @@ Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult) => {
     cy.wait(`@${basicAdvance}_${dataResult}`).its('responseBody')
       .should('be.an', 'object')
       .and('not.empty');
-})
+});
