@@ -168,6 +168,14 @@
             },
             scales: {
                 xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        unitStepSize: 10,
+                        displayFormats: {
+                            'day': 'MMM DD'
+                        }
+                    },
                     gridLines: {
                         display: false,
                         color: "#fff",
@@ -191,8 +199,7 @@
                     },
                     stacked: true
                 }]
-            },
-    
+            }, 
             animation: {
                 onComplete: function () {
                     var chartInstance = this.chart;
@@ -214,17 +221,21 @@
                 
                 datasets: [{
                     label: 'Blank',
-                    data: [10, 0, 20, 30],
+                    //data: [10, 0, 20, 30],
+                    data: {
+                        x: 20,
+                        y: 10
+                    },
                     backgroundColor: "rgba(255, 255, 255, 1)",
                     hoverBackgroundColor: "rgba(255, 255, 255, 1)"
                 }, {
                     label: 'Projected time taken',
-                    data: [0, 15, 10, 30],
+                    //data: [0, 15, 10, 30],
                     backgroundColor: "rgba(63,103,126,1)",
                     hoverBackgroundColor: "rgba(50,90,100,1)"
                 }, {
                     label: 'Lateness',
-                    data: [10, 0, 20, 30],
+                    //data: [10, 0, 20, 30],
                     backgroundColor: "rgba(255, 100, 100, 1)",
                     hoverBackgroundColor: "rgba(255, 110, 110, 1)"
                 }]
