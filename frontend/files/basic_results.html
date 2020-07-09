@@ -157,6 +157,9 @@
         var ctx = document.querySelector('#resultChart');
 
         var barOptions_stacked = {
+            legend: {
+                display: false
+            },
             tooltips: {
                 enabled: false
             },
@@ -165,6 +168,12 @@
             },
             scales: {
                 xAxes: [{
+                    gridLines: {
+                        display: false,
+                        color: "#fff",
+                        zeroLineColor: "#fff",
+                        zeroLineWidth: 0
+                    },
                     ticks: {
                         beginAtZero: true,
                         fontFamily: "'Open Sans Bold', sans-serif",
@@ -176,12 +185,6 @@
                     stacked: true
                 }],
                 yAxes: [{
-                    gridLines: {
-                        display: false,
-                        color: "#fff",
-                        zeroLineColor: "#fff",
-                        zeroLineWidth: 0
-                    },
                     ticks: {
                         fontFamily: "'Open Sans Bold', sans-serif",
                         fontSize: 11
