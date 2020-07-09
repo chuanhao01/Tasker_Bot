@@ -1,7 +1,8 @@
 Stopped at:
-	Was working on the GET /basic/result API
-		- Did validation
-		- Stopped at adding test to check if validation was correct
+	Done first itr of GET /basic/result API
+		Need add more tests for API
+		Need to add more tests and check the algo and parsing
+		Also need to settle the PR so that sherisse can use
 
 Need to be done:
 Stopped because past bulk insert does not accept decimal input
