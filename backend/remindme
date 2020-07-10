@@ -1,0 +1,9 @@
+Stopped at:
+	Done first itr of GET /basic/result API
+		Need add more tests for API
+		Need to add more tests and check the algo and parsing
+		Also need to settle the PR so that sherisse can use
+
+Need to be done:
+Stopped because past bulk insert does not accept decimal input
+But now since HOURS is 3dp dk what to do

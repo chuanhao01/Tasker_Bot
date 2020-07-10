@@ -130,7 +130,7 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                         done();
                     });
                 });
-                it('ids type validation', function(done){
+                it('Allow strings for ids and duration', function(done){
                     chai.request(app)
                     .post('/basic/insert')
                     .type('json')
@@ -139,37 +139,6 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                             {
                                 "taskId": '5',
                                 "projectId": '0',
-                                "dueDate": "1998/02/01",
-                                "dueTime": '0000',
-                                "duration": 2,
-                            },
-                        ]
-                    })
-                    .end(function(err, res){
-                        if(err){
-                            done(err);
-                        }
-                        // Check res code
-                        expect(res).to.have.status(400);
-                        // Checking if there was a body with a response
-                        expect(res).to.have.property('body');
-                        expect(res.body).to.have.property('error');
-                        expect(res.body).to.have.property('code');
-                        // Checking the error string and code
-                        expect(res.body.error).to.equal('Invalid data format');
-                        expect(res.body.code).to.equal(400);
-                        done();
-                    });
-                });
-                it('duration type validation', function(done){
-                    chai.request(app)
-                    .post('/basic/insert')
-                    .type('json')
-                    .send({
-                        'data':[
-                            {
-                                "taskId": 5,
-                                "projectId": 0,
                                 "dueDate": "1998/02/01",
                                 "dueTime": '0000',
                                 "duration": '2',
@@ -181,14 +150,12 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                             done(err);
                         }
                         // Check res code
-                        expect(res).to.have.status(400);
+                        expect(res).to.have.status(200);
                         // Checking if there was a body with a response
                         expect(res).to.have.property('body');
-                        expect(res.body).to.have.property('error');
-                        expect(res.body).to.have.property('code');
-                        // Checking the error string and code
-                        expect(res.body.error).to.equal('Invalid data format');
-                        expect(res.body.code).to.equal(400);
+                        expect(res.body).to.have.property('result');
+                        const expectedResult = 'success';
+                        expect(res.body.result).to.be.equal(expectedResult);
                         done();
                     });
                 });
@@ -238,7 +205,7 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                         done();
                     });
                 });
-                it('id type validation', function(done){
+                it('Allow string for ids and duration', function(done){
                     chai.request(app)
                     .post('/advance/insert')
                     .type('json')
@@ -247,35 +214,6 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                             {
                                 "taskId": '3',
                                 "projectId": '1',
-                                "duration": 2,
-                            },
-                        ]
-                    })
-                    .end(function(err, res){
-                        if(err){
-                            done(err);
-                        }
-                        // Check res code
-                        expect(res).to.have.status(400);
-                        // Checking if there was a body with a response
-                        expect(res).to.have.property('body');
-                        expect(res.body).to.have.property('error');
-                        expect(res.body).to.have.property('code');
-                        // Checking the error string and code
-                        expect(res.body.error).to.equal('Invalid data format');
-                        expect(res.body.code).to.equal(400);
-                        done();
-                    });
-                });
-                it('duration type validation', function(done){
-                    chai.request(app)
-                    .post('/advance/insert')
-                    .type('json')
-                    .send({
-                        'data':[
-                            {
-                                "taskId": 3,
-                                "projectId": 1,
                                 "duration": '2',
                             },
                         ]
@@ -285,14 +223,12 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                             done(err);
                         }
                         // Check res code
-                        expect(res).to.have.status(400);
+                        expect(res).to.have.status(200);
                         // Checking if there was a body with a response
                         expect(res).to.have.property('body');
-                        expect(res.body).to.have.property('error');
-                        expect(res.body).to.have.property('code');
-                        // Checking the error string and code
-                        expect(res.body.error).to.equal('Invalid data format');
-                        expect(res.body.code).to.equal(400);
+                        expect(res.body).to.have.property('result');
+                        const expectedResult = 'success';
+                        expect(res.body.result).to.be.equal(expectedResult);
                         done();
                     });
                 });

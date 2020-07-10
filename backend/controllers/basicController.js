@@ -17,6 +17,7 @@ const v = require('validator');
 // Importing the custom libs
 const utils = require('../utils/index');
 const model = require('../db/index');
+const algo = require('../algo');
 
 const configs = {
     idMin: 0,
@@ -64,11 +65,9 @@ const basicController = {
                 .custom((value) => {return value.length > 0;}),
             // Checking if all the taskId fields are within int
             body('data.*.taskId').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             // Same for projectId
             body('data.*.projectId').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.idMin, max: configs.idMax}),
             // Checking if date given is following format and is valid
             body('data.*.dueDate').exists()
@@ -79,9 +78,9 @@ const basicController = {
             body('data.*.dueTime').exists()
                 .isString()
                 .custom((value) => {return !(value == '2400');})
+                .custom((value) => {return /^[0-9]{4}/g.test(value);})
                 .custom((value) => {return moment(value, 'HHmm').isValid();}),
             body('data.*.duration').exists()
-                .custom((value)=>{return typeof(value) === 'number';})
                 .isInt({min: configs.durationMin}),
         ], function(req, res){
             // Check the validation
@@ -213,6 +212,73 @@ const basicController = {
                             'lastPage': lastPage
                         }
                     });
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
+                    // console.log(err);
+                    return;
+                }
+            );
+        });
+        app.get('/basic/result', [
+            query('projectId').exists()
+                .isInt({min: configs.idMin, max: configs.idMax}),
+            query('startDate').exists()
+                .isString()
+                .custom((value) => {return /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/g.test(value);})
+                .custom((value) => {return moment(value, 'YYYY/MM/DD').isValid();}),
+            query('startTime').exists()
+                .isString()
+                .custom((value) => {return !(value == '2400');})
+                .custom((value) => {return /^[0-9]{4}/g.test(value);})
+                .custom((value) => {return moment(value, 'HHmm').isValid();}),
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                // console.log(validationError.mapped());
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
+                return;
+            }
+            const projectId = req.query.projectId,
+            startDate = req.query.startDate,
+            startTime = req.query.startTime;
+            new Promise((resolve) => {
+                resolve(
+                    model.basic.getResults(projectId)
+                    .catch(
+                        function(err){
+                            // Process and send error response
+                            if(err.code === 'PROID'){
+                                // projectId not found
+                                res.status(404).send({
+                                    'error': 'ProjectId not found',
+                                    'code': 404
+                                });
+                            }
+                            else{
+                                // If the db has an error
+                                res.status(500).send({
+                                    'error': 'Database error',
+                                    'code': 500
+                                });
+                            }
+                            throw err;
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    const tasks = pgRes.rows;
+                    const result = algo.basic.calculateResults(tasks, startDate, startTime);
+                    const parsedResult = utils.dataParser.basic.getResults(result);
+                    res.status(200).send(parsedResult);
                 }
             )
             .catch(
