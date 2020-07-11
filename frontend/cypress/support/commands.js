@@ -47,7 +47,6 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
     cy.get('#filterOperation').select(`${filterOperation}`);
     cy.get('#filterInput').type(`${filterInput}`);
 
-
     // Determining the mathematical filter operation
     if (filterOperation == 'Equal to') {
         filterOperation = '=';
@@ -59,15 +58,24 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
         filterOperation = '<'
     }
 
+    // Defining the appropriate filter argument that should be passed in
+    var testArg = `${filterAttribute}[${filterOperation}]=${filterInput}`;
+
+
     // Reroute request and respond with pre-determined mock data (../fixtures/data.json)
     cy.fixture('data').then((data) => {
-        cy.route('GET', `/${basicAdvance}/${dataResult}?${filterAttribute}[${filterOperation}]=${filterInput}&*`, data).as('filterFeature');
+        cy.route('GET', `/${basicAdvance}/${dataResult}?*`, data).as('filterFeature');
     });
 
-    
     cy.get('#filterBtn').click();
 
-    cy.wait('@filterFeature').its('responseBody')
-      .should('be.an', 'object')
-      .and('not.empty');
+    // Wait for the routing to finish and the mock response to be sent before obtaining the url
+    cy.wait('@filterFeature');
+    cy.get('@filterFeature').then(function (xhr) {
+        var requestUrl = xhr.xhr.url;
+        console.log('url: ' + requestUrl);
+
+        var filterArg = requestUrl.split('?')[1].split('&')[0];
+        expect(filterArg).to.equal(testArg);
+    });
 });
