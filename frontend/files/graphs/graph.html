@@ -35,15 +35,22 @@
         $(function () {
 		   	var tasks = [{
 		   	    name: 'Task 1',
-		   	    intervals: []
+		   	    intervals: [{ // From-To pairs
+		   	        from: Date.UTC(2015, 05, 21),
+		   	        to: Date.UTC(2015, 07, 21),
+		   	        label: 'Task 2',
+					tooltip_data: 'this data'
+		   	    }],
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 2',
 		   	    intervals: [{ // From-To pairs
 		   	        from: Date.UTC(2015, 05, 21),
 		   	        to: Date.UTC(2015, 05, 21),
 		   	        label: 'Task 2',
-                    tooltip_data: 'this data'
-		   	    }]
+					tooltip_data: 'this data'
+		   	    }],
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 3',
 		   	    intervals: [{ // From-To pairs
@@ -51,7 +58,8 @@
 		   	        to: Date.UTC(2015,05,21 ),
 		   	        label: 'Task 3',
                     tooltip_data: 'this data'
-		   	    }]
+		   	    }],
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 4',
 		   	    intervals: [{ // From-To pairs
@@ -59,7 +67,13 @@
 		   	        to: Date.UTC(2015,07,22),
 		   	        label: 'Task 4',
                     tooltip_data: 'this data'
-		   	    }]
+				}, { 
+		   	        from: Date.UTC(2015, 07, 23),
+		   	        to: Date.UTC(2015, 07, 30),
+		   	        label: 'Task 4',
+                    tooltip_data: 'this data'
+				   }],
+				   color: '#FF0000'
 		   	}, {
 		   	    name: 'Task 5',
 		   	    intervals: [{ // From-To pairs
@@ -67,7 +81,8 @@
 		   	        to: Date.UTC(2015,06,21),
 		   	        label: 'Task 5',
                     tooltip_data: 'this data'
-		   	    }]
+		   	    }],
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 6',
 		   	    intervals: [{ // From-To pairs
@@ -75,15 +90,17 @@
 		   	        to: Date.UTC(2015,06,21),
 		   	        label: 'Task 6',
                     tooltip_data: 'this data'
-		   	    }]
+		   	    }],
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 7',
 		   	    intervals: [{ // From-To pairs
 		   	        from: Date.UTC(2015,04,10),
 		   	        to: Date.UTC(2015,06,21),
 		   	        label: 'Task 7',
-                    tooltip_data: 'this data'
-		   	    }]
+					tooltip_data: 'this data'
+		   	    }],
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 8',
 		   	    intervals: [{ // From-To pairs
@@ -91,15 +108,17 @@
 		   	        to: Date.UTC(2015,06,21),
 		   	        label: 'Task 8',
                     tooltip_data: 'this data'
-		   	    }]
+				}] ,
+					color: '#008000'
 		   	}, {
 		   	    name: 'Task 9',
 		   	    intervals: [{ // From-To pairs
 		   	        from: Date.UTC(2015,04,17),
 		   	        to: Date.UTC(2015,06,21),
 		   	        label: 'Task 9',
-                    tooltip_data: 'this data'
-		   	    }]
+					tooltip_data: 'this data'
+				   }],
+					color: '#008000'
 		   	}];
 
 			// re-structure the tasks into line series
@@ -107,7 +126,8 @@
 		   	$.each(tasks.reverse(), function(i, task) {
 		   	    var item = {
 		   	        name: task.name,
-		   	        data: []
+					data: [],
+					color: task.color
 		   	    };
 		   	    $.each(task.intervals, function(j, interval) {
 		   	        item.data.push({
@@ -116,15 +136,14 @@
 		   	            label: interval.label,
 		   	            from: interval.from,
 		   	            to: interval.to,
-                        tooltip_data: interval.tooltip_data
-                        
+						tooltip_data: interval.tooltip_data
 		   	        }, {
 		   	            x: interval.to,
 		   	            y: i,
 		   	            from: interval.from,
 		   	            to: interval.to,
-                        tooltip_data: interval.tooltip_data
-		   	        });
+						tooltip_data: interval.tooltip_data
+					});
 		   	        
 		   	        // add a null value between intervals
 		   	        if (task.intervals[j + 1]) {
@@ -132,9 +151,9 @@
 		   	                [(interval.to + task.intervals[j + 1].from) / 2, null]
 		   	            );
 		   	        }
-
-		   	    });
-
+				});
+				   
+				console.log(item)
 		   	    series.push(item);
 		   	});
 
