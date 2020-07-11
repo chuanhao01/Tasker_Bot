@@ -12,35 +12,23 @@
  * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
  * @param {string} dataResult   A string that contains either 'data' or 'result'
  */
-Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult) => {
-    var type = `${basicAdvance}_${dataResult}`;
-
-
+Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult, featureType) => {
     // Enable response stubbing
     cy.server()
 
     // Reroute request and respond with pre-determined mock data (../fixtures/data.json)
     cy.fixture('data').then((data) => {
-        cy.route('GET', `/${basicAdvance}/${dataResult}?*`, data).as(`${type}`);
+        cy.route('GET', `/${basicAdvance}/${dataResult}?*`, data).as(`${featureType}`);
     });
 
     // Visit a relevant page that will call the rerouted backend
     cy.visit(url);
-
-    // Ensure that a response has been provided from the rerouted backend and provide assertions for said response
-    cy.wait(`@${type}`).its('responseBody')
-      .should('be.an', 'object')
-      .and('not.empty');
 });
 
 
 Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filterAttribute, filterOperation, filterInput) => {
-    // Visit a relevant page that has the filter feature
-    cy.visit(url);
-
-    // Enable response stubbing
-    cy.server()
-
+    var featureType = 'filter'
+    cy.stubBackend(url, basicAdvance, dataResult, featureType);
 
     // Ajax call with arguments provided
     cy.get('#filterAttribute').select(`${filterAttribute}`)
@@ -59,19 +47,13 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
     }
 
     // Defining the appropriate filter argument that should be passed in
-    var testArg = `${filterAttribute}[${filterOperation}]=${filterInput}`;
-
-
-    // Reroute request and respond with pre-determined mock data (../fixtures/data.json)
-    cy.fixture('data').then((data) => {
-        cy.route('GET', `/${basicAdvance}/${dataResult}?*`, data).as('filterFeature');
-    });
+    var testArg = `${filterAttribute}[${filterOperation}]=${filterInput}`;;
 
     cy.get('#filterBtn').click();
 
     // Wait for the routing to finish and the mock response to be sent before obtaining the url
-    cy.wait('@filterFeature');
-    cy.get('@filterFeature').then(function (xhr) {
+    cy.wait(`@${featureType}`);
+    cy.get(`@${featureType}`).then(function (xhr) {
         var requestUrl = xhr.xhr.url;
         console.log('url: ' + requestUrl);
 
