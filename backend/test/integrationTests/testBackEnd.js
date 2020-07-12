@@ -63,8 +63,8 @@ describe('Integration testing for the whole backend server', function(){
                     (13, 13, '1998-02-02', '01:32:00', 2),
                     (14, 14, '1998-02-02', '01:32:00', 5),
                     (15, 11, '1998-02-02', '01:32:00', 2),
-                    (16, 11, '1998-02-02', '01:32:00', 2),
-                    (17, 11, '1998-02-02', '01:32:00', 2),
+                    (16, 11, '1998-02-02', '01:32:00', 2.0),
+                    (17, 11, '1998-02-02', '01:32:00', 1.911),
                     (18, 11, '1998-02-02', '01:32:00', 2),
                     (19, 11, '1998-02-02', '01:32:00', 2),
                     (20, 11, '1998-02-02', '01:32:00', 2),
@@ -247,6 +247,39 @@ describe('Integration testing for the whole backend server', function(){
                                     },
                                 ],
                                 'lastPage': '4'
+                            }
+                        };
+                        expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
+                        done();
+                    });
+                });
+                it('Checking duration with decimal place', function(done){
+                    chai.request(app)
+                    .get('/basic/data?duration[<]=2&pageNum=1')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the body specific data
+                        const expectedRes = {
+                            'result': {
+                                'data': [
+                                    {
+                                        "taskid":"17",
+                                        "duedate":"1998/02/02",
+                                        "duetime":"0132",
+                                        "duration":"1.911",
+                                        "projectid":"11"
+                                    }
+                                ],
+                                'lastPage': '8'
                             }
                         };
                         expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
