@@ -168,20 +168,9 @@ const advancedController = {
             .then(
                 function(pgRes){
                     // Refer to docs for what each object in the pgRes arr are
-                    // Calculating the last page number
-                    const rowCount = parseInt(pgRes[1].rows[0].count);
-                    let lastPage;
-                    if(req.query.pageNum){
-                        lastPage = Math.ceil(rowCount/req.query.pageNum);
-                    }
-                    else{
-                        lastPage = Math.ceil(rowCount/10);
-                    }
+                    const parsedResult = utils.dataParser.advanced.getData(pgRes, req.query.pageNum || 10);
                     res.status(200).send({
-                        'result': {
-                            'data': pgRes[0].rows,
-                            'lastPage': lastPage
-                        }
+                        'result': parsedResult
                     });
                 }
             )

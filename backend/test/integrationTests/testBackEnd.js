@@ -846,62 +846,65 @@ describe('Integration testing for the whole backend server', function(){
                         expect(res).to.have.property('body');
                         expect(res.body).to.have.property('result');
                         expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
-                        // Checking the body specific data
-                        const expectedData = [
-                            {
-                                taskid: '1',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '2',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '3',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '4',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '5',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '6',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '7',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '8',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '9',
-                                duration: '3',
-                                projectid: '1'
-                            },
-                            {
-                                taskid: '10',
-                                duration: '3',
-                                projectid: '11'
+                        // Checking the response as a whole
+                        const expectedRes = {
+                            'result': {
+                                'data': [
+                                    {
+                                        taskid: '1',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '2',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '3',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '4',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '5',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '6',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '7',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '8',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '9',
+                                        duration: '3',
+                                        projectid: '1'
+                                    },
+                                    {
+                                        taskid: '10',
+                                        duration: '3',
+                                        projectid: '11'
+                                    }
+                                ],
+                                'lastPage': '3'
                             }
-                        ];
-                        const expectedLastPage = 3;
-                        expect(JSON.stringify(res.body.result.data)).to.be.equal(JSON.stringify(expectedData));
-                        expect(JSON.stringify(res.body.result.lastPage)).to.be.equal(JSON.stringify(expectedLastPage));
+                        };
+                        expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
                         done();
                     });
                 });

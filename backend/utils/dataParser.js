@@ -26,6 +26,20 @@ const dataParser = {
          */
         roundHours(hours){
             return (Math.round((hours + Number.EPSILON) * 1000) / 1000).toString(10);
+        },
+        /**
+         * @function
+         * This function is to calculate the last page given the number of rows in the db and number of pages in a query
+         *
+         * @param {Number} rowCount The number of rows in the db based on the get model query, taken from req
+         * @param {Number} pageNum The number of pages queried in the get request
+         * 
+         * @returns {String} The string representation of the last page of a given query
+         * 
+         */
+        calculateLastPage(rowCount, pageNum){
+            const lastPage = Math.ceil(rowCount/pageNum);
+            return lastPage.toString(10);
         }
     },
 
@@ -92,14 +106,29 @@ const dataParser = {
     advanced: {
         /**
          * @function
+         * This function is to parse the data from the db request, from the pgRes object
          *
-         * @param 
+         * @param {pg Response Obejct} pgRes The response object from the db model call
+         * @param {Number} pageNum The pageNum query supplied in the get request, if not set to default
          * 
-         * @returns 
+         * @returns {Object} The parsed data object that can be sent in the response
+         * Returns the result object
          * 
          */
-        getData(pgRes){
-
+        getData(pgRes, pageNum){
+            // Extracting data needed
+            const data = pgRes[0].rows;
+            const rowCount = parseInt(pgRes[1].rows[0].count);
+            // Calculating last page and parsing duration into HOURS data type
+            const lastPage = dataParser.all.calculateLastPage(rowCount, pageNum);
+            for(let task of data){
+                task['duration'] = dataParser.all.roundHours(task['duration']);
+            }
+            const parsedData = {
+                'data': data,
+                'lastPage': lastPage
+            };
+            return parsedData;
         }
     }
 };
