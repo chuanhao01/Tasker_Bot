@@ -119,7 +119,7 @@ describe('Integration testing for the whole backend server', function(){
                     (10, 11, 3),
                     (11, 11, 3),
                     (12, 12, 3),
-                    (13, 12, 3),
+                    (13, 12, 1.211),
                     (14, 12, 3),
                     (15, 12, 3),
                     (16, 13, 3),
@@ -953,6 +953,37 @@ describe('Integration testing for the whole backend server', function(){
                                     }
                                 ],
                                 'lastPage': '3'
+                            }
+                        };
+                        expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
+                        done();
+                    });
+                });
+                it('Checking duration with decimal place', function(done){
+                    chai.request(app)
+                    .get('/advance/data?duration[<]=2&pageNum=1')
+                    .send()
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                        // Checking the response as a whole
+                        const expectedRes = {
+                            'result': {
+                                'data': [
+                                    {
+                                        "taskid":"13",
+                                        "duration":"1.211",
+                                        "projectid":"12"
+                                    }
+                                ],
+                                'lastPage': '1'
                             }
                         };
                         expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
