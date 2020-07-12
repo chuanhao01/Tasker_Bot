@@ -82,7 +82,8 @@ const basicController = {
                 .custom((value) => {return /^[0-9]{4}/g.test(value);})
                 .custom((value) => {return moment(value, 'HHmm').isValid();}),
             body('data.*.duration').exists()
-                .isInt({min: configs.durationMin}),
+                .isDecimal()
+                .custom((value) => {return parseFloat(value) >= configs.durationMin;})
         ], function(req, res){
             // Check the validation
             const validationError = validationResult(req);

@@ -99,6 +99,37 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                         done();
                     });
                 });
+                it('Checking duration decimal functionality', function(done){
+                    chai.request(app)
+                    .post('/basic/insert')
+                    .type('json')
+                    .send({
+                        'data':[
+                            {
+                                "taskId": 100,
+                                "projectId": 0,
+                                "dueDate": "1998/02/01",
+                                "dueTime": "0000",
+                                "duration": 2.123123,
+                            },
+                        ]
+                    })
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        const expectedResult = 'success';
+                        expect(res.body.result).to.be.equal(expectedResult);
+                        done();
+                    });
+                });
+                it('Checking dueTime format');
+                it('Checking dueDate format');
                 it('dueTime type validation', function(done){
                     chai.request(app)
                     .post('/basic/insert')
@@ -188,6 +219,33 @@ describe('Integration testing for the INSERT APIs for the backend server', funct
                                 "taskId": 9999999999,
                                 "projectId": 3,
                                 "duration": 1,
+                            },
+                        ]
+                    })
+                    .end(function(err, res){
+                        if(err){
+                            done(err);
+                        }
+                        // Check res code
+                        expect(res).to.have.status(200);
+                        // Checking if there was a body with a response
+                        expect(res).to.have.property('body');
+                        expect(res.body).to.have.property('result');
+                        const expectedResult = 'success';
+                        expect(res.body.result).to.be.equal(expectedResult);
+                        done();
+                    });
+                });
+                it('Checking duration decimal functionality', function(done){
+                    chai.request(app)
+                    .post('/advance/insert')
+                    .type('json')
+                    .send({
+                        'data':[
+                            {
+                                "taskId": '100',
+                                "projectId": '1',
+                                "duration": '2.123123',
                             },
                         ]
                     })

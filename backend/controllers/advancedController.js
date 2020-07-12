@@ -68,7 +68,8 @@ const advancedController = {
             body('data.*.projectId').exists()
                 .isInt({min: configs.idMin, max: configs.idMax}),
             body('data.*.duration').exists()
-                .isInt({min: configs.durationMin}),
+                .isDecimal()
+                .custom((value) => {return parseFloat(value) >= configs.durationMin;})
         ], function(req, res){
             // Check the validation
             const validationError = validationResult(req);
