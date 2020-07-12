@@ -174,74 +174,74 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 1,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                'taskid': '1',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 2,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                'taskid': '2',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': "2",
+                                'projectid': '11'
                             },
                             {
-                                taskid: 3,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 3,
-                                projectid: 11
+                                'taskid': '3',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '3',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 4,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 3,
-                                projectid: 11
+                                'taskid': '4',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '3',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 5,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 4,
-                                projectid: 11
+                                'taskid': '5',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '4',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 6,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 4,
-                                projectid: 11
+                                'taskid': '6',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '4',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 7,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                'taskid': '7',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 8,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                'taskid': '8',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 9,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 11
+                                'taskid': '9',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 10,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 2,
-                                projectid: 12
+                                'taskid': '10',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '12'
                             },
                         ];
                         const expectedLastPage = 4;
@@ -267,25 +267,25 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                taskid: 4,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 3,
-                                projectid: 11
+                                'taskid': '4',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '3',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 5,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 4,
-                                projectid: 11
+                                'taskid': '5',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '4',
+                                'projectid': '11'
                             },
                             {
-                                taskid: 6,
-                                duedate: '1998/02/02',
-                                duetime: '0132',
-                                duration: 4,
-                                projectid: 11
+                                'taskid': '6',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '4',
+                                'projectid': '11'
                             },
                         ];
                         const expectedLastPage = 13;
@@ -311,74 +311,74 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                "taskid":13,
+                                "taskid":'13',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":2,
-                                "projectid":13
+                                "duration":'2',
+                                "projectid":'13'
                             },
                             {
-                                "taskid":14,
+                                "taskid":'14',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":5,
-                                "projectid":14
+                                "duration":'5',
+                                "projectid":'14'
                             },
                             {
-                                "taskid":1000000001,
+                                "taskid":'1000000001',
                                 "duedate":"2020/01/01",
                                 "duetime":"1100",
-                                "duration":1,
-                                "projectid":1100000001
+                                "duration":'1',
+                                "projectid":'1100000001'
                             },
                             {
-                                "taskid":1000000002,
+                                "taskid":'1000000002',
                                 "duedate":"2020/01/01",
                                 "duetime":"1100",
-                                "duration":1,
-                                "projectid":1100000001
+                                "duration":'1',
+                                "projectid":'1100000001'
                             },
                             {
-                                "taskid":1000000003,
+                                "taskid":'1000000003',
                                 "duedate":"2020/01/01",
                                 "duetime":"1100",
-                                "duration":1,
-                                "projectid":1100000001
+                                "duration":'1',
+                                "projectid":'1100000001'
                             },
                             {
-                                "taskid":1000000004,
+                                "taskid":'1000000004',
                                 "duedate":"2020/01/01",
                                 "duetime":"1100",
-                                "duration":1,
-                                "projectid":1100000001
+                                "duration":'1',
+                                "projectid":'1100000001'
                             },
                             {
-                                "taskid":1000000005,
+                                "taskid":'1000000005',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":1,
-                                "projectid":1100000002
+                                "duration":'1',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000006,
+                                "taskid":'1000000006',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":2,
-                                "projectid":1100000002
+                                "duration":'2',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000007,
+                                "taskid":'1000000007',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":3,
-                                "projectid":1100000002
+                                "duration":'3',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000008,
+                                "taskid":'1000000008',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":4,
-                                "projectid":1100000002
+                                "duration":'4',
+                                "projectid":'1100000002'
                             }
                         ];
                         const expectedLastPage = 2;
@@ -404,74 +404,74 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                "taskid":3,
+                                "taskid":'3',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":3,
-                                "projectid":11
+                                "duration":'3',
+                                "projectid":'11'
                             },
                             {
-                                "taskid":4,
+                                "taskid":'4',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":3,
-                                "projectid":11
+                                "duration":'3',
+                                "projectid":'11'
                             },
                             {
-                                "taskid":5,
+                                "taskid":'5',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":4,
-                                "projectid":11
+                                "duration":'4',
+                                "projectid":'11'
                             },
                             {
-                                "taskid":6,
+                                "taskid":'6',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":4,
-                                "projectid":11
+                                "duration":'4',
+                                "projectid":'11'
                             },
                             {
-                                "taskid":14,
+                                "taskid":'14',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":5,
-                                "projectid":14
+                                "duration":'5',
+                                "projectid":'14'
                             },
                             {
-                                "taskid":1000000007,
+                                "taskid":'1000000007',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":3,
-                                "projectid":1100000002
+                                "duration":'3',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000008,
+                                "taskid":'1000000008',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":4,
-                                "projectid":1100000002
+                                "duration":'4',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000010,
+                                "taskid":'1000000010',
                                 "duedate":"2020/01/01",
                                 "duetime":"1300",
-                                "duration":3,
-                                "projectid":1100000003
+                                "duration":'3',
+                                "projectid":'1100000003'
                             },
                             {
-                                "taskid":1000000011,
+                                "taskid":'1000000011',
                                 "duedate":"2020/01/01",
                                 "duetime":"1500",
-                                "duration":5,
-                                "projectid":1100000003
+                                "duration":'5',
+                                "projectid":'1100000003'
                             },
                             {
-                                "taskid":1000000012,
+                                "taskid":'1000000012',
                                 "duedate":"2020/01/01",
                                 "duetime":"1700",
-                                "duration":7,
-                                "projectid":1100000003
+                                "duration":'7',
+                                "projectid":'1100000003'
                             }
                         ];
                         const expectedLastPage = 2;
@@ -497,74 +497,74 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                "taskid":14,
+                                "taskid":'14',
                                 "duedate":"1998/02/02",
                                 "duetime":"0132",
-                                "duration":5,
-                                "projectid":14
+                                "duration":'5',
+                                "projectid":'14'
                             },
                             {
-                                "taskid":1000000007,
+                                "taskid":'1000000007',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":3,
-                                "projectid":1100000002
+                                "duration":'3',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000008,
+                                "taskid":'1000000008',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":4,
-                                "projectid":1100000002
+                                "duration":'4',
+                                "projectid":'1100000002'
                             },
                             {
-                                "taskid":1000000010,
+                                "taskid":'1000000010',
                                 "duedate":"2020/01/01",
                                 "duetime":"1300",
-                                "duration":3,
-                                "projectid":1100000003
+                                "duration":'3',
+                                "projectid":'1100000003'
                             },
                             {
-                                "taskid":1000000011,
+                                "taskid":'1000000011',
                                 "duedate":"2020/01/01",
                                 "duetime":"1500",
-                                "duration":5,
-                                "projectid":1100000003
+                                "duration":'5',
+                                "projectid":'1100000003'
                             },
                             {
-                                "taskid":1000000012,
+                                "taskid":'1000000012',
                                 "duedate":"2020/01/01",
                                 "duetime":"1700",
-                                "duration":7,
-                                "projectid":1100000003
+                                "duration":'7',
+                                "projectid":'1100000003'
                             },
                             {
-                                "taskid":1000000014,
+                                "taskid":'1000000014',
                                 "duedate":"2020/01/01",
                                 "duetime":"1400",
-                                "duration":4,
-                                "projectid":1100000004
+                                "duration":'4',
+                                "projectid":'1100000004'
                             },
                             {
-                                "taskid":1000000015,
+                                "taskid":'1000000015',
                                 "duedate":"2020/01/01",
                                 "duetime":"1900",
-                                "duration":7,
-                                "projectid":1100000004
+                                "duration":'7',
+                                "projectid":'1100000004'
                             },
                             {
-                                "taskid":1000000016,
+                                "taskid":'1000000016',
                                 "duedate":"2020/01/01",
                                 "duetime":"1500",
-                                "duration":7,
-                                "projectid":1100000004
+                                "duration":'7',
+                                "projectid":'1100000004'
                             },
                             {
-                                "taskid":1000000017,
+                                "taskid":'1000000017',
                                 "duedate":"2020/01/01",
                                 "duetime":"1900",
-                                "duration":11,
-                                "projectid":1100000004
+                                "duration":'11',
+                                "projectid":'1100000004'
                             }
                         ];
                         const expectedLastPage = 1;
@@ -590,25 +590,25 @@ describe('Integration testing for the whole backend server', function(){
                         // Checking the body specific data
                         const expectedData = [
                             {
-                                "taskid":1000000017,
+                                "taskid":'1000000017',
                                 "duedate":"2020/01/01",
                                 "duetime":"1900",
-                                "duration":11,
-                                "projectid":1100000004
+                                "duration":'11',
+                                "projectid":'1100000004'
                             },
                             {
-                                "taskid":1000000016,
+                                "taskid":'1000000016',
                                 "duedate":"2020/01/01",
                                 "duetime":"1500",
-                                "duration":7,
-                                "projectid":1100000004
+                                "duration":'7',
+                                "projectid":'1100000004'
                             },
                             {
-                                "taskid":1000000015,
+                                "taskid":'1000000015',
                                 "duedate":"2020/01/01",
                                 "duetime":"1900",
-                                "duration":7,
-                                "projectid":1100000004
+                                "duration":'7',
+                                "projectid":'1100000004'
                             }
                         ];
                         const expectedLastPage = 13;
@@ -850,52 +850,52 @@ describe('Integration testing for the whole backend server', function(){
                         const expectedData = [
                             {
                                 taskid: '1',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '2',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '3',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '4',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '5',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '6',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '7',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '8',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '9',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '1'
                             },
                             {
                                 taskid: '10',
-                                duration: 3,
+                                duration: '3',
                                 projectid: '11'
                             }
                         ];
