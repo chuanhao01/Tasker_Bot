@@ -35,14 +35,14 @@ const dbScripts = {
             taskId BIGINT UNIQUE NOT NULL,
             dueDate DATE NOT NULL,
             dueTime TIME NOT NULL,
-            duration INT NOT NULL,
+            duration DECIMAL(10, 3) NOT NULL,
             projectId BIGINT NOT NULL,
             PRIMARY KEY (taskId)
         );
 
         CREATE TABLE IF NOT EXISTS TASKSADVANCED(
             taskId BIGINT UNIQUE NOT NULL,
-            duration INT NOT NULL,
+            duration DECIMAL(10, 3) NOT NULL,
             projectId BIGINT NOT NULL,
             PRIMARY KEY (taskId)
         );
