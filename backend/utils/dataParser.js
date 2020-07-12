@@ -47,25 +47,21 @@ const dataParser = {
     basic: {
         /**
          * @function
-         * This parsing function is to parse the data to be sent for the get data api
+         * This function is to parse the data from the db request, from the pgRes object for the basic GET /basic/data
          *
-         * @param {Array} data The array of data from the get data model
-         * task = {
-         *      taskid: 6,
-         *      duedate: '1998-02-01T16:00:00.000Z',
-         *      duetime: '01:32:00',
-         *      duration: 2,
-         *      projectid: 11
-         *  },
-         * [
-         * task, ...
-         * ]
+         * @param {pg Response Obejct} pgRes The response object from the db model call
+         * @param {Number} pageNum The pageNum query supplied in the get request, if not set to default
          * 
-         * @returns {Array} Returns an array of tasks data parsed to be sent in the response of the get data API
+         * @returns {Object} The parsed data object that can be sent in the response
+         * Returns the result object
          * 
          */
-        getData(data){
-            // Defining helper function to add padding
+        getData(pgRes, pageNum){
+            // Extracting data needed
+            const data = pgRes[0].rows;
+            const rowCount = parseInt(pgRes[1].rows[0].count);
+            // Calculating last page and parsing duration into HOURS data type
+            const lastPage = dataParser.all.calculateLastPage(rowCount, pageNum);
             for(let i=0; i<data.length; i++){
                 // Getting the values
                 let dueDate = data[i].duedate.format('YYYY/MM/DD');
@@ -80,7 +76,11 @@ const dataParser = {
                 data[i].duetime = dueTime;
                 data[i].duration = duration;
             }
-            return data;
+            const parsedData = {
+                'data': data,
+                'lastPage': lastPage
+            };
+            return parsedData;
         },
         /**
          * @function
@@ -106,7 +106,7 @@ const dataParser = {
     advanced: {
         /**
          * @function
-         * This function is to parse the data from the db request, from the pgRes object
+         * This function is to parse the data from the db request, from the pgRes object, for the GET /advance/data
          *
          * @param {pg Response Obejct} pgRes The response object from the db model call
          * @param {Number} pageNum The pageNum query supplied in the get request, if not set to default

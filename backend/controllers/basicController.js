@@ -18,6 +18,7 @@ const v = require('validator');
 const utils = require('../utils/index');
 const model = require('../db/index');
 const algo = require('../algo');
+const { util } = require('chai');
 
 const configs = {
     idMin: 0,
@@ -196,21 +197,9 @@ const basicController = {
             })
             .then(
                 function(pgRes){
-                    // Refer to docs for what each object in the pgRes arr are
-                    // Calculating the last page number
-                    const rowCount = parseInt(pgRes[1].rows[0].count);
-                    let lastPage;
-                    if(req.query.pageNum){
-                        lastPage = Math.ceil(rowCount/req.query.pageNum);
-                    }
-                    else{
-                        lastPage = Math.ceil(rowCount/10);
-                    }
+                    const parsedResult = utils.dataParser.basic.getData(pgRes, req.query.pageNum || 10);
                     res.status(200).send({
-                        'result': {
-                            'data': utils.dataParser.basic.getData(pgRes[0].rows),
-                            'lastPage': lastPage
-                        }
+                        'result': parsedResult
                     });
                 }
             )
