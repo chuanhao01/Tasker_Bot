@@ -4,18 +4,15 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:
+- Added tests for dataViewer features in Cypress with mocked backend responses
+- Worked on resultViewer graphical design (gantt chart)
+
+Chuan Hao:  
+- 
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Start on basic resultViewer
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
