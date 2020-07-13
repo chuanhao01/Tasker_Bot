@@ -184,39 +184,53 @@ describe('Utils test', function(){
                     But when parsed back to string, it is still 1998-02-01T16:00:00.000Z
                     So this test if for both
                     */
-                    const testTasks = [
+                    const testModelData = [
                         {
-                            taskid: '6',
-                            duedate: moment('1998-02-01T16:00:00.000Z'),
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
+                            'rows': [
+                                {
+                                    taskid: '6',
+                                    duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                    duetime: '01:32:00',
+                                    duration: 2,
+                                    projectid: '11'
+                                },
+                                {
+                                    taskid: '7',
+                                    duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                    duetime: '01:32:00',
+                                    duration: 2,
+                                    projectid: '11'
+                                },
+                            ]
                         },
                         {
-                            taskid: '7',
-                            duedate: moment('1998-02-02T00:00:00.000Z'),
-                            duetime: '01:32:00',
-                            duration: 2,
-                            projectid: '11'
-                        },
+                            'rows': [
+                                {
+                                    'count': 1
+                                }
+                            ]
+                        }
                     ];
-                    const result = utils.dataParser.basic.getData(testTasks);
-                    const expectedResult = [
-                        {
-                            taskid: 6,
-                            duedate: '1998/02/02',
-                            duetime: '0132',
-                            duration: 2,
-                            projectid: 11
-                        },
-                        {
-                            taskid: 7,
-                            duedate: '1998/02/02',
-                            duetime: '0132',
-                            duration: 2,
-                            projectid: 11
-                        },
-                    ];
+                    const result = utils.dataParser.basic.getData(testModelData, 10);
+                    const expectedResult = {
+                        'data': [
+                            {
+                                'taskid': '6',
+                                'duedate': '1998/02/02', 
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '7',
+                                'duedate': '1998/02/02',
+                                'duetime': '0132',
+                                'duration': '2',
+                                'projectid': '11'
+                            },
+                        ],
+                        'lastPage': '1'
+                    };
                     expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
             });
