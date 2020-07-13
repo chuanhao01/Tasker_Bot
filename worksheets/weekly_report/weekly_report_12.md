@@ -9,10 +9,17 @@ Sherisse:
 - Worked on resultViewer graphical design (gantt chart)
 
 Chuan Hao:  
-- 
+- Finished working GET /basic/result API
+  - Still need to add more tests
+  - API is stable for now
+- Migrated database and code to accomadate duration in HOURS datatype
+  - Stable and working for now
+  - Need more tests
 
 ## What do I plan to do next week
 
 - Start on basic resultViewer
+- Start on Advanced Result API
+- Add more tests as needed above
 
 ## Additional Thoughts
