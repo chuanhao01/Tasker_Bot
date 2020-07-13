@@ -4,7 +4,12 @@ const db = require('./db/index');
 const utils = require('./utils');
 const scripts = require('./scripts');
 
-console.log(1.33333333333333333 + 0.123333333333333 + 4.999999999999999 + 10.23451111111111);
+db.basic.getData('LIMIT 10')
+.then(
+    function(res){
+        console.log(res[0]);
+    }
+);
 
 // db.basic.getResults('1100000004')
 // .then(
