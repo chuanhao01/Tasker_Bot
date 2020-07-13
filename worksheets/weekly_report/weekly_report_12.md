@@ -21,5 +21,6 @@ Chuan Hao:
 - Start on basic resultViewer
 - Start on Advanced Result API
 - Add more tests as needed above
+- Update API docs
 
 ## Additional Thoughts
