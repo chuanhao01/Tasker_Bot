@@ -398,8 +398,13 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
 };
 
 
-function basic_obtainResult(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/basic/result?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+function basic_obtainResult(projectId, startDate, startTime) {
+    // Define some correct values first -> REMOVE THIS
+    projectId = '1100000001';
+    startDate = '2020/01/13';
+    startTime = '2130'
+
+    var url = `http://localhost:3000/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`;
 
     $.ajax({
         type: 'GET',
@@ -407,7 +412,28 @@ function basic_obtainResult(projectId, duration, page, pageNum, sortBy) {
         dataType: 'json',
 
         success: function (data, textStatus, xhr) {
-            console.log(data)
+            // Clear the table of data
+            $('#basic_resultTableBody').empty();
+
+            var allData = data.result;
+            var totalLateness = data.totalLateness;
+
+            allData.forEach((data) => {
+                console.log(data);
+
+                var dataHtml = `
+                   <tr class='dataRow' id='data_${data.taskId}'>
+                        <th scope="row" id="taskId_data">${data.taskId}</th>
+                        <th id="fromDate_data">${data.fromDate}</th>
+                        <th id="fromTime_data">${data.fromTime}</th>
+                        <th id="toDate_data">${data.toDate}</th>
+                        <th id="toTime_data">${data.toTime}</th>
+                        <th id="lateness_data">${data.lateness}</th>
+                    </tr>
+                `;
+
+                $('#basic_resultTableBody').append(dataHtml);
+            });
         }
     })
 };
