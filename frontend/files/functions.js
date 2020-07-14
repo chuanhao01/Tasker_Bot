@@ -229,7 +229,6 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
  * @params {string} pageNum The number of tasks displayed on each page
  */
 function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
-    // Change the url back to advanced
     var url = `http://localhost:3000/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
@@ -399,11 +398,27 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
 };
 
 
+function basic_obtainResult(projectId, duration, page, pageNum, sortBy) {
+    var url = `http://localhost:3000/basic/result?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+
+        success: function (data, textStatus, xhr) {
+            console.log(data)
+        }
+    })
+};
+
+
 const allFunctions = {
     edit_insertTask: edit_insertTask,
     deleteData: deleteData,
     basic_obtainData: basic_obtainData,
-    advanced_obtainData: advanced_obtainData
+    advanced_obtainData: advanced_obtainData,
+    basic_obtainResult: basic_obtainResult
 }
 
 module.exports = allFunctions;
