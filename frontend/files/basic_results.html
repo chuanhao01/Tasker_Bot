@@ -94,65 +94,38 @@
             </div>
         </div>
 
-        <div class="dataViewer">
-            <div class="row table-responsive" id="dataViewerTable">
+        <div class="resultViewer">
+            <div class="row table-responsive" id="basic_resultViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
                             <th id="sortBtn">Task ID &#9660;</th>
                             <th id="sortBtn">From date &#9660;</th>
-                            <th id="sortBtn">To date &#9660;</th>
                             <th id="sortBtn">From time &#9660;</th>
+                            <th id="sortBtn">To date &#9660;</th>
                             <th id="sortBtn">To time &#9660;</th>
                             <th id="sortBtn">Lateness (in Hrs) &#9660;</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <th>1</th>
-                            <th>29/03/2020</th>
-                            <th>29/05/2020</th>
-                            <th>1300</th>
-                            <th>4</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">2</th>
-                            <th>2</th>
-                            <th>05/04/2020</th>
-                            <th>10/04/2020</th>
-                            <th>0000</th>
-                            <th>0</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">3</th>
-                            <th>2</th>
-                            <th>30/03/2020</th>
-                            <th>18/04/2020</th>
-                            <th>1500</th>
-                            <th>1</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">4</th>
-                            <th>1</th>
-                            <th>01/04/2020</th>
-                            <th>02/04/2020</th>
-                            <th>0000</th>
-                            <th>1</th>
-                        </tr>   
+					</thead>
+					
+                    <tbody id='basic_resultTableBody'>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-
     <!-- Chart -->
-    <div id="container"></div>
+	<div id="container"></div>
+	
 
+	<!-- General all-purpose -->
+	<script>
+		window.document.onload = basic_obtainResult();
+	</script>
+
+
+	<!-- For the chart -->
     <script>
         // Defining the tasks
         $(function () {
@@ -275,8 +248,7 @@
 		   	            );
 		   	        }
 				});
-				   
-				console.log(item)
+				
 		   	    series.push(item);
 		   	});
 
