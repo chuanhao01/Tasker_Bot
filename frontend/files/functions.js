@@ -509,6 +509,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                                         /* GRAPH */
             // Create tasks
             allTasks = []
+            categories = []
             allData.forEach((data) => {
                 var fromDate = data.fromDate.split('/');
                 var toDate = data.toDate.split('/');
@@ -550,9 +551,10 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 }
 
                 allTasks.push(task);
+                categories.push(`Task ${data.taskId}`);
             })
 
-            function createGraph(allTasks) {
+            function createGraph(allTasks, categories) {
                 // re-structure the tasks into line series
                 var series = [];
                 $.each(allTasks.reverse(), function(i, task) {
@@ -604,9 +606,8 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
                     yAxis: {
                         min: 0,
-                        max: 3,
-                        categories:['Task 4', 'Task 3',
-                                    'Task 2', 'Task 1'],
+                        max: allTasks.length - 1,
+                        categories: categories,
                         tickInterval: 1,            
                         tickPixelInterval: 200,
                         labels: {
@@ -631,18 +632,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     },
                 
                     // Defining the tooltip of each task bar (hover over the relevant bars to view)
-                    tooltip: {
-                        formatter: function() {
-                            return (
-                            '<b>' + allTasks[this.y].name + 
-                            '</b><br/>' + this.point.options.tooltip_data +
-                            '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
-                            ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
-                            '<br>' + allTasks[this.y].intervals[0].fromTime +
-                            ' to ' + allTasks[this.y].intervals[0].toTime +
-                            '</br>'); 
-                        }
-                    },
+                    
 
                     plotOptions: {
                         line: {
@@ -653,15 +643,27 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         }
                     },
 
+                    tooltip: {
+                        formatter: function() {
+                            return (
+                            '<b>' + allTasks[this.y].name + 
+                            '</b><br/>' + this.point.options.tooltip_data +
+                            '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
+                            ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
+                            '<br>' + allTasks[this.y].intervals[0].fromTime +
+                            ' to ' + allTasks[this.y].intervals[0].toTime +
+                            '</br>'
+                            ); 
+                        }
+                    },
+
                     // Defining the dataset for the graph as the array 'series' defined at the start of the script
-                    series: series,
-                    gantt: {
-                        colorByPoint: false
-                    }
+                    series: series
                 });		         
             };
 
-            createGraph(allTasks);
+            categories = categories.reverse();
+            createGraph(allTasks, categories);
 
 
             // Reveal the table and graph
