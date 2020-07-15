@@ -417,10 +417,11 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
             var allData = data.result;
             var totalLateness = data.totalLateness;
+            console.log(totalLateness)
 
+
+            // Task information
             allData.forEach((data) => {
-                console.log(data);
-
                 var dataHtml = `
                    <tr class='dataRow' id='data_${data.taskId}'>
                         <th scope="row" id="taskId_data">${data.taskId}</th>
@@ -431,9 +432,22 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         <th id="lateness_data">${data.lateness}</th>
                     </tr>
                 `;
-
                 $('#basic_resultTableBody').append(dataHtml);
             });
+
+
+            // Total lateness
+            latenessHtml = `
+                <tr class='dataRow' id='data_totalLateness'>
+                    <th scope='row'></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Total lateness:</th>
+                    <th id='totalLateness_data'>${totalLateness}</th>
+                </tr>
+            `;
+            $('#basic_resultTableBody').append(latenessHtml);
         }
     })
 };
