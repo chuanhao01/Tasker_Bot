@@ -591,7 +591,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 });
 
                 // Creating the chart
-                var chart = new Highcharts.Chart({
+                new Highcharts.Chart({
                     chart: {
                         renderTo: 'container'
                     },
