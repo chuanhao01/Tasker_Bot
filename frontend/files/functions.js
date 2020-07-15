@@ -424,8 +424,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
             var allData = data.result;
             var totalLateness = data.totalLateness;
-            console.log(totalLateness)
-
 
             // Task information
             allData.forEach((data) => {
@@ -455,6 +453,142 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 </tr>
             `;
             $('#basic_resultTableBody').append(latenessHtml);
+
+
+                                        /* GRAPH */
+            // Create tasks
+            allTasks = []
+            allData.forEach((data) => {
+                var fromDate = data.fromDate.split('/');
+                var toDate = data.toDate.split('/');
+                var fromTime = parseInt(data.fromTime.slice(0, 2));
+                var toTime = parseInt(data.toTime.slice(0, 2));
+
+                task = {
+                    name: `TaskId: ${data.taskId}`,
+                    intervals: [{
+                        from: Date.UTC(parseInt(fromDate[0]), parseInt(fromDate[1]), parseInt(fromDate[2]), fromTime),
+                        to: Date.UTC(parseInt(toDate[0]), parseInt(toDate[1]), parseInt(toDate[2]), toTime),
+                        label: `${data.taskId}`,
+                        tooltip_data: 'Assigned time to complete task',
+                        fromTime: data.fromTime,
+                        toTime: data.toTime
+                    }],
+                }
+
+                allTasks.push(task);
+            })
+
+            function createGraph(allTasks) {
+                // re-structure the tasks into line series
+                var series = [];
+                $.each(allTasks.reverse(), function(i, task) {
+                    var item = {
+                        name: task.name,
+                        data: [],
+                        color: task.color
+                    };
+
+                    $.each(task.intervals, function(j, interval) {
+                        item.data.push({
+                            x: interval.from,
+                            y: i,
+                            label: interval.label,
+                            from: interval.from,
+                            to: interval.to,
+                            tooltip_data: interval.tooltip_data
+                        }, 
+                        {
+                            x: interval.to,
+                            y: i,
+                            from: interval.from,
+                            to: interval.to,
+                            tooltip_data: interval.tooltip_data
+                        });
+                    
+                        // add a null value between intervals
+                        if (task.intervals[j + 1]) {
+                            item.data.push([(interval.to + task.intervals[j + 1].from) / 2, null]);
+                        }
+                    });
+
+                    series.push(item);
+                });
+
+                // Creating the chart
+                var chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'container'
+                    },
+
+                    title: {
+                        text: 'Graphical view'
+                    },
+
+                    xAxis: {
+                        type: 'datetime'
+                    },
+
+                    yAxis: {
+                        min: 0,
+                        max: 3,
+                        categories:['Task 4', 'Task 3',
+                                    'Task 2', 'Task 1'],
+                        tickInterval: 1,            
+                        tickPixelInterval: 200,
+                        labels: {
+                            style: {
+                                color: '#525151',
+                                font: '12px Helvetica',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        startOnTick: false,
+                        endOnTick: false,
+                        title: {
+                            text: null
+                        },
+                        minPadding: 0.2,
+                        maxPadding: 0.2,
+                        fontSize:'15px'
+                    },
+
+                    legend: {
+                        enabled: false
+                    },
+                
+                    // Defining the tooltip of each task bar (hover over the relevant bars to view)
+                    tooltip: {
+                        formatter: function() {
+                            return (
+                            '<b>' + allTasks[this.y].name + 
+                            '</b><br/>' + this.point.options.tooltip_data +
+                            '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
+                            ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
+                            '<br>' + allTasks[this.y].intervals[0].fromTime +
+                            ' to ' + allTasks[this.y].intervals[0].toTime +
+                            '</br>'); 
+                        }
+                    },
+
+                    plotOptions: {
+                        line: {
+                            lineWidth: 10,
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+
+                    // Defining the dataset for the graph as the array 'series' defined at the start of the script
+                    series: series,
+                    gantt: {
+                        colorByPoint: false
+                    }
+                });		         
+            };
+
+            createGraph(allTasks);
 
 
             // Reveal the table and graph
