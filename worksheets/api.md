@@ -18,6 +18,7 @@ Each API should include
 ## Table of Contents
 - [API Documentation](#api-documentation)
   - [Table of Contents](#table-of-contents)
+- [Custom Datatypes](#custom-datatypes)
 - [Basic problem API endpoints](#basic-problem-api-endpoints)
   - [Basic GET data API](#basic-get-data-api)
     - [Query parameters](#query-parameters)
@@ -56,6 +57,14 @@ Each API should include
     - [Sample Response](#sample-response-4)
     - [Sample Error](#sample-error-4)
 
+# Custom Datatypes
+| Datatype Name | Description | Example                    | Remarks | 
+|-----------|-------------------------------------------------|----------------------------|----------|
+| TIME | `String` with the format (HHMM) | `"2359", "0000", "1421"` | "2400" and larger times are not accepted| 
+| DATE | `String` with the format (YYYY/MM/DD) | `"2020/01/13", "1912/12/29"` | NIL | 
+| IDENTIFIER| 10 digit `String`/`Number` | `0, "1", 9999999999, "9999999999", 123, "123"` | Decimals are not accepted (`"23.1", 0.0, "1.0"`). Also note that this is used as a unique identifier, duplicates will be rejected. Note the difference in the remarks when used in the APIs| 
+| HOUR| `Number`/`String` of hours in 3d.p. | `3.123, "0.123", "123.999"` | Note the difference in the remarks when used in the APIs | 
+
 # Basic problem API endpoints
 Below will be the API endpoints related to the basic problem statement.
 
@@ -79,7 +88,7 @@ As a breif overview, `projectId` and `duration` act as filters, with `sortBy` ac
 
 | parameter | datatype                                        | example                    | Optional | Default Behaviour |
 |-----------|-------------------------------------------------|----------------------------|----------|-------------------|
-| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
+| projectId | number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
 | duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
 | sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
 | page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
