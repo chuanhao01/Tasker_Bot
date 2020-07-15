@@ -527,13 +527,26 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         fromTime: data.fromTime,
                         toTime: data.toTime
                     }],
+                    // Set the default color of the bar as light green -> indicates no lateness
+                    color: '#8FBC8F'
                 }
 
                 // Checking if there is a lateness and add it to 'task' if so
                 if (data.lateness > 0) {
                     latenessInterval_data = get_lateness(data);
-                    console.log(latenessInterval_data)
-                    // task.intervals.push(latenessInterval);
+
+                    latenessInterval = {
+                        from: latenessInterval_data.end_day,
+                        to: latenessInterval_data.end_day,
+                        label: `${data.taskId}`,
+                        tooltip_data: 'Task completed',
+                        fromTime: latenessInterval_data.end_time,
+                        toTime: latenessInterval_data.end_time,
+                    }
+                    
+                    task.intervals.push(latenessInterval);
+                    // This will change the color of the bars to a light red -> indicate lateness
+                    task.color = '#CD5C5C';
                 }
 
                 allTasks.push(task);
