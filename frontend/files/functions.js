@@ -414,6 +414,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
         success: function (data, textStatus, xhr) {
             // Clear the table of data
             $('#basic_resultTableBody').empty();
+            $('.resultViewer').removeAttr('hidden')
 
             var allData = data.result;
             var totalLateness = data.totalLateness;
