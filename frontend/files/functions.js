@@ -38,6 +38,18 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
 };
 
 
+function calculateLateness(lateness) {
+    late_days = parseInt(lateness / 24);
+    late_hrs = lateness - (late_days * 24);
+
+
+    console.log(late_hrs)
+    latenessInterval = {
+
+    }
+}
+
+
 /**
  * @function Obtaining the data to be shown in the basic dataviewer table and appending it directly to the table as well as controlling the pagination view of said table
  *           This will handle SORTING, FILTERING and OBTAINING data && Pagination
@@ -464,6 +476,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 var fromTime = parseInt(data.fromTime.slice(0, 2));
                 var toTime = parseInt(data.toTime.slice(0, 2));
 
+                // The assigned duration of task
                 task = {
                     name: `TaskId: ${data.taskId}`,
                     intervals: [{
@@ -474,6 +487,11 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         fromTime: data.fromTime,
                         toTime: data.toTime
                     }],
+                }
+
+                // Checking if there is a lateness and add it to 'task' if so
+                if (data.lateness > 0) {
+                    calculateLateness(data.lateness);
                 }
 
                 allTasks.push(task);
