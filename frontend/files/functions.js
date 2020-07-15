@@ -4,39 +4,6 @@
  * @author Sherisse Tan
  */
 
-
-/**
- * @function Deleting an existing record in the db
- */
-function deleteData() {
-    console.log("DELETE")
-};
-
-
-/**
- * @function Inserting a new row of data into the db
- * 
- * @param {string} taskID The task ID of the new task that is to be inserted
- * @param {string} projectID The project ID of the new task that is to be inserted
- * @param {string} dueDate The due date of the new task that is to be inserted
- * @param {string} dueTime The due time of the new task that is to be inserted
- * @param {string} duration The duration of the new task that is to be inserted
- * 
- * @returns The value of each of the parameters in JSON format
- * 
- */
-function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
-    var data = {
-        "taskID": taskID,
-        "projectID": projectID,
-        "dueDate": dueDate,
-        "dueTime": dueTime,
-        "duration": duration
-    };
-
-    return data
-};
-
 /**
  * @function Calculates the appropriate actual end dates and times for each task, taking lateness into account
  * 
@@ -506,7 +473,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
             $('#basic_resultTableBody').append(latenessHtml);
 
 
-                                        /* GRAPH */
+
             // Create tasks
             allTasks = []
             categories = []
@@ -597,7 +564,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     },
 
                     title: {
-                        text: 'Graphical view'
+                        text: 'Graphical view of tasks'
                     },
 
                     xAxis: {
@@ -683,7 +650,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 status: textStatus,
                 err: err
             });
-            window.alert("An error occurred in: advanced_obtainData()");
+            window.alert("An error occurred in: basic_obtainResult()");
         }
     })
 };
