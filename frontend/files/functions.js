@@ -37,16 +37,55 @@ function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
     return data
 };
 
+/**
+ * @function Calculates the appropriate actual end dates and times for each task, taking lateness into account
+ * 
+ * @param {JSON} data 
+ * 
+ * @returns A JSON object containing the calulcated end_date (in UTC format) and end_time (int)
+ */
+function get_lateness(data) {
+    // Obtain the number of days and number of hours task is late by
+    late_days = parseInt(data.lateness / 24);
+    late_hrs = data.lateness - (late_days * 24);
+    late_mins = (late_hrs - Math.floor(late_hrs)) * 60
+    late_hrs = (Math.floor(late_hrs) * 100) + late_mins
 
-function calculateLateness(lateness) {
-    late_days = parseInt(lateness / 24);
-    late_hrs = lateness - (late_days * 24);
 
-
-    console.log(late_hrs)
-    latenessInterval = {
-
+    // Calculate the final end_day and end_time
+    add_days = 0; // The number of days that we have to add to the final count due to overflow in hours
+    end_time = parseInt(data.toTime) + late_hrs
+    if (end_time > 2400) {
+        end_time -= 2400;
+        add_days += 1;
     }
+
+    // If the last 2 digits >= 60 -> next hour (1hr == 60min)
+    if ((end_time % 100) >= 60) {
+        end_time -= (end_time % 100);
+        end_time += 100;
+
+        // If the end_time is midnight
+        if (end_time == 2400) {
+            end_time = 0000;
+            add_days += 1;
+        };
+    };
+
+    end_day = parseInt(data.toDate.split('/')[2]) + late_days + add_days
+    end_day = Date.UTC(parseInt(data.fromDate.split('/')[0]), parseInt(data.fromDate.split('/')[1]), end_day)
+
+    return lateness = {
+        end_day: end_day,
+        end_time: end_time
+    }
+    /*
+    from: Date.UTC(parseInt(fromDate[0]), parseInt(fromDate[1]), parseInt(fromDate[2]), fromTime),
+                        to: Date.UTC(parseInt(toDate[0]), parseInt(toDate[1]), parseInt(toDate[2]), toTime),
+                        label: `${data.taskId}`,
+                        tooltip_data: 'Assigned time to complete task',
+                        fromTime: data.fromTime,
+                        toTime: data.toTime */
 }
 
 
@@ -476,6 +515,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 var fromTime = parseInt(data.fromTime.slice(0, 2));
                 var toTime = parseInt(data.toTime.slice(0, 2));
 
+
                 // The assigned duration of task
                 task = {
                     name: `TaskId: ${data.taskId}`,
@@ -491,7 +531,9 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
                 // Checking if there is a lateness and add it to 'task' if so
                 if (data.lateness > 0) {
-                    calculateLateness(data.lateness);
+                    latenessInterval_data = get_lateness(data);
+                    console.log(latenessInterval_data)
+                    // task.intervals.push(latenessInterval);
                 }
 
                 allTasks.push(task);
