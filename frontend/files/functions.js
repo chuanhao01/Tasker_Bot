@@ -411,10 +411,16 @@ function basic_obtainResult(projectId, startDate, startTime) {
         url: url,
         dataType: 'json',
 
+        /**
+         * @function Handling the event in which the ajax request call is a success
+         * 
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
+         */
         success: function (data, textStatus, xhr) {
             // Clear the table of data
             $('#basic_resultTableBody').empty();
-            $('.resultViewer').removeAttr('hidden')
 
             var allData = data.result;
             var totalLateness = data.totalLateness;
@@ -449,6 +455,26 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 </tr>
             `;
             $('#basic_resultTableBody').append(latenessHtml);
+
+
+            // Reveal the table and graph
+            $('.resultViewer').removeAttr('hidden');
+            $('#container').removeAttr('hidden');
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred in: advanced_obtainData()");
         }
     })
 };
