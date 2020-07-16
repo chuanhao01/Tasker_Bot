@@ -67,7 +67,7 @@
     
 
     <!-- Table containing data -->
-    <div class="mr-4 ml-5 pb-5" id="resultTable">
+    <div class="mr-4 ml-5" id="resultTable">
         <div class="row">
             <!-- Input group above the table => Computation input -->
             <div class="input-group p-2 row">
@@ -94,10 +94,10 @@
             </div>
         </div>
 
-        <div class="row d-flex justify-content-center mb-5">
+        <div class="row d-flex justify-content-center mb-2">
             <div class="btn-group" role="group" aria-label="toggle_tableGraph">
-                <button type="button" class="btn btn-dark" id="getTable">Table</button>
-                <button type="button" class="btn border-dark" id="getGraph">Graph</button>
+                <button type="button" class="btn btn-dark border-dark" id="btn_toggleTable">Table</button>
+                <button type="button" class="btn border-dark" id="btn_toggleGraph">Graph</button>
             </div>
         </div>
 
@@ -124,10 +124,11 @@
     </div>
 
     <!-- Chart -->
-	<div class="p-5" id="container" hidden></div>
+	<div class="p-5 pt-0" id="container" hidden></div>
 	
 
 	<script>
+        // Compute the lateness
 		document.querySelector('#computeBtn').addEventListener('click', function() {
 			var projectId = $('#compute_projectId').val();
 			var startDate = $('#compute_startDate').val();
@@ -135,6 +136,19 @@
 
 			basic_obtainResult(projectId, startDate, startTime);
 		});
-	</script>
+    
+        // Toggle to graphical view
+        document.querySelector('#btn_toggleGraph').addEventListener('click', function () {
+            // Hide the table
+            $('.resultViewer').attr('hidden', 'true');
+
+            // Reveal the graph
+            $('#container').removeAttr('hidden');
+
+            // Change the toggle button display
+            $('#btn_toggleGraph').addClass("btn-dark");
+            $('#btn_toggleTable').removeClass("btn-dark");
+        })
+    </script>
 </body>
 </html>

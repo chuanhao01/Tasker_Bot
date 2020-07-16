@@ -632,10 +632,8 @@ function basic_obtainResult(projectId, startDate, startTime) {
             categories = categories.reverse();
             createGraph(allTasks, categories);
 
-
-            // Reveal the table and graph
+            // Reveal the table
             $('.resultViewer').removeAttr('hidden');
-            $('#container').removeAttr('hidden');
         },
 
         /**
