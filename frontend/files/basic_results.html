@@ -149,6 +149,19 @@
             $('#btn_toggleGraph').addClass("btn-dark");
             $('#btn_toggleTable').removeClass("btn-dark");
         })
+
+        // Toggle back to table view
+        document.querySelector('#btn_toggleTable').addEventListener('click', function() {
+            // Hide the graph
+            $('#container').attr('hidden', 'true');
+
+            // Reveal the table
+            $('.resultViewer').removeAttr('hidden');
+
+            // Change the toggle button display
+            $('#btn_toggleTable').addClass("btn-dark");
+            $('#btn_toggleGraph').removeClass("btn-dark");
+        })
     </script>
 </body>
 </html>
