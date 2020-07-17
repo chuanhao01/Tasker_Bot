@@ -2,7 +2,14 @@
 
 ## Wireframe
 
-![Wireframe](justifications/result_viewer_wireframe.png)
+Starting view:
+![Wireframe](justifications/resultViewer_start.png)
+
+After computation / Upon toggling to table view:
+![Wireframe](justifications/resultViewer_table.png)
+
+Upon toggling to graph view:
+![Wireframe](justifications/resultViewer_graph.png)
 
 ## Justifications
 
