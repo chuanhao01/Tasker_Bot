@@ -632,10 +632,12 @@ function basic_obtainResult(projectId, startDate, startTime) {
             categories = categories.reverse();
             createGraph(allTasks, categories);
 
+
             // Return the display to that of table view -> reveal table; hide graph; toggle display
             $('#container').attr('hidden', 'true');
             $('.resultViewer').removeAttr('hidden');
 
+            $('#toggle_tableGraph').removeAttr('hidden');
             $('#btn_toggleTable').addClass("btn-dark");
             $('#btn_toggleGraph').removeClass("btn-dark");
         },
@@ -659,8 +661,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
 
 const allFunctions = {
-    edit_insertTask: edit_insertTask,
-    deleteData: deleteData,
     basic_obtainData: basic_obtainData,
     advanced_obtainData: advanced_obtainData,
     basic_obtainResult: basic_obtainResult

@@ -95,7 +95,7 @@
         </div>
 
         <div class="row d-flex justify-content-center mb-2">
-            <div class="btn-group" role="group" aria-label="toggle_tableGraph">
+            <div class="btn-group" role="group" aria-label="toggle_tableGraph" id="toggle_tableGraph" hidden>
                 <button type="button" class="btn btn-dark border-dark" id="btn_toggleTable">Table</button>
                 <button type="button" class="btn border-dark" id="btn_toggleGraph">Graph</button>
             </div>
@@ -134,7 +134,7 @@
 			var startDate = $('#compute_startDate').val();
 			var startTime = $('#compute_startTime').val();
 
-			basic_obtainResult(projectId, startDate, startTime);
+            basic_obtainResult(projectId, startDate, startTime);
 		});
     
         // Toggle to graphical view
