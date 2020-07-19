@@ -3,13 +3,13 @@
 ## Wireframe
 
 Starting view:
-![Wireframe](justifications/resultViewer_start.png)
+![Wireframe](justifications/resultViewer_start.PNG)
 
 After computation / Upon toggling to table view:
-![Wireframe](justifications/resultViewer_table.png)
+![Wireframe](justifications/resultViewer_table.PNG)
 
 Upon toggling to graph view:
-![Wireframe](justifications/resultViewer_graph.png)
+![Wireframe](justifications/resultViewer_graph.PNG)
 
 ## Justifications
 
