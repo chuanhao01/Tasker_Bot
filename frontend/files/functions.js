@@ -485,14 +485,12 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 var toTime = parseInt(data.toTime.slice(0, 2));
                 var deadlineTime = parseInt(data.deadlineTime.slice(0, 2));
 
-                // Checking if there is a lateness and add it to 'task' if so
+                // Checking if there is a lateness. If so, deadline to end
                 if (data.lateness > 0) {
                     task = {
                         name: `TaskId: ${data.taskId}`,
                         intervals: [{
-                            // from: Date.UTC(parseInt(fromDate[0]), parseInt(fromDate[1]), parseInt(fromDate[2]), fromTime),
                             from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            // to: Date.UTC(parseInt(deadlineDate[0]), parseInt(deadlineDate[1]), parseInt(deadlineDate[2]), deadlineTime), 
                             to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             label: `${data.taskId}`,
                             tooltip_data: 'Assigned time to complete task',
@@ -504,7 +502,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     }
                 }
                 
-
+                // No lateness, start to end
                 else {
                     // The assigned duration of task
                     task = {
@@ -541,7 +539,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
                             x: interval.from,
                             y: i,
                             label: interval.label,
-                            id: 'test',
                             from: interval.from,
                             to: interval.to,
                             tooltip_data: interval.tooltip_data
@@ -549,7 +546,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         {
                             x: interval.to,
                             y: i,
-                            id: 'test',
                             from: interval.from,
                             to: interval.to,
                             tooltip_data: interval.tooltip_data
@@ -561,14 +557,13 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         }
                     });
 
-                    item.data.parent = 'test'
-
                     series.push(item);
                 });
 
                 console.log(series)
 
                 // Creating the chart
+                const timezoneOffset = new Date().getTimezoneOffset()
                 new Highcharts.Chart({
                     chart: {
                         renderTo: 'container'
@@ -579,7 +574,12 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     },
 
                     xAxis: {
+                        startOnTick: true,
                         type: 'datetime'
+                    },
+
+                    time: {
+                        timezoneOffset: timezoneOffset
                     },
 
                     yAxis: {
@@ -609,9 +609,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         enabled: false
                     },
                 
-                    // Defining the tooltip of each task bar (hover over the relevant bars to view)
-                    
-
                     plotOptions: {
                         line: {
                             lineWidth: 10,
@@ -620,7 +617,8 @@ function basic_obtainResult(projectId, startDate, startTime) {
                             }
                         }
                     },
-
+                
+                    // Defining the tooltip of each task bar (hover over the relevant bars to view) 
                     tooltip: {
                         formatter: function() {
                             return (
