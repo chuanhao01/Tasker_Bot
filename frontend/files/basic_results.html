@@ -96,15 +96,7 @@
             </div>
         </div>
 
-        <div class="row d-flex justify-content-center mb-2">
-            <div class="btn-group" role="group" aria-label="toggle_tableGraph" id="toggle_tableGraph" hidden>
-                <button type="button" class="btn btn-dark border-dark" id="btn_toggleTable">Table</button>
-                <button type="button" class="btn border-dark" id="btn_toggleGraph">Graph</button>
-            </div>
-        </div>
-
-
-        <div class="resultViewer">
+        <div class="resultViewer" hidden>
             <div class="row table-responsive" id="basic_resultViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
@@ -137,6 +129,7 @@
 			var startTime = $('#compute_startTime').val();
 
             basic_obtainResult(projectId, startDate, startTime);
+            $('.resultViewer').removeAttr('hidden')
 		});
     </script>
 </body>
