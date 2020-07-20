@@ -65,7 +65,7 @@ const dataParser = {
             for(let i=0; i<data.length; i++){
                 // Getting the values
                 let dueDate = data[i].duedate.format('YYYY/MM/DD');
-                let dueTime = `${data[i].duetime}`;
+                let dueTime = data[i].duetime;
                 let duration = data[i].duration;
                 // Formatting and parsing them
                 dueTime = dueTime.substring(0, 5);
@@ -93,6 +93,8 @@ const dataParser = {
          */
         getResults(result){
             for(let task of result.data){ 
+                task['deadlineDate'] = task['deadlineDate'].format('YYYY/MM/DD');
+                task['deadlineTime'] = task['deadlineTime'].substring(0, 5).replace(':', '');
                 task['lateness'] = dataParser.all.roundHours(task['lateness']);
             }
             result.totalLateness = dataParser.all.roundHours(result.totalLateness);

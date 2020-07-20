@@ -35,6 +35,8 @@ const basicAlgo = {
             // Creating the result object
             let result = {
                 'taskId': task.taskid,
+                'deadlineDate': task.duedate,
+                'deadlineTime': task.duetime,
                 'fromDate': trueCurrentTime.format('YYYY/MM/DD'),
                 'fromTime': trueCurrentTime.format('HHmm')
             };
