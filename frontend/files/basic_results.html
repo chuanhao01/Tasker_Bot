@@ -24,6 +24,8 @@
     <!-- Highcharts -->
     <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
     <!-- External Scripts -->
     <script src="./functions.js"></script>
     <script src="./script.js"></script>
@@ -67,293 +69,275 @@
     
 
     <!-- Table containing data -->
-    <div class="mr-4 ml-5 pb-5" id="resultTable">
+    <div class="mr-4 ml-5" id="resultTable">
         <div class="row">
             <!-- Input group above the table => Computation input -->
             <div class="input-group p-2 row">
                 <div class="col-sm-1 col-md-1 col-lg-1"></div>
 
-                <!-- Filtering data: Choose attribue to filter by -->
+                <!-- ProjectId value for lateness computation -->
                 <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1">
-                    <input type="text" class="form-control" placeholder="Enter projectID value..">
+                    <input type="text" class="form-control" id="compute_projectId" placeholder="Enter projectID value..">
                 </div>
     
-                <!-- Filtering data: Choose operation to filter attribute by -->
+                <!-- startDate value for lateness computation -->
                 <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1">
-                    <input type="text" class="form-control" placeholder="Enter startDate value..">
+                    <input type="text" class="form-control" id="compute_startDate" placeholder="Enter startDate value..">
                 </div>
 
-                <!-- Filtering data: Input value to complete the filter 'equation' -->
+                <!-- startTime value for lateness computation -->
                 <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1 ">
-                    <input type="text" class="form-control" placeholder="Enter startTime value..">
+                    <input type="text" class="form-control" id="compute_startTime" placeholder="Enter startTime value..">
                 </div>
     
                 <div class="input-group-append p-0">
-                    <button class="btn btn-secondary" type="button">Compute</button>
+                    <button class="btn btn-secondary" type="button" id="computeBtn">Compute</button>
                 </div>
             </div>
         </div>
 
-        <div class="dataViewer">
-            <div class="row table-responsive" id="dataViewerTable">
+        <div class="row d-flex justify-content-center mb-2">
+            <div class="btn-group" role="group" aria-label="toggle_tableGraph" id="toggle_tableGraph" hidden>
+                <button type="button" class="btn btn-dark border-dark" id="btn_toggleTable">Table</button>
+                <button type="button" class="btn border-dark" id="btn_toggleGraph">Graph</button>
+            </div>
+        </div>
+
+
+        <div class="resultViewer" hidden>
+            <div class="row table-responsive" id="basic_resultViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
                             <th id="sortBtn">Task ID &#9660;</th>
                             <th id="sortBtn">From date &#9660;</th>
-                            <th id="sortBtn">To date &#9660;</th>
                             <th id="sortBtn">From time &#9660;</th>
+                            <th id="sortBtn">To date &#9660;</th>
                             <th id="sortBtn">To time &#9660;</th>
                             <th id="sortBtn">Lateness (in Hrs) &#9660;</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <th>1</th>
-                            <th>29/03/2020</th>
-                            <th>29/05/2020</th>
-                            <th>1300</th>
-                            <th>4</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">2</th>
-                            <th>2</th>
-                            <th>05/04/2020</th>
-                            <th>10/04/2020</th>
-                            <th>0000</th>
-                            <th>0</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">3</th>
-                            <th>2</th>
-                            <th>30/03/2020</th>
-                            <th>18/04/2020</th>
-                            <th>1500</th>
-                            <th>1</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">4</th>
-                            <th>1</th>
-                            <th>01/04/2020</th>
-                            <th>02/04/2020</th>
-                            <th>0000</th>
-                            <th>1</th>
-                        </tr>   
+					</thead>
+					
+                    <tbody id='basic_resultTableBody'>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-
     <!-- Chart -->
-    <div id="container"></div>
+	<div class="p-5 pt-0" id="container"></div>
+	
+
+	<script>
+        // Compute the lateness
+		document.querySelector('#computeBtn').addEventListener('click', function() {
+			var projectId = $('#compute_projectId').val();
+			var startDate = $('#compute_startDate').val();
+			var startTime = $('#compute_startTime').val();
+
+            basic_obtainResult(projectId, startDate, startTime);
+		});
+    
+        // Toggle to graphical view
+        document.querySelector('#btn_toggleGraph').addEventListener('click', function () {
+            // Hide the table
+            $('.resultViewer').attr('hidden', 'true');
+
+            // Reveal the graph
+            $('#container').removeAttr('hidden');
+
+            // Change the toggle button display
+            $('#btn_toggleGraph').addClass("btn-dark");
+            $('#btn_toggleTable').removeClass("btn-dark");
+        })
+
+        // Toggle back to table view
+        document.querySelector('#btn_toggleTable').addEventListener('click', function() {
+            // Hide the graph
+            $('#container').attr('hidden', 'true');
+
+            // Reveal the table
+            $('.resultViewer').removeAttr('hidden');
+
+            // Change the toggle button display
+            $('#btn_toggleTable').addClass("btn-dark");
+            $('#btn_toggleGraph').removeClass("btn-dark");
+        })
+    </script>
 
     <script>
-        // Defining the tasks
-        $(function () {
-		   	var tasks = [{
-		   	    name: 'Task 1',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015, 05, 21),
-		   	        to: Date.UTC(2015, 07, 21),
-		   	        label: 'Task 2',
-					tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 2',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015, 05, 21),
-		   	        to: Date.UTC(2015, 05, 21),
-		   	        label: 'Task 2',
-					tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 3',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,16),
-		   	        to: Date.UTC(2015,05,21 ),
-		   	        label: 'Task 3',
-                    tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 4',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,06,18 ),
-		   	        to: Date.UTC(2015,07,22),
-		   	        label: 'Task 4',
-                    tooltip_data: 'this data'
-				}, { 
-		   	        from: Date.UTC(2015, 07, 23),
-		   	        to: Date.UTC(2015, 07, 30),
-		   	        label: 'Task 4',
-                    tooltip_data: 'this data'
-				   }],
-				   color: '#CD5C5C'
-		   	}, {
-		   	    name: 'Task 5',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,06,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 5',
-                    tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 6',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,06,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 6',
-                    tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 7',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,10),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 7',
-					tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 8',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 8',
-                    tooltip_data: 'this data'
-				}] ,
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 9',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 9',
-					tooltip_data: 'this data'
-				   }],
-					color: '#8FBC8F'
-		   	}];
+        var today = new Date(),
+    day = 1000 * 60 * 60 * 24,
+    // Utility functions
+    dateFormat = Highcharts.dateFormat,
+    defined = Highcharts.defined,
+    isObject = Highcharts.isObject,
+    reduce = Highcharts.reduce;
 
-			// re-structure the tasks into line series
-		   	var series = [];
-		   	$.each(tasks.reverse(), function(i, task) {
-		   	    var item = {
-		   	        name: task.name,
-					data: [],
-					color: task.color
-		   	    };
-		   	    $.each(task.intervals, function(j, interval) {
-		   	        item.data.push({
-		   	            x: interval.from,
-		   	            y: i,
-		   	            label: interval.label,
-		   	            from: interval.from,
-		   	            to: interval.to,
-						tooltip_data: interval.tooltip_data
-		   	        }, {
-		   	            x: interval.to,
-		   	            y: i,
-		   	            from: interval.from,
-		   	            to: interval.to,
-						tooltip_data: interval.tooltip_data
-					});
-		   	        
-		   	        // add a null value between intervals
-		   	        if (task.intervals[j + 1]) {
-		   	            item.data.push(
-		   	                [(interval.to + task.intervals[j + 1].from) / 2, null]
-		   	            );
-		   	        }
-				});
-				   
-				console.log(item)
-		   	    series.push(item);
-		   	});
+// Set to 00:00:00:000 today
+today.setUTCHours(0);
+today.setUTCMinutes(0);
+today.setUTCSeconds(0);
+today.setUTCMilliseconds(0);
+today = today.getTime();
 
-		   	// Creating the chart
-		   	var chart = new Highcharts.Chart({
-		   	    chart: {
-		   	        renderTo: 'container'
-		   	    },
+Highcharts.ganttChart('container', {
+    series: [{
+        name: 'Offices',
+        data: [{
+            name: 'New offices',
+            id: 'new_offices',
+            owner: 'Peter'
+        }, {
+            name: 'Prepare office building',
+            id: 'prepare_building',
+            parent: 'new_offices',
+            start: today - (2 * day),
+            end: today + (6 * day),
+            completed: {
+                amount: 0.2
+            },
+            owner: 'Linda'
+        }, {
+            name: 'Inspect building',
+            id: 'inspect_building',
+            dependency: 'prepare_building',
+            parent: 'new_offices',
+            start: today + 6 * day,
+            end: today + 8 * day,
+            owner: 'Ivy'
+        }, {
+            name: 'Passed inspection',
+            id: 'passed_inspection',
+            dependency: 'inspect_building',
+            parent: 'new_offices',
+            start: today + 9.5 * day,
+            milestone: true,
+            owner: 'Peter'
+        }, {
+            name: 'Relocate',
+            id: 'relocate',
+            dependency: 'passed_inspection',
+            parent: 'new_offices',
+            owner: 'Josh'
+        }, {
+            name: 'Relocate staff',
+            id: 'relocate_staff',
+            parent: 'relocate',
+            start: today + 10 * day,
+            end: today + 11 * day,
+            owner: 'Mark'
+        }, {
+            name: 'Relocate test facility',
+            dependency: 'relocate_staff',
+            parent: 'relocate',
+            start: today + 11 * day,
+            end: today + 13 * day,
+            owner: 'Anne'
+        }, {
+            name: 'Relocate cantina',
+            dependency: 'relocate_staff',
+            parent: 'relocate',
+            start: today + 11 * day,
+            end: today + 14 * day
+        }]
+    }, {
+        name: 'Product',
+        data: [{
+            name: 'New product launch',
+            id: 'new_product',
+            owner: 'Peter'
+        }, {
+            name: 'Development',
+            id: 'development',
+            parent: 'new_product',
+            start: today - day,
+            end: today + (11 * day),
+            completed: {
+                amount: 0.6,
+                fill: '#e80'
+            },
+            owner: 'Susan'
+        }, {
+            name: 'Beta',
+            id: 'beta',
+            dependency: 'development',
+            parent: 'new_product',
+            start: today + 12.5 * day,
+            milestone: true,
+            owner: 'Peter'
+        }, {
+            name: 'Final development',
+            id: 'finalize',
+            dependency: 'beta',
+            parent: 'new_product',
+            start: today + 13 * day,
+            end: today + 17 * day
+        }, {
+            name: 'Launch',
+            dependency: 'finalize',
+            parent: 'new_product',
+            start: today + 17.5 * day,
+            milestone: true,
+            owner: 'Peter'
+        }]
+    }],
+    tooltip: {
+        pointFormatter: function () {
+            var point = this,
+                format = '%e. %b',
+                options = point.options,
+                completed = options.completed,
+                amount = isObject(completed) ? completed.amount : completed,
+                status = ((amount || 0) * 100) + '%',
+                lines;
 
-		   	    title: {
-		   	        text: 'FSP resultViewer Gantt Chart playground'
-		   	    },
+            lines = [{
+                value: point.name,
+                style: 'font-weight: bold;'
+            }, {
+                title: 'Start',
+                value: dateFormat(format, point.start)
+            }, {
+                visible: !options.milestone,
+                title: 'End',
+                value: dateFormat(format, point.end)
+            }, {
+                title: 'Completed',
+                value: status
+            }, {
+                title: 'Owner',
+                value: options.owner || 'unassigned'
+            }];
 
-		   	    xAxis: {
-		   	        type: 'datetime'
-		   	    },
+            return reduce(lines, function (str, line) {
+                var s = '',
+                    style = (
+                        defined(line.style) ? line.style : 'font-size: 0.8em;'
+                    );
+                if (line.visible !== false) {
+                    s = (
+                        '<span style="' + style + '">' +
+                        (defined(line.title) ? line.title + ': ' : '') +
+                        (defined(line.value) ? line.value : '') +
+                        '</span><br/>'
+                    );
+                }
+                return str + s;
+            }, '');
+        }
+    },
+    title: {
+        text: 'Gantt Project Management'
+    },
+    xAxis: {
+        currentDateIndicator: true,
+        min: today - 3 * day,
+        max: today + 18 * day
+    }
+});
 
-		   	    yAxis: {
-                    min:0,
-                    max:8,
-		            categories: ['Task 9',
-		                         'Task 8',
-		                         'Task 7',
-		                         'Task 6',
-		                         'Task 5',
-		                         'Task 4',
-		                         'Task 3',
-		                         'Task 2',
-		                         'Task 1'],
-		   	        tickInterval: 1,            
-		   	        tickPixelInterval: 200,
-		   	        labels: {
-		   	            style: {
-		   	                color: '#525151',
-		   	                font: '12px Helvetica',
-		   	                fontWeight: 'bold'
-		   	            }
-		   	        },
-		   	        startOnTick: false,
-		   	        endOnTick: false,
-		   	        title: {
-		   	            text: null
-		   	        },
-		   	        minPadding: 0.2,
-		   	        maxPadding: 0.2,
-		               fontSize:'15px'
-		   	        
-		   	    },
-
-		   	    legend: {
-		   	        enabled: false
-				},
-				   
-				// Defining the tooltip of each task bar (hover over the relevant bars to view)
-		   	    tooltip: {
-		   	        formatter: function() {
-		   	            return (
-							'<b>' + tasks[this.y].name + 
-							'</b><br/>' + this.point.options.tooltip_data +
-							'<br>' + Highcharts.dateFormat('%m-%d-%Y', this.point.options.from) +
-		   	                ' to ' + Highcharts.dateFormat('%m-%d-%Y', this.point.options.to)); 
-		   	        }
-		   	    },
-
-		   	    plotOptions: {
-		   	        line: {
-		   	            lineWidth: 10,
-		   	            marker: {
-		   	                enabled: false
-		   	            }
-		   	        }
-		   	    },
-
-				// Defining the dataset for the graph as the array 'series' defined at the start of the script
-		   	    series: series
-		   	});		         
-	   });
     </script>
 </body>
 </html>

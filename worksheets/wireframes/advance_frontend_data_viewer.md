@@ -1,36 +1,52 @@
 # Wireframe & Justification
 
-This document should help you explain how your user interfaces are designed. You should have a wireframe to give a good overview and some screenshot with simple writeups to justify your designs.
-
 ## Wireframe
 
-> This is just an example, please find your own wireframe.
-
-![Wireframe](assets/sample-wireframe-data-viewer-frontend.png)
+![Wireframe](justifications/dataViewer.png)
 
 ## Justifications
 
 ### Justification 1
 
-> This is just an example, please find your own justifications.
-
-![Justificaiton1](https://www.jquery-az.com/wp-content/uploads/2016/05/39.0_1-Bootstrap-data-table.png)
+![Justification 1](justifications/Data_viewer_layout.png)
 
 #### Good Points
 
-1. Attributes shown at top and bottom can be useful for big table.
-2. Showing total number of entries can be useful for some instance.
-3. Pagination tool meets requirement
+1. Layout itself is simple and clear, shows relevant information
+2. Simple to implement - Tables
 
 #### Bad Points
 
-1. May need more than 1 search bar as we need to search by multiple attributes
-2. Data with many column may be bad.
+1. Does not have Pagination & Filtering fields
+2. Some columns are irrelevant for the project scheme (i.e. 'Project')
+3. Does not allow for sub-tasks
 
 ### Justification 2
 
-> Find more existing work for reference.
+![Justification 2](justifications/Data_viewer_Pagination.png)
+
+#### Good Points
+
+1. Pagination is simple and adheres to project requirements
+2. Shows sub-tasks in a drop-down within the table
+3. Simple layout
+
+#### Bad Points
+
+1. Only 3 columns
+2. Does not have filtering fields
 
 ### Justification 3
 
-> Find more existing work for reference.
+![Justification 3](justifications/possible_wireframe.png)
+
+#### Good Points
+
+1. Input field available at the bottom to add a new task
+2. Tasks can be color-coded which helps visualisation
+3. Shows sub-tasks in a drop-down within the table
+
+#### Bad Points
+
+1. Filtering field (Upper right) has many icon options and is clean but seems to only change the Result Viewer portion. Still a good implementation idea for the Data Viewer however
+2. No Pagination - Tasks are browsed using scrolling

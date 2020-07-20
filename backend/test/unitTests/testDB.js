@@ -17,9 +17,15 @@
 // Setting up date parser for pg
 var types = require('pg').types;
 var moment = require('moment');
+// Setting up custom parsing for datatypes
+// For the DATE data type
 types.setTypeParser(1082, function(val) {
     return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
+// For the DECIMAL data type
+types.setTypeParser(1700, parseFloat);
+// For the FLOAT data type
+types.setTypeParser(701, parseFloat);
 
 // Importing libs needed to run the test
 const {Pool} = require('pg');
@@ -59,7 +65,7 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    describe('Checking DB scripts', function(){
+    describe('Checking DB internals', function(){
         it('Checking if DB initialized properly ', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
@@ -104,6 +110,47 @@ describe('Model Test Suite', function(){
                 }
             );
         });
+        it('Checking is parsers are working correctly', function(done){
+            new Promise((resolve, reject) => {
+                pool.query(`
+                INSERT INTO TASKSBASIC
+                (taskId, projectId, dueDate, dueTime, duration)
+                VALUES
+                (1, 11, '1998-02-02', '01:32:00', 2.123);
+                `, function(err, res){
+                    if(err){
+                        reject(err);
+                    }
+                    resolve(res);
+                });
+            })
+            .then(
+                function(){
+                    // Check for the datetime and float/decimal working
+                    return new Promise((resolve, reject) => {
+                        pool.query(`
+                        SELECT * FROM TASKSBASIC;  
+                        `, function(err, res){
+                            if(err){
+                                reject(err);
+                                return;
+                            }
+                            resolve(res.rows[0]);
+                        });
+                    });
+                }
+            )
+            .then(
+                function(rows){
+                    const expectedDateTime = moment('1998-02-02', 'YYYY-MM-DD');
+                    const expectedDecimal = 2.123;
+                    expect(JSON.stringify(rows['duedate'])).to.be.equal(JSON.stringify(expectedDateTime));
+                    expect(rows['duration']).to.be.equal(expectedDecimal);
+                    done();
+                }
+            )
+            .catch(done);
+        });
     });
     describe('Basic Problem Statement Models', function(){
         // Populating with preset data
@@ -118,7 +165,24 @@ describe('Model Test Suite', function(){
             (7, 11, '1998-02-02', '01:32:00', 2),
             (8, 11, '1998-02-02', '01:32:00', 2),
             (9, 11, '1998-02-02', '01:32:00', 2),
-            (10, 11, '1998-02-02', '01:32:00', 2)
+            (10, 11, '1998-02-02', '01:32:00', 2),
+            (1000000001, 1100000001, '2020-01-01', '11:00:00', 1),
+            (1000000002, 1100000001, '2020-01-01', '11:00:00', 1),
+            (1000000003, 1100000001, '2020-01-01', '11:00:00', 1),
+            (1000000004, 1100000001, '2020-01-01', '11:00:00', 1),
+            (1000000005, 1100000002, '2020-01-01', '14:00:00', 1),
+            (1000000006, 1100000002, '2020-01-01', '14:00:00', 2),
+            (1000000007, 1100000002, '2020-01-01', '14:00:00', 3),
+            (1000000008, 1100000002, '2020-01-01', '14:00:00', 4),
+            (1000000009, 1100000003, '2020-01-01', '11:00:00', 1),
+            (1000000010, 1100000003, '2020-01-01', '13:00:00', 3),
+            (1000000011, 1100000003, '2020-01-01', '15:00:00', 5),
+            (1000000012, 1100000003, '2020-01-01', '17:00:00', 7),
+            (1000000013, 1100000004, '2020-01-01', '12:00:00', 1),
+            (1000000014, 1100000004, '2020-01-01', '14:00:00', 4),
+            (1000000015, 1100000004, '2020-01-01', '19:00:00', 7),
+            (1000000016, 1100000004, '2020-01-01', '15:00:00', 7),
+            (1000000017, 1100000004, '2020-01-01', '19:00:00', 11)
             `;
             pool.query(`
             INSERT INTO TASKSBASIC
@@ -186,7 +250,7 @@ describe('Model Test Suite', function(){
 
                         ];
                         const expectedCountResult = [{
-                            'count': '10'
+                            'count': '26'
                         }];
                         expect(res).to.be.lengthOf(2);
                         expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
@@ -262,6 +326,77 @@ describe('Model Test Suite', function(){
                         done(err);
                     }
                 );
+            });
+        });
+        describe('Result Problem statement', function(){
+            it('Basic Functionality', function(done){
+                const projectId = 1100000004;
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getResults(projectId)
+                    );
+                })
+                .then(
+                    function(res){
+                        const expectedData = [
+                            {
+                                "taskid":'1000000013',
+                                "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                                "duetime":"12:00:00",
+                                "duration":1,
+                                "projectid":'1100000004'
+                            },
+                            {
+                                "taskid":'1000000014',
+                                "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                                "duetime":"14:00:00",
+                                "duration":4,
+                                "projectid":'1100000004'
+                            },
+                            {
+                                "taskid":'1000000016',
+                                "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                                "duetime":"15:00:00",
+                                "duration":7,
+                                "projectid":'1100000004'
+                            },
+                            {
+                                "taskid":'1000000015',
+                                "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                                "duetime":"19:00:00",
+                                "duration":7,
+                                "projectid":'1100000004'
+                            },
+                            {
+                                "taskid":'1000000017',
+                                "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                                "duetime":"19:00:00",
+                                "duration":11,
+                                "projectid":'1100000004'
+                            }
+                        ];
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedData));
+                        done();
+                    }
+                )
+                .catch(done);
+            });
+            it('ProjectId does not exists', function(done){
+                const projectId = 123;
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getResults(projectId)
+                    );
+                })
+                .then(
+                    function(){
+                        done('Should not resolve');
+                    }
+                )
+                .catch((err) => {
+                    expect(err.code).to.be.equal('PROID');
+                    done();
+                });
             });
         });
     });

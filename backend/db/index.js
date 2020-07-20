@@ -15,9 +15,15 @@
 // Setting up date parser for pg
 var types = require('pg').types;
 var moment = require('moment');
+// Setting up custom parsing for datatypes
+// For the DATE data type
 types.setTypeParser(1082, function(val) {
     return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
+// For the DECIMAL data type
+types.setTypeParser(1700, parseFloat);
+// For the FLOAT data type
+types.setTypeParser(701, parseFloat);
 
 //  Importing the pg lib
 const {Pool} = require('pg');
