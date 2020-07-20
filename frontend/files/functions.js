@@ -439,7 +439,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
         success: function (data, textStatus, xhr) {
             // Clear the table of data
             $('#basic_resultTableBody').empty();
-            console.log(data)
 
             var allData = data.result;
             var totalLateness = data.totalLateness;
@@ -486,37 +485,42 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 var toTime = parseInt(data.toTime.slice(0, 2));
                 var deadlineTime = parseInt(data.deadlineTime.slice(0, 2));
 
-
-                // The assigned duration of task
-                task = {
-                    name: `TaskId: ${data.taskId}`,
-                    intervals: [{
-                        from: Date.UTC(parseInt(fromDate[0]), parseInt(fromDate[1]), parseInt(fromDate[2]), fromTime),
-                        to: Date.UTC(parseInt(deadlineDate[0]), parseInt(deadlineDate[1]), parseInt(deadlineDate[2]), deadlineTime), 
-                        label: `${data.taskId}`,
-                        tooltip_data: 'Assigned time to complete task',
-                        fromTime: data.fromTime,
-                        toTime: data.deadlineTime
-                    }],
-                    // Set the default color of the bar as light green -> indicates no lateness
-                    color: '#8FBC8F'
-                }
-
                 // Checking if there is a lateness and add it to 'task' if so
                 if (data.lateness > 0) {
-                    latenessInterval = {
-                        from: Date.UTC(parseInt(toDate[0]), parseInt(toDate[1]), parseInt(toDate[2]), toTime),
-                        to: Date.UTC(parseInt(toDate[0]), parseInt(toDate[1]), parseInt(toDate[2]), toTime),
-                        label: `${data.taskId}`,
-                        tooltip_data: 'Task completed',
-                        fromTime: data.toTime,
-                        toTime: data.toTime,
+                    task = {
+                        name: `TaskId: ${data.taskId}`,
+                        intervals: [{
+                            // from: Date.UTC(parseInt(fromDate[0]), parseInt(fromDate[1]), parseInt(fromDate[2]), fromTime),
+                            from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            // to: Date.UTC(parseInt(deadlineDate[0]), parseInt(deadlineDate[1]), parseInt(deadlineDate[2]), deadlineTime), 
+                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            label: `${data.taskId}`,
+                            tooltip_data: 'Assigned time to complete task',
+                            fromTime: data.deadlineTime,
+                            toTime: data.toTime
+                        }],
+                        // Set the default color of the bar as light red -> indicates lateness
+                        color: '#CD5C5C'
                     }
-                    
-                    task.intervals.push(latenessInterval);
-                    // This will change the color of the bars to a light red -> indicate lateness
-                    task.color = '#CD5C5C';
                 }
+                
+
+                else {
+                    // The assigned duration of task
+                    task = {
+                        name: `TaskId: ${data.taskId}`,
+                        intervals: [{
+                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
+                            label: `${data.taskId}`,
+                            tooltip_data: 'Assigned time to complete task',
+                            fromTime: data.fromTime,
+                            toTime: data.toTime
+                        }],
+                        // Set the default color of the bar as light green -> indicates no lateness
+                        color: '#8FBC8F'
+                    }
+                }   
 
                 allTasks.push(task);
                 categories.push(`Task ${data.taskId}`);
@@ -537,6 +541,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                             x: interval.from,
                             y: i,
                             label: interval.label,
+                            id: 'test',
                             from: interval.from,
                             to: interval.to,
                             tooltip_data: interval.tooltip_data
@@ -544,6 +549,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         {
                             x: interval.to,
                             y: i,
+                            id: 'test',
                             from: interval.from,
                             to: interval.to,
                             tooltip_data: interval.tooltip_data
@@ -555,8 +561,12 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         }
                     });
 
+                    item.data.parent = 'test'
+
                     series.push(item);
                 });
+
+                console.log(series)
 
                 // Creating the chart
                 new Highcharts.Chart({
