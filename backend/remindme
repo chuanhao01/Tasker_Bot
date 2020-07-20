@@ -1,4 +1,8 @@
 Stopped at:
+	P1
+	Start working on the advanced result API
+
+	P2
 	Done first itr of GET /basic/result API
 		Need add more tests for API
 		Need to add more tests and check the algo and parsing

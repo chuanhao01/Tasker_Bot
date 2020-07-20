@@ -17,9 +17,15 @@
 // Setting up date parser for pg
 var types = require('pg').types;
 var moment = require('moment');
+// Setting up custom parsing for datatypes
+// For the DATE data type
 types.setTypeParser(1082, function(val) {
     return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
+// For the DECIMAL data type
+types.setTypeParser(1700, parseFloat);
+// For the FLOAT data type
+types.setTypeParser(701, parseFloat);
 
 // Importing libs needed to run the test
 const {Pool} = require('pg');
@@ -59,7 +65,7 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    describe('Checking DB scripts', function(){
+    describe('Checking DB internals', function(){
         it('Checking if DB initialized properly ', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
@@ -103,6 +109,47 @@ describe('Model Test Suite', function(){
                     done(err);
                 }
             );
+        });
+        it('Checking is parsers are working correctly', function(done){
+            new Promise((resolve, reject) => {
+                pool.query(`
+                INSERT INTO TASKSBASIC
+                (taskId, projectId, dueDate, dueTime, duration)
+                VALUES
+                (1, 11, '1998-02-02', '01:32:00', 2.123);
+                `, function(err, res){
+                    if(err){
+                        reject(err);
+                    }
+                    resolve(res);
+                });
+            })
+            .then(
+                function(){
+                    // Check for the datetime and float/decimal working
+                    return new Promise((resolve, reject) => {
+                        pool.query(`
+                        SELECT * FROM TASKSBASIC;  
+                        `, function(err, res){
+                            if(err){
+                                reject(err);
+                                return;
+                            }
+                            resolve(res.rows[0]);
+                        });
+                    });
+                }
+            )
+            .then(
+                function(rows){
+                    const expectedDateTime = moment('1998-02-02', 'YYYY-MM-DD');
+                    const expectedDecimal = 2.123;
+                    expect(JSON.stringify(rows['duedate'])).to.be.equal(JSON.stringify(expectedDateTime));
+                    expect(rows['duration']).to.be.equal(expectedDecimal);
+                    done();
+                }
+            )
+            .catch(done);
         });
     });
     describe('Basic Problem Statement Models', function(){
