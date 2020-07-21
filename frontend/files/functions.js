@@ -490,7 +490,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                             fromTime: data.fromTime,
                             toTime: data.deadlineTime
                         }],
-                        // Set the default color of the bar as light red -> indicates lateness
+                        // Set the default color of the bar as light green -> indicates no lateness
                         color: '#8FBC8F'
                     }
 
@@ -504,7 +504,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                             fromTime: data.deadlineTime,
                             toTime: data.toTime
                         }],
-                        // Set the default color of the bar as light green -> indicates no lateness
+                        // Set the default color of the bar as light red -> indicates lateness
                         color: '#CD5C5C'
                     }
                 }
@@ -538,6 +538,8 @@ function basic_obtainResult(projectId, startDate, startTime) {
             function createGraph(allTasks, categories) {
                 // re-structure the tasks into line series
                 var series = [];
+                var skippedRows = 0;
+                var yValue = 0;
                 $.each(allTasks.reverse(), function(i, task) {
                     var item = {
                         name: task.name,
@@ -545,10 +547,12 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         color: task.color
                     };
 
-                    var yValue = i;
                     if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
                         yValue = i - 1;
+                        skippedRows += 1;
                     }
+                    yValue = i - skippedRows;
+                    console.log(skippedRows)
 
                     $.each(task.intervals, function(j, interval) {
                         item.data.push({
@@ -600,7 +604,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
                     yAxis: {
                         min: 0,
-                        max: allTasks.length - 1,
                         categories: categories,
                         tickInterval: 1,            
                         tickPixelInterval: 200,
