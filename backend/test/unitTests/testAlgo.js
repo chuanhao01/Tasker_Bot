@@ -57,6 +57,8 @@ describe('Algo Test Suite', function(){
                 'data': [
                     {
                         taskId:'1000000001',
+                        deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime:"11:00:00",
                         fromDate: '2020/01/01',
                         fromTime: '0900',
                         toDate: '2020/01/01',
@@ -65,6 +67,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId:'1000000002',
+                        deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime:"11:00:00",
                         fromDate: '2020/01/01',
                         fromTime: '1000',
                         toDate: '2020/01/01',
@@ -73,6 +77,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId:'1000000003',
+                        deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime:"11:00:00",
                         fromDate: '2020/01/01',
                         fromTime: '1100',
                         toDate: '2020/01/01',
@@ -81,6 +87,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId:'1000000004',
+                        deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime:"11:00:00",
                         fromDate: '2020/01/01',
                         fromTime: '1200',
                         toDate: '2020/01/01',
@@ -129,6 +137,8 @@ describe('Algo Test Suite', function(){
                 'data': [
                     {
                         taskId: '1000000009',
+                        deadlineDate: moment('2020/01/01', "YYYY/MM/DD"),
+                        deadlineTime: '11:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '0900',
                         toDate: '2020/01/01',
@@ -137,6 +147,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000010',
+                        deadlineDate: moment('2020/01/01', "YYYY/MM/DD"),
+                        deadlineTime: '13:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '1000',
                         toDate: '2020/01/01',
@@ -145,6 +157,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000011',
+                        deadlineDate: moment('2020/01/01', "YYYY/MM/DD"),
+                        deadlineTime: '15:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '1300',
                         toDate: '2020/01/01',
@@ -153,6 +167,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000012',
+                        deadlineDate: moment('2020/01/01', "YYYY/MM/DD"),
+                        deadlineTime: '17:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '1800',
                         toDate: '2020/01/02',
@@ -208,6 +224,8 @@ describe('Algo Test Suite', function(){
                 'data': [
                     {
                         taskId: '1000000013',
+                        deadlineDate: moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime: '12:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '0900',
                         toDate: '2020/01/01',
@@ -216,6 +234,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000014',
+                        deadlineDate: moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime: '14:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '1000',
                         toDate: '2020/01/01',
@@ -224,6 +244,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000016',
+                        deadlineDate: moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime: '15:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '1400',
                         toDate: '2020/01/01',
@@ -232,6 +254,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000015',
+                        deadlineDate: moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime: '19:00:00',
                         fromDate: '2020/01/01',
                         fromTime: '2100',
                         toDate: '2020/01/02',
@@ -240,6 +264,8 @@ describe('Algo Test Suite', function(){
                     },
                     {
                         taskId: '1000000017',
+                        deadlineDate: moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime: '19:00:00',
                         fromDate: '2020/01/02',
                         fromTime: '0400',
                         toDate: '2020/01/02',
@@ -267,6 +293,8 @@ describe('Algo Test Suite', function(){
                 'data': [
                     {
                         taskId:'1000000001',
+                        deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                        deadlineTime:"11:00:00",
                         fromDate: '2020/01/01',
                         fromTime: '0900',
                         toDate: '2020/01/01',
