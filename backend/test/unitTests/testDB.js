@@ -566,6 +566,25 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
+            it('ProjectId does not exists', function(done){
+                const projectId = 10000;
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.getResults(projectId)
+                    );
+                })
+                .then(
+                    function(){
+                        done('Should not resolve');
+                    }
+                )
+                .catch(
+                    function(err){
+                        expect(err.code).to.be.equal('PROID');
+                        done()
+                    }
+                );
+            });
         });
     });
 });
