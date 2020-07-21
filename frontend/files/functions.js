@@ -478,26 +478,33 @@ function basic_obtainResult(projectId, startDate, startTime) {
             allTasks = []
             categories = []
             allData.forEach((data) => {
-                var fromDate = data.fromDate.split('/');
-                var toDate = data.toDate.split('/');
-                var deadlineDate = data.deadlineDate.split('/');
-                var fromTime = parseInt(data.fromTime.slice(0, 2));
-                var toTime = parseInt(data.toTime.slice(0, 2));
-                var deadlineTime = parseInt(data.deadlineTime.slice(0, 2));
-
                 // Checking if there is a lateness. If so, deadline to end
                 if (data.lateness > 0) {
                     task = {
                         name: `TaskId: ${data.taskId}`,
                         intervals: [{
-                            from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             label: `${data.taskId}`,
                             tooltip_data: 'Assigned time to complete task',
+                            fromTime: data.fromTime,
+                            toTime: data.deadlineTime
+                        }],
+                        // Set the default color of the bar as light red -> indicates lateness
+                        color: '#8FBC8F'
+                    }
+
+                    latenessInterval = {
+                        name: `TaskId: ${data.taskId}`,
+                        intervals: [{
+                            from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
+                            label: `${data.taskId}`,
+                            tooltip_data: 'Lateness period',
                             fromTime: data.deadlineTime,
                             toTime: data.toTime
                         }],
-                        // Set the default color of the bar as light red -> indicates lateness
+                        // Set the default color of the bar as light green -> indicates no lateness
                         color: '#CD5C5C'
                     }
                 }
@@ -521,6 +528,10 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 }   
 
                 allTasks.push(task);
+                if (data.lateness > 0) {
+                    allTasks.push(latenessInterval)
+                }
+
                 categories.push(`Task ${data.taskId}`);
             })
 
@@ -534,10 +545,15 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         color: task.color
                     };
 
+                    var yValue = i;
+                    if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
+                        yValue = i - 1;
+                    }
+
                     $.each(task.intervals, function(j, interval) {
                         item.data.push({
                             x: interval.from,
-                            y: i,
+                            y: yValue,
                             label: interval.label,
                             from: interval.from,
                             to: interval.to,
@@ -545,7 +561,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         }, 
                         {
                             x: interval.to,
-                            y: i,
+                            y: yValue,
                             from: interval.from,
                             to: interval.to,
                             tooltip_data: interval.tooltip_data
