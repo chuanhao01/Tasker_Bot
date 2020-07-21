@@ -643,7 +643,11 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
                             if (toTime > 2400) {
                                 extraDays = Math.floor(toTime / 2400)
-                                toTime = toTime - (2400 * extraDays);
+                                toTime = (toTime - (2400 * extraDays)).toString();
+                                
+                                while (toTime.length < 4) {
+                                    toTime = "0" + toTime
+                                }
                             } 
 
                             return (
