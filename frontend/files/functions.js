@@ -485,7 +485,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         intervals: [{
                             from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            label: `${data.taskId}`,
+                            label: `TaskId: ${data.taskId}`,
                             tooltip_data: 'Assigned time to complete task',
                             fromTime: data.fromTime,
                             toTime: data.deadlineTime
@@ -499,7 +499,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         intervals: [{
                             from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
-                            label: `${data.taskId}`,
+                            label: `TaskId: ${data.taskId}`,
                             tooltip_data: 'Lateness period',
                             fromTime: data.deadlineTime,
                             toTime: data.toTime
@@ -517,7 +517,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         intervals: [{
                             from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
-                            label: `${data.taskId}`,
+                            label: `TaskId: ${data.taskId}`,
                             tooltip_data: 'Assigned time to complete task',
                             fromTime: data.fromTime,
                             toTime: data.toTime
@@ -547,12 +547,12 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         color: task.color
                     };
 
+                    // Change the yValue if there is a lateness (ensures that the lateness bar is plotted in the same row)
                     if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
                         yValue = i - 1;
                         skippedRows += 1;
                     }
                     yValue = i - skippedRows;
-                    console.log(skippedRows)
 
                     $.each(task.intervals, function(j, interval) {
                         item.data.push({
@@ -566,21 +566,15 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         {
                             x: interval.to,
                             y: yValue,
+                            label: interval.label,
                             from: interval.from,
                             to: interval.to,
                             tooltip_data: interval.tooltip_data
                         });
-                    
-                        // add a null value between intervals
-                        if (task.intervals[j + 1]) {
-                            item.data.push([(interval.to + task.intervals[j + 1].from) / 2, null]);
-                        }
                     });
 
                     series.push(item);
                 });
-
-                console.log(series)
 
                 // Creating the chart
                 const timezoneOffset = new Date().getTimezoneOffset()
@@ -599,6 +593,10 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     },
 
                     time: {
+                        timezoneOffset: timezoneOffset
+                    },
+                    global: {
+                        useUTC: false,
                         timezoneOffset: timezoneOffset
                     },
 
@@ -640,13 +638,21 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     // Defining the tooltip of each task bar (hover over the relevant bars to view) 
                     tooltip: {
                         formatter: function() {
+                            var fromTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.from)) * 100) - (timezoneOffset / 60 * 100)
+                            var toTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.to) * 100)) - (timezoneOffset / 60 * 100)
+
+                            if (toTime > 2400) {
+                                extraDays = Math.floor(toTime / 2400)
+                                toTime = toTime - (2400 * extraDays);
+                            } 
+
                             return (
-                            '<b>' + allTasks[this.y].name + 
+                            '<b>' + this.point.options.label + 
                             '</b><br/>' + this.point.options.tooltip_data +
                             '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
                             ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
-                            '<br>' + allTasks[this.y].intervals[0].fromTime +
-                            ' to ' + allTasks[this.y].intervals[0].toTime +
+                            '<br>' + fromTime +
+                            ' to ' + toTime +
                             '</br>'
                             ); 
                         }
