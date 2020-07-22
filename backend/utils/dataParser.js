@@ -131,6 +131,24 @@ const dataParser = {
                 'lastPage': lastPage
             };
             return parsedData;
+        },
+        /**
+         * @function
+         * This function is to parse the data for the advance problem statement, data from the equally split algo
+         * 
+         * @param {Array} results The array of results return from advanced problem, equally split algo
+         */
+        getEqualSplitResults(results){
+            // Parse all duration by rounding and parse to string
+            for(let tasks of results){
+                for(let task of tasks){
+                    task['duration'] = dataParser.all.roundHours(task['duration']);
+                }
+            }
+            const parsedResults = {
+                'result': results
+            };
+            return parsedResults;
         }
     }
 };

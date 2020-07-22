@@ -425,5 +425,135 @@ describe('Utils test', function(){
                 });
             });
         });
+        describe('For the advanced parser', function(){
+            describe('Parsing the calculated results for the equally split', function(){
+                it('Basic Functionality', function(){
+                    const results = [
+                        [
+                            {
+                                'projectid': '1',
+                                'taskid': '2',
+                                'duration': 1,
+                            },
+                            {
+                                'projectid': '1',
+                                'taskid': '4',
+                                'duration': 2,
+                            }
+                        ],
+                        [
+                            {
+                                'projectid': '1',
+                                'taskid': '1',
+                                'duration': 1,
+                            },
+                            {
+                                'projectid': '1',
+                                'taskid': '3',
+                                'duration': 2,
+                            }
+                        ]
+                    ];
+                    const parsedResults = utils.dataParser.advanced.getEqualSplitResults(results);
+                    const expectedParsedResults = {
+                        "result": [
+                            [
+                                {
+                                    'projectid': '1',
+                                    'taskid': '2',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectid': '1',
+                                    'taskid': '4',
+                                    'duration': '2',
+                                }
+                            ],
+                            [
+                                {
+                                    'projectid': '1',
+                                    'taskid': '1',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectid': '1',
+                                    'taskid': '3',
+                                    'duration': '2',
+                                }
+                            ]
+                        ]
+                    };
+                    expect(JSON.stringify(parsedResults)).to.be.equal(JSON.stringify(expectedParsedResults));
+                });
+                it('Basic Functionality 2', function(){
+                    const results = [
+                        [
+                            {
+                                'projectid': '1',
+                                'taskid': '2',
+                                'duration': 1,
+                            },
+                            {
+                                'projectid': '1',
+                                'taskid': '4',
+                                'duration': 2,
+                            },
+                            {
+                                'projectid': '1',
+                                'taskid': '5',
+                                'duration': 1,
+                            }
+                        ],
+                        [
+                            {
+                                'projectid': '1',
+                                'taskid': '1',
+                                'duration': 1,
+                            },
+                            {
+                                'projectid': '1',
+                                'taskid': '3',
+                                'duration': 2,
+                            }
+                        ]
+                    ];
+                    const parsedResults = utils.dataParser.advanced.getEqualSplitResults(results);
+                    const expectedParsedResults = {
+                        "result": [
+                            [
+                                {
+                                    'projectid': '1',
+                                    'taskid': '2',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectid': '1',
+                                    'taskid': '4',
+                                    'duration': '2',
+                                },
+                                {
+                                    'projectid': '1',
+                                    'taskid': '5',
+                                    'duration': '1',
+                                }
+                            ],
+                            [
+                                {
+                                    'projectid': '1',
+                                    'taskid': '1',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectid': '1',
+                                    'taskid': '3',
+                                    'duration': '2',
+                                }
+                            ]
+                        ]
+                    };
+                    expect(JSON.stringify(parsedResults)).to.be.equal(JSON.stringify(expectedParsedResults));
+                });
+            });
+        });
     });
 });
