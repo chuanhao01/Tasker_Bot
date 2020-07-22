@@ -307,5 +307,82 @@ describe('Algo Test Suite', function(){
             expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
         });
     });
+    describe('Advanced problem', function(){
+        describe('Problem to equally split tasks, among 2 ppl', function(){
+            it('Basic Functionality', function(){
+                const tasks = [
+                    {
+                        'projectid': 1,
+                        'taskid': 1,
+                        'duration': 1
+                    }
+                ];
+                const advancedResult = algo.advanced.splitEqual.calculateResults(tasks, 0.5);
+                const expectedResult = [
+                    [
+                        {
+                            'projectid': 1,
+                            'taskid': 1,
+                            'duration': 1
+                        }
+                    ],
+                    []
+                ];
+                expect(JSON.stringify(advancedResult)).to.be.equal(JSON.stringify(expectedResult));
+            });
+            it('Basic Functionality 2', function(){
+                const tasks = [
+                    {
+                        'projectid': 1,
+                        'taskid': 1,
+                        'duration': 1,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 2,
+                        'duration': 1,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 3,
+                        'duration': 2,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 4,
+                        'duration': 2,
+                    }
+                ];
+                const advancedResult = algo.advanced.splitEqual.calculateResults(tasks);
+                const expectedResult = [
+                    [
+                        {
+                            'projectid': 1,
+                            'taskid': 2,
+                            'duration': 1,
+                        },
+                        {
+                            'projectid': 1,
+                            'taskid': 4,
+                            'duration': 2,
+                        }
+                    ],
+                    [
+                        {
+                            'projectid': 1,
+                            'taskid': 1,
+                            'duration': 1,
+                        },
+                        {
+                            'projectid': 1,
+                            'taskid': 3,
+                            'duration': 2,
+                        }
+                    ]
+                ];
+                expect(JSON.stringify(advancedResult)).to.be.equal(JSON.stringify(expectedResult));
+            });
+        });
+    });
 });
 
