@@ -136,7 +136,7 @@ const advancedAlgo = {
                     return;
                 }
                 // Pushing factor
-                if(j === dp[i-1][j]){
+                if(dp[i][j] === dp[i-1][j]){
                     // If same as the above value
                     return findTasks(i-1, j);
                 }

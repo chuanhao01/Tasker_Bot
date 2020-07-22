@@ -444,6 +444,68 @@ describe('Algo Test Suite', function(){
                 ];
                 expect(JSON.stringify(advancedResults)).to.be.equal(JSON.stringify(expectedResults));
             });
+            it('Basic Functionality 4', function(){
+                const tasks = [
+                    {
+                        'projectid': 1,
+                        'taskid': 1,
+                        'duration': 1,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 2,
+                        'duration': 1,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 3,
+                        'duration': 2,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 4,
+                        'duration': 2,
+                    },
+                    {
+                        'projectid': 1,
+                        'taskid': 5,
+                        'duration': 11,
+                    }
+                ];
+                const advancedResults = algo.advanced.splitEqual.calculateResults(tasks);
+                const expectedResults = [
+                    [
+                        {
+                            'projectid': 1,
+                            'taskid': 5,
+                            'duration': 11,
+                        }
+                    ],
+                    [
+                        {
+                            'projectid': 1,
+                            'taskid': 1,
+                            'duration': 1,
+                        },
+                        {
+                            'projectid': 1,
+                            'taskid': 2,
+                            'duration': 1,
+                        },
+                        {
+                            'projectid': 1,
+                            'taskid': 3,
+                            'duration': 2,
+                        },
+                        {
+                            'projectid': 1,
+                            'taskid': 4,
+                            'duration': 2,
+                        },
+                    ]
+                ];
+                expect(JSON.stringify(advancedResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
         });
     });
 });
