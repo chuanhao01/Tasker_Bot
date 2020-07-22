@@ -67,8 +67,9 @@ const advancedAlgo = {
         /**
          * @function
          * Helper funciton to abstract the knapsack algorithm from processing the results
-         * Note: The algorithm used here is a recursive solution with a DP memorization table to the 0/1 knapsack problem, this is for assumed integer calculations
+         * Note: The algorithm used here is a recursive solution with a DP memorization table to the 0/1 knapsack problem, this is for assumed integer algo calculations
          * As such tasks is assumed to only contain integers, with target floored, due to splitting of tasks into 2 subsets with closest equal sum K of elements in each subset
+         * The task taken, (task allocation with 1) will always try to reach the target, leaving the task not taken (0) always having more or equal work
          * 
          * Refer to docs for more information on the algorithm
          * 
