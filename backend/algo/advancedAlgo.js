@@ -19,27 +19,29 @@ const advancedAlgo = {
          * 
          */
         calculateResults(tasks){
-            // Calculate sum of duration to find split and find out if there are decimals
+            // Calculate sum of duration to find split, find out if there are decimals, and create the arrs of duration
             let sum = 0;
             let includeFloats = false;
+            let tasksDuration = [];
             for(let task of tasks){
                 if(!Number.isSafeInteger(task.duration)){
                     includeFloats = true;
                 }
                 sum += task.duration;
+                tasksDuration.push(task.duration);
             }
             // Get the task allocation based on algo
-            let taskAllocation;
+            let tasksAllocation;
             if(includeFloats){
-                taskAllocation = this.customKnapsackRec(tasks, sum/2);
+                tasksAllocation = this.customKnapsackRec(tasksDuration, sum/2);
             }
             else{
-                taskAllocation = this.customKnapsackDPMem(tasks, sum/2);
+                tasksAllocation = this.customKnapsackDPMem(tasksDuration, sum/2);
             }
             // Tasks for each person to be returned
             let personTasks = [[], []];
-            for(let i=0; i<taskAllocation.length; i++){
-                personTasks[taskAllocation[i]].push(tasks[i]);
+            for(let i=0; i<tasksAllocation.length; i++){
+                personTasks[tasksAllocation[i]].push(tasks[i]);
             }
             return personTasks;
         },
@@ -57,45 +59,15 @@ const advancedAlgo = {
          * 
          */
         customKnapsackRec(tasks, target){
-            // Creating the 0/1 array to assign tasks to the person
-            let taskAllocation = [];
-            for(let task of tasks){
-                taskAllocation.push(-1);
-            }
-            // Recursive function call to solve
-            function rec(n, c){
-                // Base case
-                if(n === 0 || c === 0){
-                    if(n > 0){
-                        taskAllocation[n-1] = 0;
-                    }
-                    return 0;
-                }
-                // Rec, pushing factor
-                if(tasks[n-1] < c){
-                    taskAllocation[n-1] = 0;
-                    return rec(n-1, c);
-                }
-                else{
-                    const takeItem = tasks[n-1] + rec(n-1, c-tasks[n-1]);
-                    const dontTakeItem = rec(n-1, c);
-                    if(takeItem > dontTakeItem){
-                        taskAllocation[n-1] = 1;
-                    }
-                    else{
-                        taskAllocation[n-1] = 0;
-                    }
-                    return Math.max(takeItem, dontTakeItem);
-                }
-            }
-            rec(tasks.length, target);
-            return taskAllocation;
+            // Not Implemented for now
+            return;
         },
         /**
          * @function
          * Helper funciton to abstract the knapsack algorithm from processing the results
+         * Note: The algorithm used here is a recursive solution with a DP memorization table to the 0/1 knapsack problem, this is for assumed integer calculations
+         * As such tasks is assumed to only contain integers, with target floored, due to splitting of tasks into 2 subsets with closest equal sum K of elements in each subset
          * 
-         * Note: The algorithm used here is a recursive solution to the 0/1 knapsack problem, this is only used for integer calculations
          * Refer to docs for more information on the algorithm
          * 
          * @param {Array} tasks The array of tasks for the knapsack algo to solve
@@ -105,51 +77,77 @@ const advancedAlgo = {
          * 
          */
         customKnapsackDPMem(tasks, target){
-            // Creating DP table to store past results and the 0/1 array to assign tasks to the person
+            // Flooring the target
+            target = Math.floor(target);
+            // Creating the DP table
             let dp = [];
-            let taskAllocation = [];
-            for(let task of tasks){
-                let arr = 0;
-                taskAllocation.push(-1);
+            // Creating the allocation array, where 0 means that the item is not taken and 1 is
+            let tasksAllocation = [];
+            // Populating the DP and allocation arr at the same time
+            for(let i=0; i<tasks.length; i++){
+                // tasks.length number of rows, i -> (maps to) i in tasks
+                let arr = [];
+                tasksAllocation.push(0);
                 for(let j=0; j<target+1; j++){
+                    // 0 - target number of columns to represent each integer in weight
                     arr.push(-1);
                 }
                 dp.push(arr);
             }
-            // Recursive function call to solve
+            // Recursive function(Algo) to solve the problem and populate DP table
             function rec(n, c){
-                // If previous solution was found
+                // If problem was previously solved
                 if(n !== 0){
                     if(dp[n-1][c] > -1){
                         return dp[n-1][c];
                     }
                 }
-                // Base case
+                // Main pushing factor
+                let result;
                 if(n === 0 || c === 0){
-                    if(n > 0){
-                        taskAllocation[n-1] = 0;
-                    }
+                    // Base Case
                     return 0;
                 }
-                // Rec, pushing factor
-                if(tasks[n-1] < c){
-                    taskAllocation[n-1] = 0;
-                    return rec(n-1, c);
+                else if(tasks[n-1] > c){
+                    // Tasks is too heavy to take
+                    result = rec(n-1, c);
                 }
                 else{
-                    const takeItem = tasks[n-1] + rec(n-1, c-tasks[n-1]);
+                    // Normal case
+                    const takeItem = tasks[n-1] + rec(n-1, c - tasks[n-1]);
                     const dontTakeItem = rec(n-1, c);
-                    if(takeItem > dontTakeItem){
-                        taskAllocation[n-1] = 1;
-                    }
-                    else{
-                        taskAllocation[n-1] = 0;
-                    }
-                    return Math.max(takeItem, dontTakeItem);
+                    result = Math.max(takeItem, dontTakeItem);
+                }
+                dp[n-1][c] = result;
+                return result;
+            }
+            // Call rec algo to populate DP table
+            rec(tasks.length, target);
+            // Main algo to backtrack the DP table and find the task allocations
+            function findTasks(i, j){
+                // Base case
+                if(j === 0){
+                    // There is nothing else to take
+                    return;
+                }
+                // Got to the 0 item, which means that item is taken
+                if(i === 0){
+                    tasksAllocation[i] = 1;
+                    return;
+                }
+                // Pushing factor
+                if(j === dp[i-1][j]){
+                    // If same as the above value
+                    return findTasks(i-1, j);
+                }
+                else{
+                    // If different, this item is taken and go on to find where is next place to start searching down
+                    tasksAllocation[i] = 1;
+                    return findTasks(i-1, j-tasks[i]);
                 }
             }
-            rec(tasks.length, target);
-            return taskAllocation;
+            findTasks(tasks.length - 1, target);
+            return tasksAllocation;
         }
     },
 };
