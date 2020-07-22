@@ -33,7 +33,9 @@ const advancedAlgo = {
             // Get the task allocation based on algo
             let tasksAllocation;
             if(includeFloats){
-                tasksAllocation = this.customKnapsackRec(tasksDuration, sum/2);
+                // tasksAllocation = this.customKnapsackRec(tasksDuration, sum/2);
+                // Throws an error if there is a float for now
+                throw Error('Advanced Result should not have floats');
             }
             else{
                 tasksAllocation = this.customKnapsackDPMem(tasksDuration, sum/2);
