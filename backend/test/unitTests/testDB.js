@@ -581,7 +581,7 @@ describe('Model Test Suite', function(){
                 .catch(
                     function(err){
                         expect(err.code).to.be.equal('PROID');
-                        done()
+                        done();
                     }
                 );
             });
