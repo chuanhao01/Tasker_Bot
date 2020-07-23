@@ -133,6 +133,10 @@ const advancedAlgo = {
                     // There is nothing else to take
                     return;
                 }
+                if(dp[i][j] === 0){
+                    // Nothing else to take as well
+                    return;
+                }
                 // Got to the 0 item, which means that item is taken
                 if(i === 0){
                     tasksAllocation[i] = 1;

@@ -448,6 +448,11 @@ describe('Algo Test Suite', function(){
                 const tasks = [
                     {
                         'projectid': '1',
+                        'taskid': '5',
+                        'duration': 11,
+                    },
+                    {
+                        'projectid': '1',
                         'taskid': '1',
                         'duration': 1,
                     },
@@ -466,11 +471,6 @@ describe('Algo Test Suite', function(){
                         'taskid': '4',
                         'duration': 2,
                     },
-                    {
-                        'projectid': '1',
-                        'taskid': '5',
-                        'duration': 11,
-                    }
                 ];
                 const advancedResults = algo.advanced.splitEqual.calculateResults(tasks);
                 const expectedResults = [
