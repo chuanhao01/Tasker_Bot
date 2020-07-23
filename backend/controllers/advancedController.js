@@ -16,6 +16,7 @@ const v = require('validator');
 // Importing the custom libs
 const utils = require('../utils/index');
 const model = require('../db/index');
+const algo = require('../algo');
 
 const configs = {
     idMin: 0,
@@ -178,7 +179,59 @@ const advancedController = {
             .catch(
                 function(err){
                     // For debugging err in api chain
-                    console.log(err);
+                    return;
+                }
+            );
+        });
+        app.get('/advance/result', [
+            query('projectId').exists()
+                .isInt({min: configs.idMin, max: configs.idMax})
+        ], function(req, res){
+            // Check the validation
+            const validationError = validationResult(req);
+            if(!validationError.isEmpty()){
+                res.status(400).send({
+                    'error': 'Wrong syntax for query params',
+                    'code': 400
+                });
+                return;
+            }
+            new Promise((resolve) => {
+                resolve(
+                    model.advanced.getResults(req.query.projectId)
+                    .catch(
+                        function(err){
+                            // Process and send error response
+                            if(err.code === 'PROID'){
+                                // projectId not found
+                                res.status(404).send({
+                                    'error': 'ProjectId not found',
+                                    'code': 404
+                                });
+                            }
+                            else{
+                                // If the db has an error
+                                res.status(500).send({
+                                    'error': 'Database error',
+                                    'code': 500
+                                });
+                            }
+                            throw err;
+                        }
+                    )
+                );
+            })
+            .then(
+                function(pgRes){
+                    const tasks = pgRes.rows;
+                    const results = algo.advanced.splitEqual.calculateResults(tasks);
+                    const parsedResult = utils.dataParser.advanced.getEqualSplitResults(results);
+                    res.status(200).send(parsedResult);
+                }
+            )
+            .catch(
+                function(err){
+                    // For debugging err in api chain
                     return;
                 }
             );
