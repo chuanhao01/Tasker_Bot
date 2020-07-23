@@ -4,67 +4,16 @@
  * @author Sherisse Tan
  */
 
-// /**
-//  * @function Calculates the appropriate actual end dates and times for each task, taking lateness into account
-//  * 
-//  * @param {JSON} data 
-//  * 
-//  * @returns A JSON object containing the calulcated end_date (in UTC format) and end_time (int)
-//  */
-// function get_lateness(data) {
-//     // Obtain the number of days and number of hours task is late by
-//     late_days = parseInt(data.lateness / 24);
-//     late_hrs = data.lateness - (late_days * 24);
-//     late_mins = (late_hrs - Math.floor(late_hrs)) * 60
-//     late_hrs = (Math.floor(late_hrs) * 100) + late_mins
-
-
-//     // Calculate the final end_day and end_time
-//     add_days = 0; // The number of days that we have to add to the final count due to overflow in hours
-//     end_time = parseInt(data.toTime) + late_hrs
-//     if (end_time > 2400) {
-//         end_time -= 2400;
-//         add_days += 1;
-//     }
-
-//     // If the last 2 digits >= 60 -> next hour (1hr == 60min)
-//     if ((end_time % 100) >= 60) {
-//         end_time -= (end_time % 100);
-//         end_time += 100;
-
-//         // If the end_time is midnight
-//         if (end_time == 2400) {
-//             end_time = 0000;
-//             add_days += 1;
-//         };
-//     };
-
-//     end_day = parseInt(data.toDate.split('/')[2]) + late_days + add_days
-//     end_day = Date.UTC(parseInt(data.fromDate.split('/')[0]), parseInt(data.fromDate.split('/')[1]), end_day)
-
-//     return lateness = {
-//         end_day: end_day,
-//         end_time: end_time
-//     }
-//     /*
-//     from: Date.UTC(parseInt(fromDate[0]), parseInt(fromDate[1]), parseInt(fromDate[2]), fromTime),
-//                         to: Date.UTC(parseInt(toDate[0]), parseInt(toDate[1]), parseInt(toDate[2]), toTime),
-//                         label: `${data.taskId}`,
-//                         tooltip_data: 'Assigned time to complete task',
-//                         fromTime: data.fromTime,
-//                         toTime: data.toTime */
-// }
-
 
 /**
  * @function Obtaining the data to be shown in the basic dataviewer table and appending it directly to the table as well as controlling the pagination view of said table
  *           This will handle SORTING, FILTERING and OBTAINING data && Pagination
  * 
- * @params {string} projectId The project ID of the new task that is to be inserted
- * @params {string} duration The duration of the new task that is to be inserted
- * @params {string} sortBy The column to be sorted by
- * @params {string} page The page number that we are on / navigating to
- * @params {string} pageNum The number of tasks displayed on each page
+ * @param {string} projectId The project ID of the new task that is to be inserted
+ * @param {string} duration The duration of the new task that is to be inserted
+ * @param {string} sortBy The column to be sorted by
+ * @param {string} page The page number that we are on / navigating to
+ * @param {string} pageNum The number of tasks displayed on each page
  */
 function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
     var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
@@ -222,7 +171,7 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
          * @function Handling the event in which the ajax request call has an error
          * 
          * @param xhr The XMLHttpRequest
-         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param {string} textStatus A string stating whether the call was a success or failure
          * @param err The error message / response sent back by the server
          */
         error: function(xhr, textStatus, err) {
@@ -240,11 +189,11 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
  * @function Obtaining the data to be shown in the advanced dataviewer table and appending it directly to the table as well as controlling the pagination view of said table
  *           This will handle SORTING, FILTERING and OBTAINING data && Pagination
  * 
- * @params {string} projectId The project ID of the new task that is to be inserted
- * @params {string} duration The duration of the new task that is to be inserted
- * @params {string} sortBy The column to be sorted by
- * @params {string} page The page number that we are on / navigating to
- * @params {string} pageNum The number of tasks displayed on each page
+ * @param {string} projectId The project ID of the new task that is to be inserted
+ * @param {string} duration The duration of the new task that is to be inserted
+ * @param {string} sortBy The column to be sorted by
+ * @param {string} page The page number that we are on / navigating to
+ * @param {string} pageNum The number of tasks displayed on each page
  */
 function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
     var url = `http://localhost:3000/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
@@ -416,6 +365,13 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
 };
 
 
+/**
+ * @function Obtaining the data to be shown in the basic resultViewer table and appending it directly to the table as well as using said data to create a graph that will provide a graphical view of the data
+ * 
+ * @param {String} projectId The project ID whose task lateness is to be computed
+ * @param {String} startDate The start date of the project
+ * @param {String} startTime The start time of the project
+ */
 function basic_obtainResult(projectId, startDate, startTime) {
     // Define some correct values first -> REMOVE THIS
     projectId = '1100000004';

@@ -49,6 +49,7 @@ advancedDB.init(pool);
 const model = {
     basic: basicDB,
     advanced: advancedDB,
+    pool: pool
 };
 
 module.exports = model;
