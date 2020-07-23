@@ -10,10 +10,12 @@
 
 // Importing the modules to be packaged
 const basicAlgo = require('./basicAlgo');
+const advancedAlgo = require('./advancedAlgo');
 
 // Creating the main obj to export
 const algo = {
-    basic: basicAlgo
+    basic: basicAlgo,
+    advanced: advancedAlgo
 };
 
 module.exports = algo;
