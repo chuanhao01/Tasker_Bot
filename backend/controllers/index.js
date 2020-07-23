@@ -28,6 +28,26 @@ const controllers = {
      * 
      */
     init(app){
+        // For the backend test runner to work
+        app.get('/reset', function(req, res){
+            const dbScripts = require('../scripts/dbScripts');
+            const model = require('../db/index');
+            new Promise((resolve) => {
+                resolve(
+                    dbScripts.dbInit(model.pool)
+                );
+            })
+            .then(
+                function(){
+                    res.status(200).send({success: true});
+                }
+            )
+            .catch(
+                function(err){
+                    res.status(500).send({error: err});
+                }
+            );
+        });
         basicController.init(app);
         advancedController.init(app);
     }
