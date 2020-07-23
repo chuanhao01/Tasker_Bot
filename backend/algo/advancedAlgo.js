@@ -43,7 +43,15 @@ const advancedAlgo = {
             // Tasks for each person to be returned
             let personTasks = [[], []];
             for(let i=0; i<tasksAllocation.length; i++){
-                personTasks[tasksAllocation[i]].push(tasks[i]);
+                // Taking the choosen task
+                const choosenTask = tasks[i];
+                const resultTask = {
+                    'projectId': choosenTask['projectid'],
+                    'taskId': choosenTask['taskid'],
+                    'duration': choosenTask['duration']
+                };
+                // Place it for the 1st or 2nd person
+                personTasks[tasksAllocation[i]].push(resultTask);
             }
             return personTasks;
         },

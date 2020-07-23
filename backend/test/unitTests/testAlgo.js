@@ -321,8 +321,8 @@ describe('Algo Test Suite', function(){
                 const expectedResults = [
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '1',
+                            'projectId': '1',
+                            'taskId': '1',
                             'duration': 1
                         }
                     ],
@@ -357,25 +357,25 @@ describe('Algo Test Suite', function(){
                 const expectedResults = [
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '2',
+                            'projectId': '1',
+                            'taskId': '2',
                             'duration': 1,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '4',
+                            'projectId': '1',
+                            'taskId': '4',
                             'duration': 2,
                         }
                     ],
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '1',
+                            'projectId': '1',
+                            'taskId': '1',
                             'duration': 1,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '3',
+                            'projectId': '1',
+                            'taskId': '3',
                             'duration': 2,
                         }
                     ]
@@ -414,30 +414,30 @@ describe('Algo Test Suite', function(){
                 const expectedResults = [
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '2',
+                            'projectId': '1',
+                            'taskId': '2',
                             'duration': 1,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '4',
+                            'projectId': '1',
+                            'taskId': '4',
                             'duration': 2,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '5',
+                            'projectId': '1',
+                            'taskId': '5',
                             'duration': 1,
                         }
                     ],
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '1',
+                            'projectId': '1',
+                            'taskId': '1',
                             'duration': 1,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '3',
+                            'projectId': '1',
+                            'taskId': '3',
                             'duration': 2,
                         }
                     ]
@@ -476,30 +476,30 @@ describe('Algo Test Suite', function(){
                 const expectedResults = [
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '5',
+                            'projectId': '1',
+                            'taskId': '5',
                             'duration': 11,
                         }
                     ],
                     [
                         {
-                            'projectid': '1',
-                            'taskid': '1',
+                            'projectId': '1',
+                            'taskId': '1',
                             'duration': 1,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '2',
+                            'projectId': '1',
+                            'taskId': '2',
                             'duration': 1,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '3',
+                            'projectId': '1',
+                            'taskId': '3',
                             'duration': 2,
                         },
                         {
-                            'projectid': '1',
-                            'taskid': '4',
+                            'projectId': '1',
+                            'taskId': '4',
                             'duration': 2,
                         },
                     ]
