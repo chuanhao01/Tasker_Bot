@@ -705,6 +705,36 @@ function advanced_obtainResult(projectId) {
 
 
 
+
+            // Generate the data for the graph
+            var numMembers = allData.length;
+            var categories = [];
+            for (i = 0; i <= numMembers; i++) {
+                categories.push(`Member ${i + 1}`);
+            };
+
+            var series = []
+            var currentMember = 0;
+            allData.forEach((member) => {
+                currentMember++;
+
+                for (i = 0; i < member.length; i++) {
+                    var currentTask = member[i];
+
+                    item = {
+                        name: `Task ${currentTask.taskId}`,
+                        data: [parseInt(currentTask.duration)]
+                    };
+
+                    for (count = 1; count < currentMember; count++) {
+                        item.data.unshift(0)
+                    };
+
+                    series.push(item);
+                };
+            });
+
+
             // Graph
             new Highcharts.chart({
                 chart: {
@@ -716,7 +746,7 @@ function advanced_obtainResult(projectId) {
                 },
 
                 xAxis: {
-                    categories: ['Member 1', 'Member 2'],
+                    categories: categories,
                     title: {
                         text: 'Member'
                     }
@@ -735,26 +765,7 @@ function advanced_obtainResult(projectId) {
                     }
                 },
 
-                series: [{
-                    name: 'Task 1',
-                    data: [5]
-                }, 
-                {
-                    name: 'Task 2',
-                    data: [0, 10]
-                },
-                {
-                    name: 'Task 3',
-                    data: [0, 10]
-                },
-                {
-                    name: 'Task 4',
-                    data: [0, 5]
-                },
-                {
-                    name: 'Task 5',
-                    data: [0, 20]
-                }]
+                series: series
             });
         },
 
