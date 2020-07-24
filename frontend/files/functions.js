@@ -645,10 +645,72 @@ function basic_obtainResult(projectId, startDate, startTime) {
 };
 
 
+function advanced_obtainResult(projectId) {
+    // Define some correct values first -> REMOVE THIS
+    projectId = '1005';
+    
+    var url = `http://localhost:3000/advance/result?projectId=${projectId}`;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+
+        /**
+         * @function Handling the event in which the ajax request call is a success
+         * 
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
+         */
+        success: function(data, textStatus, xhr) {
+            data = data.result;
+            let memberCount = 0;
+
+            data.forEach((member) => {
+                memberCount++;
+
+                var total_taskCount = member.length;
+                var taskCount = 0
+                var assignmentResults = []
+
+                var tasksAssigned = '';
+                var hoursAssigned = 0;
+
+                member.forEach((task) => {
+                    taskCount++;
+                    
+                    tasksAssigned += task.taskId + ", ";
+                    hoursAssigned += parseInt(task.duration);   
+                    
+                    if (taskCount == total_taskCount) {
+                        // Trim off the ending ", "
+                        tasksAssigned = tasksAssigned.slice(0, tasksAssigned.length - 2);
+
+                        assignmentResults.push(tasksAssigned);
+                        assignmentResults.push(hoursAssigned);
+                    };
+                });
+
+                var dataHtml = `
+                    <tr class='dataRow' id='data_${memberCount}'>
+                        <th scope="row" id="member_data">${memberCount}</th>
+                        <th id="tasksAssigned_data">${assignmentResults[0]}</th>
+                        <th id="hoursAssigned_data">${assignmentResults[1]}</th>
+                    </tr>
+                `;
+                $('#advanced_resultTableBody').append(dataHtml);
+            });
+        }
+    })
+}
+
+
 const allFunctions = {
     basic_obtainData: basic_obtainData,
     advanced_obtainData: advanced_obtainData,
-    basic_obtainResult: basic_obtainResult
+    basic_obtainResult: basic_obtainResult,
+    advanced_obtainResult: advanced_obtainResult
 }
 
 module.exports = allFunctions;
