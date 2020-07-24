@@ -664,10 +664,11 @@ function advanced_obtainResult(projectId) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
-            data = data.result;
+            var allData = data.result;
             let memberCount = 0;
 
-            data.forEach((member) => {
+            // Table
+            allData.forEach((member) => {
                 memberCount++;
 
                 var total_taskCount = member.length;
@@ -701,6 +702,75 @@ function advanced_obtainResult(projectId) {
                 `;
                 $('#advanced_resultTableBody').append(dataHtml);
             });
+
+
+
+            // Graph
+            new Highcharts.chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Distribution of tasks and hours assigned per member'
+                },
+
+                xAxis: {
+                    categories: ['Member 1', 'Member 2'],
+                    title: {
+                        text: 'Member'
+                    }
+                },
+
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Hours Assigned'
+                    }
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+
+                series: [{
+                    name: 'Task 1',
+                    data: [5]
+                }, 
+                {
+                    name: 'Task 2',
+                    data: [0, 10]
+                },
+                {
+                    name: 'Task 3',
+                    data: [0, 10]
+                },
+                {
+                    name: 'Task 4',
+                    data: [0, 5]
+                },
+                {
+                    name: 'Task 5',
+                    data: [0, 20]
+                }]
+            });
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred in: advanced_obtainResult()");
         }
     })
 }
