@@ -3,9 +3,11 @@
 ## Wireframe
 
 Starting view:
+
 ![Wireframe](justifications/resultViewer_start.PNG)
 
 After computation:
+
 ![Wireframe](justifications/basic_resultViewer.PNG)
 
 ## Justifications
