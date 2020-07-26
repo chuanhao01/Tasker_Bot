@@ -169,13 +169,30 @@ const dataParser = {
          */
         getEqualSplitResults(results){
             // Parse all duration by rounding and parse to string
+            let newResults = [];
             for(let tasks of results){
+                let newTasks = [];
                 for(let task of tasks){
-                    task['duration'] = dataParser.all.roundHours(task['duration']);
+                    // Extracing the values from task
+                    let projectId = task['projectId'];
+                    let taskId = task['taskId'];
+                    let duration = task['duration'];
+                    // Parsing the values
+                    projectId = parseInt(projectId);
+                    taskId = parseInt(taskId);
+                    duration = dataParser.all.roundHours(duration);
+                    // Creating the newTask
+                    let newTask = {
+                        'projectId': projectId,
+                        'taskId': taskId,
+                        'duration': duration
+                    };
+                    newTasks.push(newTask);
                 }
+                newResults.push(newTasks);
             }
             const parsedResults = {
-                'result': results
+                'result': newResults
             };
             return parsedResults;
         }
