@@ -62,6 +62,7 @@ const dataParser = {
             const rowCount = parseInt(pgRes[1].rows[0].count);
             // Calculating last page and parsing duration into HOURS data type
             const lastPage = dataParser.all.calculateLastPage(rowCount, pageNum);
+            // Calculating/Parsing the newData
             let newData = [];
             for(let task of data){
                 // Getting the values
@@ -135,11 +136,27 @@ const dataParser = {
             const rowCount = parseInt(pgRes[1].rows[0].count);
             // Calculating last page and parsing duration into HOURS data type
             const lastPage = dataParser.all.calculateLastPage(rowCount, pageNum);
+            // Calculating and parsing for the newData
+            let newData = [];
             for(let task of data){
-                task['duration'] = dataParser.all.roundHours(task['duration']);
+                // Extracing the values from task
+                let projectId = task['projectid'];
+                let taskId = task['taskid'];
+                let duration = task['duration'];
+                // Parsing the values
+                projectId = parseInt(projectId);
+                taskId = parseInt(taskId);
+                duration = dataParser.all.roundHours(duration);
+                // Creating the newTask
+                let newTask = {
+                    'projectId': projectId,
+                    'taskId': taskId,
+                    'duration': duration
+                };
+                newData.push(newTask);
             }
             const parsedData = {
-                'data': data,
+                'data': newData,
                 'lastPage': lastPage
             };
             return parsedData;
