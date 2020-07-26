@@ -96,9 +96,10 @@ As a brief overview, `projectId` and `duration` act as filters, with `sortBy` ac
 | pageNum   | Positive `Number` Integer greater than 0          | `pageNum=5`                | Yes      | `pageNum=10`      |
 
 ### Errors
+
 | HTTP Error Code | Error Description             | Remarks |
 |-----------------|-------------------------------|---------|
-| 409             | Wrong syntax for query Params | NIL     |
+| 400             | Wrong syntax for query Params | NIL     |
 | 500             | Server Error/Database error   | NIL     |
 
 ### Response Body
@@ -121,7 +122,7 @@ As a brief overview, `projectId` and `duration` act as filters, with `sortBy` ac
 }
 ```
 
-### Error
+### Error Body
 
 ```json
 {
