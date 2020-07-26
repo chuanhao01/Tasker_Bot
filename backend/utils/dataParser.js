@@ -104,6 +104,7 @@ const dataParser = {
          */
         getResults(results){
             for(let task of results.data){ 
+                task['taskId'] = parseInt(task['taskId']);
                 task['deadlineDate'] = task['deadlineDate'].format('YYYY/MM/DD');
                 task['deadlineTime'] = task['deadlineTime'].substring(0, 5).replace(':', '');
                 task['lateness'] = dataParser.all.roundHours(task['lateness']);
