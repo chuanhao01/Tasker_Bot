@@ -190,13 +190,13 @@ For this request, as it is a post request, there are no optional query parameter
 
 Table for insert (`data`) object  
 
-| Parameter | Datatype    | example    | Optional | Default Behaviour | Remarks                                               |
+| Parameter | Datatype    | Example    | Optional | Default Behaviour | Remarks                                               |
 |-----------|-------------|------------|----------|-------------------|-------------------------------------------------------|
-| taskId    | INDENTIFIER | 1          | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '1'    |
-| projectId | INDENTIFIER | 1          | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '1'    |
-| dueDate   | DATE        | 1980/01/01 | No       | NIL               | NIL                                                   |
-| dueTime   | TIME        | 2211       | No       | NIL               | NIL                                                   |
-| duration  | HOURS       | 20.1       | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '20.1' |
+| taskId    | `INDENTIFIER` | 1          | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '1'    |
+| projectId | `INDENTIFIER` | 1          | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '1'    |
+| dueDate   | `DATE`        | 1980/01/01 | No       | NIL               | NIL                                                   |
+| dueTime   | `TIME`        | 2211       | No       | NIL               | NIL                                                   |
+| duration  | `HOURS`       | 20.1       | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '20.1' |
 
 ### Errors
 
