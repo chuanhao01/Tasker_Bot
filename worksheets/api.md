@@ -55,6 +55,7 @@ Each API should include
     - [Sample Error](#sample-error-3)
   - [Advance Bulk Insert Data](#advance-bulk-insert-data)
     - [Request body](#request-body-1)
+    - [Errors](#errors-4)
     - [Response Body](#response-body-4)
     - [Error](#error)
     - [Sample Request](#sample-request-4)
@@ -497,15 +498,21 @@ For this request, as it is a post request, there are no optional query parameter
 |-----------|------------------|-------------------------------------------------|----------|-------------------|
 | data      | Array of objects | {taskId, projectId, duration} | No       | NIL               |
 
+Table for insert(`data`) objects  
 
-Table for insert objects  
-| parameter | datatype                                    | example    | Optional | Default Behaviour |
-|-----------|---------------------------------------------|------------|----------|-------------------|
-| taskId    | 10 digit number (int)                       | 0000000001 | No       | NIL               |
-| projectId | 10 digit number (int)                       | 0000000001 | No       | NIL               |
-| duration  | an integer(maximum of 10 digits) (int)      | 20         | No       | NIL               |
+| parameter | datatype     | example | Optional | Default Behaviour |
+|-----------|--------------|---------|----------|-------------------|
+| taskId    | `IDENTIFIER` | 1       | No       | NIL               |
+| projectId | `IDENTIFIER` | 1       | No       | NIL               |
+| duration  | `HOUR`       | 20      | No       | NIL               |
 
+### Errors
 
+| HTTP Error Code | Error Description           | Remarks                                                                        |
+|-----------------|-----------------------------|--------------------------------------------------------------------------------|
+| 400             | Invalid data format         | NIL                                                                            |
+| 409             | Duplicate entries           | Most likely due to duplicate `taskId` either in the request or in the database |
+| 500             | Database Error/Server Error | NIL                                                                            |
 
 ### Response Body
 
@@ -520,7 +527,7 @@ Table for insert objects
 ```json
 {
 	"error": String,
-	"code": Int
+	"code": Number 
 }
 ```
 
