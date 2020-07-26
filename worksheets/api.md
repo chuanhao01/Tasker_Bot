@@ -92,7 +92,7 @@ As a brief overview, `projectId` and `duration` act as filters, with `sortBy` ac
 | parameter | datatype                                          | example                    | Optional | Default Behaviour |
 |-----------|---------------------------------------------------|----------------------------|----------|-------------------|
 | projectId | `IDENTIFIER`                                      | `projectId[>=]=123456789`  | Yes      | NIL               |
-| duration  | Positive `Number` Integer greater than 0          | `duration[<]=10`           | Yes      | NIL               |
+| duration  | `HOUR`                                            | `duration[<]=10`           | Yes      | NIL               |
 | sortBy    | A `String` in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
 | page      | Positive `Number` Integer greater than 0          | `page=10`                  | Yes      | `page=1`          |
 | pageNum   | Positive `Number` Integer greater than 0          | `pageNum=5`                | Yes      | `pageNum=10`      |
