@@ -306,16 +306,16 @@ For the `result` attribute in the response body:
 
 For the attributes in the `data`:  
 
-| parameter    | datatype   | example            | Remarks                                                                                                                    |
+| Parameter    | Datatype   | Example            | Remarks                                                                                                                    |
 |--------------|------------|--------------------|----------------------------------------------------------------------------------------------------------------------------|
-| taskId       | IDENTIFIER | 1                  | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| deadlineDate | DATE       | 1980/01/01         | The original deadline given in task data                                                                                   |
-| deadlineTime | TIME       | 2211               | The original deadline given in task data                                                                                   |
-| fromDate     | DATE       | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| fromTime     | TIME       | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| toDate       | DATE       | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| toTime       | TIME       | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| lateness     | HOUR       | 1, 0.012, 1.123, 0 | Minimum number of hours of lateness (rounded to 3dp) of the tasks completion compared to the given startTime and startDate |
+| taskId       | `IDENTIFIER` | 1                  | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| deadlineDate | `DATE`       | 1980/01/01         | The original deadline given in task data                                                                                   |
+| deadlineTime | `TIME`       | 2211               | The original deadline given in task data                                                                                   |
+| fromDate     | `DATE`       | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| fromTime     | `TIME`       | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| toDate       | `DATE`       | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| toTime       | `TIME`       | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| lateness     | `HOUR`       | 1, 0.012, 1.123, 0 | Minimum number of hours of lateness (rounded to 3dp) of the tasks completion compared to the given startTime and startDate |
 
 ```json
 {
