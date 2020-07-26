@@ -62,24 +62,33 @@ const dataParser = {
             const rowCount = parseInt(pgRes[1].rows[0].count);
             // Calculating last page and parsing duration into HOURS data type
             const lastPage = dataParser.all.calculateLastPage(rowCount, pageNum);
-            for(let i=0; i<data.length; i++){
+            let newData = [];
+            for(let task of data){
                 // Getting the values
-                let dueDate = data[i].duedate.format('YYYY/MM/DD');
-                let dueTime = data[i].duetime;
-                let duration = data[i].duration;
-                let projectId = data[i].projectid;
-                let taskId = data[i].taskId;
+                let dueDate = task['duedate'];
+                let dueTime = task['duetime'];
+                let duration = task['duration'];
+                let projectId = task['projectid'];
+                let taskId = task['taskid'];
                 // Formatting and parsing them
+                dueDate = dueDate.format('YYYY/MM/DD');
                 dueTime = dueTime.substring(0, 5);
                 dueTime = dueTime.replace(':', '');
                 duration = dataParser.all.roundHours(duration);
-                // Setting values back
-                data[i].duedate = dueDate;
-                data[i].duetime = dueTime;
-                data[i].duration = duration;
+                projectId = parseInt(projectId);
+                taskId = parseInt(taskId);
+                // Creating new task to hold the new data
+                let newTask = {
+                    'dueDate': dueDate,
+                    'dueTime': dueTime,
+                    'duration': duration,
+                    'projectId': projectId,
+                    'taskId': taskId
+                };
+                newData.push(newTask);
             }
             const parsedData = {
-                'data': data,
+                'data': newData,
                 'lastPage': lastPage
             };
             return parsedData;
