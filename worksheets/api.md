@@ -22,6 +22,7 @@ Each API should include
 - [Basic problem API endpoints](#basic-problem-api-endpoints)
   - [Basic GET data API](#basic-get-data-api)
     - [Query parameters](#query-parameters)
+    - [Errors](#errors)
     - [Response Body](#response-body)
     - [Error](#error)
     - [Sample Request](#sample-request)
@@ -84,16 +85,21 @@ As this is a GET API endpoint, no request body is expected and only optional que
 
 ### Query parameters
 
-As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
+As a brief overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
 
-| parameter | datatype                                        | example                    | Optional | Default Behaviour |
-|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
-| projectId | number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
-| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
-| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
-| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
-| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
+| parameter | datatype                                          | example                    | Optional | Default Behaviour |
+|-----------|---------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | `IDENTIFIER`                                      | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | Positive `Number` Integer greater than 0          | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A `String` in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive `Number` Integer greater than 0          | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive `Number` Integer greater than 0          | `pageNum=5`                | Yes      | `pageNum=10`      |
 
+### Errors
+| HTTP Error Code | Error Description             | Remarks |
+|-----------------|-------------------------------|---------|
+| 409             | Wrong syntax for query Params | NIL     |
+| 500             | Server Error/Database error   | NIL     |
 
 ### Response Body
 
@@ -102,15 +108,15 @@ As a breif overview, `projectId` and `duration` act as filters, with `sortBy` ac
     "result": {
         "data": [
             {
-                "projectId": number,
-                "taskId": number,
-                "dueDate": string,
-                "dueTime": number,
-                "duration": number
+                "projectId": IDENTIFIER,
+                "taskId": IDENTIFIER,
+                "dueDate": String,
+                "dueTime": String,
+                "duration": Number 
             },
             ...
         ],
-        "lastPage": number
+        "lastPage": Number
     }
 }
 ```
@@ -119,8 +125,8 @@ As a breif overview, `projectId` and `duration` act as filters, with `sortBy` ac
 
 ```json
 {
-	"error": string,
-	"code": number
+	"error": String,
+	"code": Number 
 }
 ```
 
@@ -141,7 +147,7 @@ GET /basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&p
                 "projectId": 1234567890,
                 "dueDate": "2020/01/13",
                 "dueTime": "2200",
-                "duration": 1,
+                "duration": 1.01,
             }
         ],
         "lastPage": 2
