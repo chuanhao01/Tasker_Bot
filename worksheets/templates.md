@@ -13,6 +13,11 @@ For `API.md`
 | --------- | --------------- | --------- |
 | id        | 10 digit number | 123456789 |
 
+### Errors
+| HTTP Error Code | Error Description             | Remarks |
+|-----------------|-------------------------------|---------|
+| 409             | Wrong syntax for query Params | NIL     |
+
 ### Response Body
 
 ```json
@@ -33,7 +38,7 @@ For `API.md`
 ```json
 {
 	"error": string,
-	"code": number
+    "code": number
 }
 ```
 
