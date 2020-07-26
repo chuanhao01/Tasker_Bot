@@ -91,7 +91,7 @@ As this is a GET API endpoint, no request body is expected and only optional que
 
 As a brief overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
 
-| parameter | datatype                                          | example                    | Optional | Default Behaviour |
+| Parameter | Datatype                                          | Example                    | Optional | Default Behaviour |
 |-----------|---------------------------------------------------|----------------------------|----------|-------------------|
 | projectId | `IDENTIFIER`                                      | `projectId[>=]=123456789`  | Yes      | NIL               |
 | duration  | `HOUR`                                            | `duration[<]=10`           | Yes      | NIL               |
