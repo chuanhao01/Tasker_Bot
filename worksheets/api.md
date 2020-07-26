@@ -500,7 +500,7 @@ For this request, as it is a post request, there are no optional query parameter
 
 Table for insert(`data`) objects  
 
-| parameter | datatype     | example | Optional | Default Behaviour |
+| Parameter | Datatype     | Example | Optional | Default Behaviour |
 |-----------|--------------|---------|----------|-------------------|
 | taskId    | `IDENTIFIER` | 1       | No       | NIL               |
 | projectId | `IDENTIFIER` | 1       | No       | NIL               |
