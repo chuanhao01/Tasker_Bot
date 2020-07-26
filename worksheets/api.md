@@ -62,8 +62,8 @@ Each API should include
 |-----------|-------------------------------------------------|----------------------------|----------|
 | TIME | `String` with the format (HHMM) | `"2359", "0000", "1421"` | "2400" and larger times are not accepted| 
 | DATE | `String` with the format (YYYY/MM/DD) | `"2020/01/13", "1912/12/29"` | NIL | 
-| IDENTIFIER| 10 digit `String`/`Number` | `0, "1", 9999999999, "9999999999", 123, "123"` | Decimals are not accepted (`"23.1", 0.0, "1.0"`). Also note that this is used as a unique identifier, duplicates will be rejected. Note the difference in the remarks when used in the APIs| 
-| HOUR| `Number`/`String` of hours in 3d.p. | `3.123, "0.123", "123.999"` | Note the difference in the remarks when used in the APIs | 
+| IDENTIFIER| 10 digit `Number` | `0, 9999999999, 123` | Decimals are not accepted (`23.1, 0.0, 1.0`). Also note that this is used as a unique identifier, duplicates will be rejected. Note the difference in the remarks when used in the APIs| 
+| HOUR| `Number` of hours in 3d.p. | `3.123, 0.12, 123, 4.0` | Note the difference in the remarks when used in the APIs | 
 
 # Basic problem API endpoints
 Below will be the API endpoints related to the basic problem statement.
