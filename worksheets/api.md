@@ -302,7 +302,7 @@ For the `result` attribute in the response body:
 | parameter     | datatype         | example                                                | Remarks                                                                 |
 |---------------|------------------|--------------------------------------------------------|-------------------------------------------------------------------------|
 | result        | Array of objects | {taskId, fromDate, fromTime, toDate, toTime, lateness} | Refer below to description of the attributes                            |
-| totalLateness | HOUR             | 1, 0.012, 1.123, 0                                     | Calculated total minimum lateness of all the tasks given in the project |
+| totalLateness | `HOUR`             | 1, 0.012, 1.123, 0                                     | Calculated total minimum lateness of all the tasks given in the project |
 
 For the attributes in the `data`:  
 
