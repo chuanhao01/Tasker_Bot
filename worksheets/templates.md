@@ -17,7 +17,7 @@ For `API.md`
 
 | HTTP Error Code | Error Description             | Remarks |
 |-----------------|-------------------------------|---------|
-| 409             | Wrong syntax for query Params | NIL     |
+| 400             | Wrong syntax for query Params | NIL     |
 
 ### Response Body
 
