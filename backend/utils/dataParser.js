@@ -21,11 +21,11 @@ const dataParser = {
          *
          * @param {Number} hours the hours in number format
          * 
-         * @returns {String} String representation of the hours rounded off to 3dp
+         * @returns {Number} Number representation of the hours rounded off to 3dp
          * 
          */
         roundHours(hours){
-            return (Math.round((hours + Number.EPSILON) * 1000) / 1000).toString(10);
+            return parseFloat((Math.round((hours + Number.EPSILON) * 1000) / 1000).toString(10));
         },
         /**
          * @function
@@ -34,12 +34,12 @@ const dataParser = {
          * @param {Number} rowCount The number of rows in the db based on the get model query, taken from req
          * @param {Number} pageNum The number of pages queried in the get request
          * 
-         * @returns {String} The string representation of the last page of a given query
+         * @returns {Number} The Number representation of the last page of a given query
          * 
          */
         calculateLastPage(rowCount, pageNum){
             const lastPage = Math.ceil(rowCount/pageNum);
-            return lastPage.toString(10);
+            return lastPage;
         }
     },
 
@@ -67,6 +67,8 @@ const dataParser = {
                 let dueDate = data[i].duedate.format('YYYY/MM/DD');
                 let dueTime = data[i].duetime;
                 let duration = data[i].duration;
+                let projectId = data[i].projectid;
+                let taskId = data[i].taskId;
                 // Formatting and parsing them
                 dueTime = dueTime.substring(0, 5);
                 dueTime = dueTime.replace(':', '');
