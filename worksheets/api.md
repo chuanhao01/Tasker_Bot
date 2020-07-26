@@ -47,15 +47,16 @@ Each API should include
 - [Advanced problem API endpoints](#advanced-problem-api-endpoints)
   - [Advacned Get data API](#advacned-get-data-api)
     - [Query parameters](#query-parameters-2)
+    - [Errors](#errors-3)
     - [Response Body](#response-body-3)
-    - [Error](#error)
+    - [Error Body](#error-body-3)
     - [Sample Request](#sample-request-3)
     - [Sample Response](#sample-response-3)
     - [Sample Error](#sample-error-3)
   - [Advance Bulk Insert Data](#advance-bulk-insert-data)
     - [Request body](#request-body-1)
     - [Response Body](#response-body-4)
-    - [Error](#error-1)
+    - [Error](#error)
     - [Sample Request](#sample-request-4)
     - [Sample Response](#sample-response-4)
     - [Sample Error](#sample-error-4)
@@ -403,13 +404,20 @@ As this is a GET API endpoint, no request body is expected and only optional que
 
 As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
 
-| parameter | datatype                                        | example                    | Optional | Default Behaviour |
-|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
-| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
-| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
-| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
-| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
-| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
+| Parameter | Datatype                                          | Example                    | Optional | Default Behaviour |
+|-----------|---------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | `IDENTIFIER`                                      | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | `HOUR` | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A `String` in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive `Number` Integer greater than 0          | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive `Number` Integer greater than 0          | `pageNum=5`                | Yes      | `pageNum=10`      |
+
+### Errors
+
+| HTTP Error Code | Error Description             | Remarks |
+|-----------------|-------------------------------|---------|
+| 400             | Wrong syntax for query Params | NIL     |
+| 500             | Server Error/Database error   | NIL     |
 
 ### Response Body
 
@@ -418,23 +426,23 @@ As a breif overview, `projectId` and `duration` act as filters, with `sortBy` ac
     "result": {
         "data": [
             {
-                "projectId": number,
-                "taskId": number,
-                "duration": number
+                "projectId": IDENTIFIER,
+                "taskId": IDENTIFIER,
+                "duration": HOUR
             },
             ...
         ],
-        "lastPage": number
+        "lastPage": HOUR
     }
 }
 ```
 
-### Error
+### Error Body
 
 ```json
 {
-	"error": string,
-	"code": number
+	"error": String,
+	"code": Number
 }
 ```
 
