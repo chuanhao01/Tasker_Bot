@@ -281,11 +281,11 @@ This is the API endpoint to get the result for the basic problem statement
 
 ### Query parameters
 
-| parameter | datatype   | example                   | Optional | Default Behaviour |
+| Parameter | Datatype   | Example                   | Optional | Default Behaviour |
 |-----------|------------|---------------------------|----------|-------------------|
-| projectId | IDENTIFIER | `projectId[>=]=123456789` | No       | NIL               |
-| startDate | DATE       | `startDate=1980/01/01`    | No       | NIL               |
-| startTime | TIME       | `startTime=2211`          | No       | NIL               |
+| projectId | `IDENTIFIER` | `projectId[>=]=123456789` | No       | NIL               |
+| startDate | `DATE`       | `startDate=1980/01/01`    | No       | NIL               |
+| startTime | `TIME`       | `startTime=2211`          | No       | NIL               |
 
 ### Errors  
 
