@@ -24,6 +24,9 @@
     <!-- Highcharts -->
     <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
 
+    <!-- Momentjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
     <!-- External Scripts -->
     <script src="./functions.js"></script>
     <script src="./script.js"></script>
@@ -61,335 +64,59 @@
             </div>
         </nav>
         <div class="jumbotron jumbotron fluid">
-            <h2 class="text-center">FSP Basic Result Viewer</h2>
+            <h2 class="text-center">FSP Advanced Result Viewer</h2>
         </div>
     </header>
     
 
     <!-- Table containing data -->
-    <div class="mr-4 ml-5 pb-5" id="resultTable">
+    <div class="mr-4 ml-5" id="resultTable">
         <div class="row">
             <!-- Input group above the table => Computation input -->
             <div class="input-group p-2 row">
-                <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                <div class="col-sm-4 col-md-4 col-lg-4"></div>
 
-                <!-- Filtering data: Choose attribue to filter by -->
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1">
-                    <input type="text" class="form-control" placeholder="Enter projectID value..">
-                </div>
-    
-                <!-- Filtering data: Choose operation to filter attribute by -->
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1">
-                    <input type="text" class="form-control" placeholder="Enter startDate value..">
-                </div>
-
-                <!-- Filtering data: Input value to complete the filter 'equation' -->
-                <div class="col-sm-3 col-md-3 col-lg-3 p-0 pr-1 ">
-                    <input type="text" class="form-control" placeholder="Enter startTime value..">
+                <!-- ProjectId value for lateness computation -->
+                <div class="col-sm-4 col-md-4 col-lg-4 p-0 pr-1">
+                    <input type="text" class="form-control" id="compute_projectId" placeholder="Enter projectID value..">
                 </div>
     
                 <div class="input-group-append p-0">
-                    <button class="btn btn-secondary" type="button">Compute</button>
+                    <button class="btn btn-secondary" type="button" id="computeBtn">Compute</button>
                 </div>
             </div>
         </div>
 
-        <div class="dataViewer">
-            <div class="row table-responsive" id="dataViewerTable">
+        <div class="resultViewer" hidden>
+            <div class="row table-responsive" id="advanced_resultViewerTable">
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th id="sortBtn">Task ID &#9660;</th>
-                            <th id="sortBtn">Project ID &#9660;</th>
-                            <th id="sortBtn">Start date &#9660;</th>
-                            <th id="sortBtn">Start time &#9660;</th>
-                            <th id="sortBtn">End date &#9660;</th>
-                            <th id="sortBtn">End time &#9660;</th>
-                            <th id="sortBtn">Lateness (in Hrs) &#9660;</th>
+                            <th id="sortBtn">Members &#9660;</th>
+                            <th id="sortBtn">Tasks Assigned &#9660;</th>
+                            <th id="sortBtn">Hours Assigned &#9660;</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <th>1</th>
-                            <th>29/03/2020</th>
-                            <th>29/05/2020</th>
-                            <th>1300</th>
-                            <th>0000</th>
-                            <th>4</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">2</th>
-                            <th>2</th>
-                            <th>05/04/2020</th>
-                            <th>10/04/2020</th>
-                            <th>0000</th>
-                            <th>0000</th>
-                            <th>0</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">3</th>
-                            <th>2</th>
-                            <th>30/03/2020</th>
-                            <th>18/04/2020</th>
-                            <th>1500</th>
-                            <th>1200</th>
-                            <th>1</th>
-                        </tr>
-    
-                        <tr>
-                            <th scope="row">4</th>
-                            <th>1</th>
-                            <th>01/04/2020</th>
-                            <th>02/04/2020</th>
-                            <th>0000</th>
-                            <th>0000</th>
-                            <th>1</th>
-                        </tr>   
+					</thead>
+					
+                    <tbody id='advanced_resultTableBody'>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="row">
-                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-    
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-    
-                        <li class="page-item">
-                            <a class="page-link" href="#!" aria-label="Next">
-                              <span aria-hidden="true">&raquo;</span>
-                              <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-    
-                <div class="ml-auto p-2 col-lg-6 col-md-6 col-sm-6 text-right">
-                    <h6 class="lead">1 of 1 pages (4 items)</h6>
-                </div>
             </div>
         </div>
     </div>
 
-
     <!-- Chart -->
-    <div id="container"></div>
+	<div class="p-5 pt-0" id="container"></div>
+	
 
-    <script>
-        // Defining the tasks
-        $(function () {
-		   	var tasks = [{
-		   	    name: 'Task 1',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015, 05, 21),
-		   	        to: Date.UTC(2015, 07, 21),
-		   	        label: 'Task 2',
-					tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 2',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015, 05, 21),
-		   	        to: Date.UTC(2015, 05, 21),
-		   	        label: 'Task 2',
-					tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 3',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,16),
-		   	        to: Date.UTC(2015,05,21 ),
-		   	        label: 'Task 3',
-                    tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 4',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,06,18 ),
-		   	        to: Date.UTC(2015,07,22),
-		   	        label: 'Task 4',
-                    tooltip_data: 'this data'
-				}, { 
-		   	        from: Date.UTC(2015, 07, 23),
-		   	        to: Date.UTC(2015, 07, 30),
-		   	        label: 'Task 4',
-                    tooltip_data: 'this data'
-				   }],
-				   color: '#CD5C5C'
-		   	}, {
-		   	    name: 'Task 5',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,06,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 5',
-                    tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 6',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,06,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 6',
-                    tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 7',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,10),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 7',
-					tooltip_data: 'this data'
-		   	    }],
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 8',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 8',
-                    tooltip_data: 'this data'
-				}] ,
-					color: '#8FBC8F'
-		   	}, {
-		   	    name: 'Task 9',
-		   	    intervals: [{ // From-To pairs
-		   	        from: Date.UTC(2015,04,17),
-		   	        to: Date.UTC(2015,06,21),
-		   	        label: 'Task 9',
-					tooltip_data: 'this data'
-				   }],
-					color: '#8FBC8F'
-		   	}];
+	<script>
+        // Compute the lateness
+		document.querySelector('#computeBtn').addEventListener('click', function() {
+			var projectId = $('#compute_projectId').val();
 
-			// re-structure the tasks into line series
-		   	var series = [];
-		   	$.each(tasks.reverse(), function(i, task) {
-		   	    var item = {
-		   	        name: task.name,
-					data: [],
-					color: task.color
-		   	    };
-		   	    $.each(task.intervals, function(j, interval) {
-		   	        item.data.push({
-		   	            x: interval.from,
-		   	            y: i,
-		   	            label: interval.label,
-		   	            from: interval.from,
-		   	            to: interval.to,
-						tooltip_data: interval.tooltip_data
-		   	        }, {
-		   	            x: interval.to,
-		   	            y: i,
-		   	            from: interval.from,
-		   	            to: interval.to,
-						tooltip_data: interval.tooltip_data
-					});
-		   	        
-		   	        // add a null value between intervals
-		   	        if (task.intervals[j + 1]) {
-		   	            item.data.push(
-		   	                [(interval.to + task.intervals[j + 1].from) / 2, null]
-		   	            );
-		   	        }
-				});
-				   
-				console.log(item)
-		   	    series.push(item);
-		   	});
-
-		   	// Creating the chart
-		   	var chart = new Highcharts.Chart({
-		   	    chart: {
-		   	        renderTo: 'container'
-		   	    },
-
-		   	    title: {
-		   	        text: 'FSP resultViewer Gantt Chart playground'
-		   	    },
-
-		   	    xAxis: {
-		   	        type: 'datetime'
-		   	    },
-
-		   	    yAxis: {
-                    min:0,
-                    max:8,
-		            categories: ['Task 9',
-		                         'Task 8',
-		                         'Task 7',
-		                         'Task 6',
-		                         'Task 5',
-		                         'Task 4',
-		                         'Task 3',
-		                         'Task 2',
-		                         'Task 1'],
-		   	        tickInterval: 1,            
-		   	        tickPixelInterval: 200,
-		   	        labels: {
-		   	            style: {
-		   	                color: '#525151',
-		   	                font: '12px Helvetica',
-		   	                fontWeight: 'bold'
-		   	            }
-		   	        },
-		   	        startOnTick: false,
-		   	        endOnTick: false,
-		   	        title: {
-		   	            text: null
-		   	        },
-		   	        minPadding: 0.2,
-		   	        maxPadding: 0.2,
-		               fontSize:'15px'
-		   	        
-		   	    },
-
-		   	    legend: {
-		   	        enabled: false
-				},
-				   
-				// Defining the tooltip of each task bar (hover over the relevant bars to view)
-		   	    tooltip: {
-		   	        formatter: function() {
-		   	            return (
-							'<b>' + tasks[this.y].name + 
-							'</b><br/>' + this.point.options.tooltip_data +
-							'<br>' + Highcharts.dateFormat('%m-%d-%Y', this.point.options.from) +
-		   	                ' to ' + Highcharts.dateFormat('%m-%d-%Y', this.point.options.to)); 
-		   	        }
-		   	    },
-
-		   	    plotOptions: {
-		   	        line: {
-		   	            lineWidth: 10,
-		   	            marker: {
-		   	                enabled: false
-		   	            }
-		   	        }
-		   	    },
-
-				// Defining the dataset for the graph as the array 'series' defined at the start of the script
-		   	    series: series
-		   	});		         
-	   });
+            advanced_obtainResult(projectId);
+            $('.resultViewer').removeAttr('hidden')
+		});
     </script>
 </body>
 </html>

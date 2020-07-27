@@ -18,43 +18,57 @@ Each API should include
 ## Table of Contents
 - [API Documentation](#api-documentation)
   - [Table of Contents](#table-of-contents)
+- [Custom Datatypes](#custom-datatypes)
 - [Basic problem API endpoints](#basic-problem-api-endpoints)
   - [Basic GET data API](#basic-get-data-api)
     - [Query parameters](#query-parameters)
+    - [Errors](#errors)
     - [Response Body](#response-body)
-    - [Error](#error)
+    - [Error Body](#error-body)
     - [Sample Request](#sample-request)
     - [Sample Response](#sample-response)
     - [Sample Error](#sample-error)
   - [Basic Bulk Insert Data](#basic-bulk-insert-data)
     - [Request body](#request-body)
+    - [Errors](#errors-1)
     - [Response Body](#response-body-1)
-    - [Error](#error-1)
+    - [Error Body](#error-body-1)
     - [Sample Request](#sample-request-1)
     - [Sample Response](#sample-response-1)
     - [Sample Error](#sample-error-1)
   - [Basic GET Result API](#basic-get-result-api)
     - [Query parameters](#query-parameters-1)
+    - [Errors](#errors-2)
     - [Response Body](#response-body-2)
-    - [Error](#error-2)
+    - [Error body](#error-body-2)
     - [Sample Request](#sample-request-2)
     - [Sample Response](#sample-response-2)
     - [Sample Error](#sample-error-2)
 - [Advanced problem API endpoints](#advanced-problem-api-endpoints)
   - [Advacned Get data API](#advacned-get-data-api)
     - [Query parameters](#query-parameters-2)
+    - [Errors](#errors-3)
     - [Response Body](#response-body-3)
-    - [Error](#error-3)
+    - [Error Body](#error-body-3)
     - [Sample Request](#sample-request-3)
     - [Sample Response](#sample-response-3)
     - [Sample Error](#sample-error-3)
   - [Advance Bulk Insert Data](#advance-bulk-insert-data)
     - [Request body](#request-body-1)
+    - [Errors](#errors-4)
     - [Response Body](#response-body-4)
-    - [Error](#error-4)
+    - [Error](#error)
     - [Sample Request](#sample-request-4)
     - [Sample Response](#sample-response-4)
     - [Sample Error](#sample-error-4)
+
+# Custom Datatypes
+| Datatype Name | Description | Example                    | Remarks | 
+|-----------|-------------------------------------------------|----------------------------|----------|
+| `TIME` | `String` with the format (HHMM) | `"2359", "0000", "1421"` | "2400" and larger times are not accepted| 
+| `DATE` | `String` with the format (YYYY/MM/DD) | `"2020/01/13", "1912/12/29"` | NIL | 
+| `IDENTIFIER`| 10 digit `Number` | `0, 9999999999, 123` | Decimals are not accepted (`23.1, 0.0, 1.0`). Also note that this is used as a unique identifier, duplicates will be rejected. Note the difference in the remarks when used in the APIs| 
+| HOUR| `Number` of hours in 3d.p. | `3.123, 0.12, 123, 4.0` | Note the difference in the remarks when used in the APIs | 
 
 # Basic problem API endpoints
 Below will be the API endpoints related to the basic problem statement.
@@ -75,16 +89,22 @@ As this is a GET API endpoint, no request body is expected and only optional que
 
 ### Query parameters
 
-As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
+As a brief overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
 
-| parameter | datatype                                        | example                    | Optional | Default Behaviour |
-|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
-| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
-| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
-| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
-| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
-| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
+| Parameter | Datatype                                          | Example                    | Optional | Default Behaviour |
+|-----------|---------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | `IDENTIFIER`                                      | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | `HOUR`                                            | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A `String` in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive `Number` Integer greater than 0          | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive `Number` Integer greater than 0          | `pageNum=5`                | Yes      | `pageNum=10`      |
 
+### Errors
+
+| HTTP Error Code | Error Description             | Remarks |
+|-----------------|-------------------------------|---------|
+| 400             | Wrong syntax for query Params | NIL     |
+| 500             | Server Error/Database error   | NIL     |
 
 ### Response Body
 
@@ -93,25 +113,25 @@ As a breif overview, `projectId` and `duration` act as filters, with `sortBy` ac
     "result": {
         "data": [
             {
-                "projectId": number,
-                "taskId": number,
-                "dueDate": string,
-                "dueTime": number,
-                "duration": number
+                "projectId": IDENTIFIER,
+                "taskId": IDENTIFIER,
+                "dueDate": String,
+                "dueTime": String,
+                "duration": Number 
             },
             ...
         ],
-        "lastPage": number
+        "lastPage": Number
     }
 }
 ```
 
-### Error
+### Error Body
 
 ```json
 {
-	"error": string,
-	"code": number
+	"error": String,
+	"code": Number 
 }
 ```
 
@@ -132,7 +152,7 @@ GET /basic/data?projectId[>]=1&duration[<=]=10&sortBy=projectId.asc,taskId.asc&p
                 "projectId": 1234567890,
                 "dueDate": "2020/01/13",
                 "dueTime": "2200",
-                "duration": 1,
+                "duration": 1.01,
             }
         ],
         "lastPage": 2
@@ -164,21 +184,27 @@ For this request, as it is a post request, there are no optional query parameter
 
 ### Request body
 
-| parameter | datatype         | example                                         | Optional | Default Behaviour |
+| Parameter | Datatype         | Example                                         | Optional | Default Behaviour |
 |-----------|------------------|-------------------------------------------------|----------|-------------------|
 | data      | Array of objects | {taskId, projectId, dueDate, dueTime, duration} | No       | NIL               |
 
+Table for insert (`data`) object  
 
-Table for insert objects  
-| parameter | datatype                                    | example    | Optional | Default Behaviour |
-|-----------|---------------------------------------------|------------|----------|-------------------|
-| taskId    | 10 digit number (int)                       | 0000000001 | No       | NIL               |
-| projectId | 10 digit number (int)                       | 0000000001 | No       | NIL               |
-| dueDate   | a date in the format oe yyyy/mm/dd (string) | 1980/01/01 | No       | NIL               |
-| dueTime   | a 24H time in the format of HHMM (string)   | 2211       | No       | NIL               |
-| duration  | an integer(maximum of 10 digits) (int)      | 20         | No       | NIL               |
+| Parameter | Datatype    | Example    | Optional | Default Behaviour | Remarks                                               |
+|-----------|-------------|------------|----------|-------------------|-------------------------------------------------------|
+| taskId    | `INDENTIFIER` | 1          | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '1'    |
+| projectId | `INDENTIFIER` | 1          | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '1'    |
+| dueDate   | `DATE`        | 1980/01/01 | No       | NIL               | NIL                                                   |
+| dueTime   | `TIME`        | 2211       | No       | NIL               | NIL                                                   |
+| duration  | `HOURS`       | 20.1       | No       | NIL               | Inserted IDENTIFIER can also be a string, i.e. '20.1' |
 
+### Errors
 
+| HTTP Error Code | Error Description           | Remarks                                                                        |
+|-----------------|-----------------------------|--------------------------------------------------------------------------------|
+| 400             | Invalid data format         | NIL                                                                            |
+| 409             | Duplicate entries           | Most likely due to duplicate `taskId` either in the request or in the database |
+| 500             | Database Error/Server Error | NIL                                                                            |
 
 ### Response Body
 
@@ -188,12 +214,12 @@ Table for insert objects
 }
 ```
 
-### Error
+### Error Body
 
 ```json
 {
 	"error": String,
-	"code": Int
+	"code": Number
 }
 ```
 
@@ -204,7 +230,7 @@ Sample endpoint
 POST /basic/insert
 ```
 
-Sample body
+Sample request body
 ```json
 {
     "data": [
@@ -255,11 +281,19 @@ This is the API endpoint to get the result for the basic problem statement
 
 ### Query parameters
 
-| parameter | datatype                                        | example                    | Optional | Default Behaviour |
-|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
-| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | No | NIL               |
-| startDate | a date in the format oe yyyy/mm/dd (string) | 1980/01/01 | No       | NIL               |
-| startTime | a 24H time in the format of HHMM (string)   | 2211       | No       | NIL               |
+| Parameter | Datatype   | Example                   | Optional | Default Behaviour |
+|-----------|------------|---------------------------|----------|-------------------|
+| projectId | `IDENTIFIER` | `projectId[>=]=123456789` | No       | NIL               |
+| startDate | `DATE`       | `startDate=1980/01/01`    | No       | NIL               |
+| startTime | `TIME`       | `startTime=2211`          | No       | NIL               |
+
+### Errors  
+
+| HTTP Error Code | Error Description             | Remarks |
+|-----------------|-------------------------------|---------|
+| 400             | Wrong syntax for query Params | NIL     |
+| 404             | ProjectId not found           | NIL     |
+| 500             | Database Error/Server Error   | NIL     |
 
 ### Response Body
 
@@ -268,17 +302,20 @@ For the `result` attribute in the response body:
 | parameter     | datatype         | example                                                | Remarks                                                                 |
 |---------------|------------------|--------------------------------------------------------|-------------------------------------------------------------------------|
 | result        | Array of objects | {taskId, fromDate, fromTime, toDate, toTime, lateness} | Refer below to description of the attributes                            |
-| totalLateness | Hour             | 1, 0.012, 1.123, 0                                     | Calculated total minimum lateness of all the tasks given in the project |
+| totalLateness | `HOUR`             | 1, 0.012, 1.123, 0                                     | Calculated total minimum lateness of all the tasks given in the project |
 
 For the attributes in the `data`:  
-| parameter | datatype                                    | example            | Remarks                                                                                                                    |
-|-----------|---------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------|
-| taskId    | 10 digit number (int)                       | 0000000001         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| fromDate  | a date in the format oe yyyy/mm/dd (string) | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| fromTime  | a 24H time in the format of HHMM (string)   | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| toDate    | a date in the format oe yyyy/mm/dd (string) | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| toTime    | a 24H time in the format of HHMM (string)   | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
-| lateness  | Hour                                        | 1, 0.012, 1.123, 0 | Minimum number of hours of lateness (rounded to 3dp) of the tasks completion compared to the given startTime and startDate |
+
+| Parameter    | Datatype   | Example            | Remarks                                                                                                                    |
+|--------------|------------|--------------------|----------------------------------------------------------------------------------------------------------------------------|
+| taskId       | `IDENTIFIER` | 1                  | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| deadlineDate | `DATE`       | 1980/01/01         | The original deadline given in task data                                                                                   |
+| deadlineTime | `TIME`       | 2211               | The original deadline given in task data                                                                                   |
+| fromDate     | `DATE`       | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| fromTime     | `TIME`       | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| toDate       | `DATE`       | 1980/01/01         | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| toTime       | `TIME`       | 2211               | Refer to POST /basic/insert or GET /basic/data for more information                                                        |
+| lateness     | `HOUR`       | 1, 0.012, 1.123, 0 | Minimum number of hours of lateness (rounded to 3dp) of the tasks completion compared to the given startTime and startDate |
 
 ```json
 {
@@ -297,12 +334,12 @@ For the attributes in the `data`:
 }
 ```
 
-### Error
+### Error body
 
 ```json
 {
-	"error": string,
-	"code": number
+	"error": String,
+	"code": Number
 }
 ```
 
@@ -368,13 +405,20 @@ As this is a GET API endpoint, no request body is expected and only optional que
 
 As a breif overview, `projectId` and `duration` act as filters, with `sortBy` acting as the order for the results, `page` acting as the page number to be requested and the `pageNum` acting as the size of the page.  
 
-| parameter | datatype                                        | example                    | Optional | Default Behaviour |
-|-----------|-------------------------------------------------|----------------------------|----------|-------------------|
-| projectId | 10 digit number                                 | `projectId[>=]=123456789`  | Yes      | NIL               |
-| duration  | Positive Integer greater than 0                 | `duration[<]=10`           | Yes      | NIL               |
-| sortBy    | A string in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
-| page      | Positive Integer greater than 0                 | `page=10`                  | Yes      | `page=1`          |
-| pageNum   | Positive Integer greater than 0                 | `pageNum=5`                | Yes      | `pageNum=10`      |
+| Parameter | Datatype                                          | Example                    | Optional | Default Behaviour |
+|-----------|---------------------------------------------------|----------------------------|----------|-------------------|
+| projectId | `IDENTIFIER`                                      | `projectId[>=]=123456789`  | Yes      | NIL               |
+| duration  | `HOUR` | `duration[<]=10`           | Yes      | NIL               |
+| sortBy    | A `String` in the format of `attribute.order,...` | `sortBy=projectId.asc,...` | Yes      | NIL               |
+| page      | Positive `Number` Integer greater than 0          | `page=10`                  | Yes      | `page=1`          |
+| pageNum   | Positive `Number` Integer greater than 0          | `pageNum=5`                | Yes      | `pageNum=10`      |
+
+### Errors
+
+| HTTP Error Code | Error Description             | Remarks |
+|-----------------|-------------------------------|---------|
+| 400             | Wrong syntax for query Params | NIL     |
+| 500             | Server Error/Database error   | NIL     |
 
 ### Response Body
 
@@ -383,23 +427,23 @@ As a breif overview, `projectId` and `duration` act as filters, with `sortBy` ac
     "result": {
         "data": [
             {
-                "projectId": number,
-                "taskId": number,
-                "duration": number
+                "projectId": IDENTIFIER,
+                "taskId": IDENTIFIER,
+                "duration": HOUR
             },
             ...
         ],
-        "lastPage": number
+        "lastPage": HOUR
     }
 }
 ```
 
-### Error
+### Error Body
 
 ```json
 {
-	"error": string,
-	"code": number
+	"error": String,
+	"code": Number
 }
 ```
 
@@ -454,15 +498,21 @@ For this request, as it is a post request, there are no optional query parameter
 |-----------|------------------|-------------------------------------------------|----------|-------------------|
 | data      | Array of objects | {taskId, projectId, duration} | No       | NIL               |
 
+Table for insert(`data`) objects  
 
-Table for insert objects  
-| parameter | datatype                                    | example    | Optional | Default Behaviour |
-|-----------|---------------------------------------------|------------|----------|-------------------|
-| taskId    | 10 digit number (int)                       | 0000000001 | No       | NIL               |
-| projectId | 10 digit number (int)                       | 0000000001 | No       | NIL               |
-| duration  | an integer(maximum of 10 digits) (int)      | 20         | No       | NIL               |
+| Parameter | Datatype     | Example | Optional | Default Behaviour |
+|-----------|--------------|---------|----------|-------------------|
+| taskId    | `IDENTIFIER` | 1       | No       | NIL               |
+| projectId | `IDENTIFIER` | 1       | No       | NIL               |
+| duration  | `HOUR`       | 20      | No       | NIL               |
 
+### Errors
 
+| HTTP Error Code | Error Description           | Remarks                                                                        |
+|-----------------|-----------------------------|--------------------------------------------------------------------------------|
+| 400             | Invalid data format         | NIL                                                                            |
+| 409             | Duplicate entries           | Most likely due to duplicate `taskId` either in the request or in the database |
+| 500             | Database Error/Server Error | NIL                                                                            |
 
 ### Response Body
 
@@ -477,7 +527,7 @@ Table for insert objects
 ```json
 {
 	"error": String,
-	"code": Int
+	"code": Number 
 }
 ```
 
