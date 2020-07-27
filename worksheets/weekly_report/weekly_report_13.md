@@ -6,8 +6,6 @@ This report is for you to document the progres of your project. You should also 
 
 Sherisse:
 - Basic result viewer (Table & Graph)
-- Advance result viewer (Table & Graph)
-- Updated wireframe docs
 
 Chuan Hao:  
 - 
