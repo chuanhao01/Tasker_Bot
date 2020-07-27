@@ -17,9 +17,15 @@
 // Setting up date parser for pg
 var types = require('pg').types;
 var moment = require('moment');
+// Setting up custom parsing for datatypes
+// For the DATE data type
 types.setTypeParser(1082, function(val) {
     return val === null ? null : moment(val, 'YYYY-MM-DD');
 });
+// For the DECIMAL data type
+types.setTypeParser(1700, parseFloat);
+// For the FLOAT data type
+types.setTypeParser(701, parseFloat);
 
 // Importing libs needed to run the test
 const {Pool} = require('pg');
@@ -59,7 +65,7 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    describe('Checking DB scripts', function(){
+    describe('Checking DB internals', function(){
         it('Checking if DB initialized properly ', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
@@ -103,6 +109,47 @@ describe('Model Test Suite', function(){
                     done(err);
                 }
             );
+        });
+        it('Checking is parsers are working correctly', function(done){
+            new Promise((resolve, reject) => {
+                pool.query(`
+                INSERT INTO TASKSBASIC
+                (taskId, projectId, dueDate, dueTime, duration)
+                VALUES
+                (1, 11, '1998-02-02', '01:32:00', 2.123);
+                `, function(err, res){
+                    if(err){
+                        reject(err);
+                    }
+                    resolve(res);
+                });
+            })
+            .then(
+                function(){
+                    // Check for the datetime and float/decimal working
+                    return new Promise((resolve, reject) => {
+                        pool.query(`
+                        SELECT * FROM TASKSBASIC;  
+                        `, function(err, res){
+                            if(err){
+                                reject(err);
+                                return;
+                            }
+                            resolve(res.rows[0]);
+                        });
+                    });
+                }
+            )
+            .then(
+                function(rows){
+                    const expectedDateTime = moment('1998-02-02', 'YYYY-MM-DD');
+                    const expectedDecimal = 2.123;
+                    expect(JSON.stringify(rows['duedate'])).to.be.equal(JSON.stringify(expectedDateTime));
+                    expect(rows['duration']).to.be.equal(expectedDecimal);
+                    done();
+                }
+            )
+            .catch(done);
         });
     });
     describe('Basic Problem Statement Models', function(){
@@ -365,7 +412,10 @@ describe('Model Test Suite', function(){
             (7, 11, 2),
             (8, 11, 2),
             (9, 11, 2),
-            (10, 11, 2)
+            (10, 11, 2),
+            (1001, 1001, 1),
+            (1002, 1001, 2),
+            (1003, 1001, 3)
             `;
             pool.query(`
             INSERT INTO TASKSADVANCED
@@ -472,7 +522,7 @@ describe('Model Test Suite', function(){
                             },
                         ];
                         const expectedCountResult = [{
-                            'count': '10'
+                            'count': '13'
                         }];
                         expect(pgRes).to.have.lengthOf(2);
                         expect(JSON.stringify(pgRes[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
@@ -481,6 +531,59 @@ describe('Model Test Suite', function(){
                     }
                 )
                 .catch(done);
+            });
+        });
+        describe('Result Problem statement', function(){
+            it('Basic Functionality', function(done){
+                const projectId = 1001;
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.getResults(projectId)
+                    );
+                })
+                .then(
+                    function(res){
+                        const expectedData = [
+                            {
+                                'taskid': '1001',
+                                'duration': 1,
+                                'projectid': '1001'
+                            },
+                            {
+                                'taskid': '1002',
+                                'duration': 2,
+                                'projectid': '1001'
+                            },
+                            {
+                                'taskid': '1003',
+                                'duration': 3,
+                                'projectid': '1001'
+                            }
+                        ];
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedData));
+                        done();
+                    }
+                )
+                .catch(done);
+            });
+            it('ProjectId does not exists', function(done){
+                const projectId = 10000;
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.getResults(projectId)
+                    );
+                })
+                .then(
+                    function(){
+                        done('Should not resolve');
+                    }
+                )
+                .catch(
+                    function(err){
+                        expect(err.code).to.be.equal('PROID');
+                        done();
+                    }
+                );
             });
         });
     });

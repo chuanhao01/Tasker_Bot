@@ -240,6 +240,8 @@ describe('Utils test', function(){
                         'data': [
                             {
                                 taskId:'1000000001',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '0900',
                                 toDate: '2020/01/01',
@@ -248,6 +250,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000002',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '1000',
                                 toDate: '2020/01/01',
@@ -256,6 +260,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000003',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '1100',
                                 toDate: '2020/01/01',
@@ -264,6 +270,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000004',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '1200',
                                 toDate: '2020/01/01',
@@ -278,6 +286,8 @@ describe('Utils test', function(){
                         'result': [
                             {
                                 taskId:'1000000001',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '0900',
                                 toDate: '2020/01/01',
@@ -286,6 +296,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000002',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '1000',
                                 toDate: '2020/01/01',
@@ -294,6 +306,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000003',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '1100',
                                 toDate: '2020/01/01',
@@ -302,6 +316,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000004',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '1200',
                                 toDate: '2020/01/01',
@@ -318,6 +334,8 @@ describe('Utils test', function(){
                         'data': [
                             {
                                 taskId:'1000000001',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '0900',
                                 toDate: '2020/01/01',
@@ -326,6 +344,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000002',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '1000',
                                 toDate: '2020/01/01',
@@ -334,6 +354,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000003',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '1100',
                                 toDate: '2020/01/01',
@@ -342,6 +364,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000004',
+                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                                deadlineTime:"11:00:00",
                                 fromDate: '2020/01/01',
                                 fromTime: '1200',
                                 toDate: '2020/01/01',
@@ -356,6 +380,8 @@ describe('Utils test', function(){
                         'result': [
                             {
                                 taskId:'1000000001',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '0900',
                                 toDate: '2020/01/01',
@@ -364,6 +390,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000002',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '1000',
                                 toDate: '2020/01/01',
@@ -372,6 +400,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000003',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '1100',
                                 toDate: '2020/01/01',
@@ -380,6 +410,8 @@ describe('Utils test', function(){
                             },
                             {
                                 taskId:'1000000004',
+                                deadlineDate: '2020/01/01',
+                                deadlineTime: '1100',
                                 fromDate: '2020/01/01',
                                 fromTime: '1200',
                                 toDate: '2020/01/01',
@@ -390,6 +422,136 @@ describe('Utils test', function(){
                         'totalLateness': '16.691'
                     };
                     expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
+                });
+            });
+        });
+        describe('For the advanced parser', function(){
+            describe('Parsing the calculated results for the equally split', function(){
+                it('Basic Functionality', function(){
+                    const results = [
+                        [
+                            {
+                                'projectId': '1',
+                                'taskId': '2',
+                                'duration': 1,
+                            },
+                            {
+                                'projectId': '1',
+                                'taskId': '4',
+                                'duration': 2,
+                            }
+                        ],
+                        [
+                            {
+                                'projectId': '1',
+                                'taskId': '1',
+                                'duration': 1,
+                            },
+                            {
+                                'projectId': '1',
+                                'taskId': '3',
+                                'duration': 2,
+                            }
+                        ]
+                    ];
+                    const parsedResults = utils.dataParser.advanced.getEqualSplitResults(results);
+                    const expectedParsedResults = {
+                        "result": [
+                            [
+                                {
+                                    'projectId': '1',
+                                    'taskId': '2',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectId': '1',
+                                    'taskId': '4',
+                                    'duration': '2',
+                                }
+                            ],
+                            [
+                                {
+                                    'projectId': '1',
+                                    'taskId': '1',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectId': '1',
+                                    'taskId': '3',
+                                    'duration': '2',
+                                }
+                            ]
+                        ]
+                    };
+                    expect(JSON.stringify(parsedResults)).to.be.equal(JSON.stringify(expectedParsedResults));
+                });
+                it('Basic Functionality 2', function(){
+                    const results = [
+                        [
+                            {
+                                'projectId': '1',
+                                'taskId': '2',
+                                'duration': 1,
+                            },
+                            {
+                                'projectId': '1',
+                                'taskId': '4',
+                                'duration': 2,
+                            },
+                            {
+                                'projectId': '1',
+                                'taskId': '5',
+                                'duration': 1,
+                            }
+                        ],
+                        [
+                            {
+                                'projectId': '1',
+                                'taskId': '1',
+                                'duration': 1,
+                            },
+                            {
+                                'projectId': '1',
+                                'taskId': '3',
+                                'duration': 2,
+                            }
+                        ]
+                    ];
+                    const parsedResults = utils.dataParser.advanced.getEqualSplitResults(results);
+                    const expectedParsedResults = {
+                        "result": [
+                            [
+                                {
+                                    'projectId': '1',
+                                    'taskId': '2',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectId': '1',
+                                    'taskId': '4',
+                                    'duration': '2',
+                                },
+                                {
+                                    'projectId': '1',
+                                    'taskId': '5',
+                                    'duration': '1',
+                                }
+                            ],
+                            [
+                                {
+                                    'projectId': '1',
+                                    'taskId': '1',
+                                    'duration': '1',
+                                },
+                                {
+                                    'projectId': '1',
+                                    'taskId': '3',
+                                    'duration': '2',
+                                }
+                            ]
+                        ]
+                    };
+                    expect(JSON.stringify(parsedResults)).to.be.equal(JSON.stringify(expectedParsedResults));
                 });
             });
         });

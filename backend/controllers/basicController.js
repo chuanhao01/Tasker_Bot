@@ -10,7 +10,7 @@
  */
 
 // Importing npm libs needed
-const {check, validationResult, checkSchema, body, query} = require('express-validator');
+const {validationResult, body, query} = require('express-validator');
 const moment = require('moment');
 const v = require('validator');
 
@@ -18,7 +18,6 @@ const v = require('validator');
 const utils = require('../utils/index');
 const model = require('../db/index');
 const algo = require('../algo');
-const { util } = require('chai');
 
 const configs = {
     idMin: 0,
@@ -266,9 +265,9 @@ const basicController = {
             .then(
                 function(pgRes){
                     const tasks = pgRes.rows;
-                    const result = algo.basic.calculateResults(tasks, startDate, startTime);
-                    const parsedResult = utils.dataParser.basic.getResults(result);
-                    res.status(200).send(parsedResult);
+                    const results = algo.basic.calculateResults(tasks, startDate, startTime);
+                    const parsedResults = utils.dataParser.basic.getResults(results);
+                    res.status(200).send(parsedResults);
                 }
             )
             .catch(
