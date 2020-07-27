@@ -17,4 +17,9 @@ Chuan Hao:
 
 -   Start on additional features
 
+Chuan Hao:
+- Plan out spreadsheet for tests
+- Code review
+- Start CI/CD devops
+
 ## Additional Thoughts

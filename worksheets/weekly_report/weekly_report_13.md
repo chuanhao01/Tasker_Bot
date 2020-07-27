@@ -8,7 +8,9 @@ Sherisse:
 - Basic result viewer (Table & Graph)
 
 Chuan Hao:  
-- 
+- Advance result API
+- Migrated db to float datatype for HOUR
+- add More tested
 
 ## What do I plan to do next week
 
