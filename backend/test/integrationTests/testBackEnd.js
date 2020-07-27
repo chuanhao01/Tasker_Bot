@@ -991,6 +991,10 @@ describe('Integration testing for the whole backend server', function(){
                     });
                 });
             });
+            describe('GET /advance/result', function(){
+                it('Basic Functionality');
+                it('Invalid projectId format');
+            });
         });
     });
 });

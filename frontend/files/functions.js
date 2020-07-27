@@ -6,47 +6,14 @@
 
 
 /**
- * @function Deleting an existing record in the db
- */
-function deleteData() {
-    console.log("DELETE")
-};
-
-
-/**
- * @function Inserting a new row of data into the db
- * 
- * @param {string} taskID The task ID of the new task that is to be inserted
- * @param {string} projectID The project ID of the new task that is to be inserted
- * @param {string} dueDate The due date of the new task that is to be inserted
- * @param {string} dueTime The due time of the new task that is to be inserted
- * @param {string} duration The duration of the new task that is to be inserted
- * 
- * @returns The value of each of the parameters in JSON format
- * 
- */
-function edit_insertTask(taskID, projectID, dueDate, dueTime, duration) {
-    var data = {
-        "taskID": taskID,
-        "projectID": projectID,
-        "dueDate": dueDate,
-        "dueTime": dueTime,
-        "duration": duration
-    };
-
-    return data
-};
-
-
-/**
  * @function Obtaining the data to be shown in the basic dataviewer table and appending it directly to the table as well as controlling the pagination view of said table
  *           This will handle SORTING, FILTERING and OBTAINING data && Pagination
  * 
- * @params {string} projectId The project ID of the new task that is to be inserted
- * @params {string} duration The duration of the new task that is to be inserted
- * @params {string} sortBy The column to be sorted by
- * @params {string} page The page number that we are on / navigating to
- * @params {string} pageNum The number of tasks displayed on each page
+ * @param {string} projectId The project ID of the new task that is to be inserted
+ * @param {string} duration The duration of the new task that is to be inserted
+ * @param {string} sortBy The column to be sorted by
+ * @param {string} page The page number that we are on / navigating to
+ * @param {string} pageNum The number of tasks displayed on each page
  */
 function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
     var url = `http://localhost:3000/basic/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
@@ -204,7 +171,7 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
          * @function Handling the event in which the ajax request call has an error
          * 
          * @param xhr The XMLHttpRequest
-         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param {string} textStatus A string stating whether the call was a success or failure
          * @param err The error message / response sent back by the server
          */
         error: function(xhr, textStatus, err) {
@@ -222,14 +189,13 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
  * @function Obtaining the data to be shown in the advanced dataviewer table and appending it directly to the table as well as controlling the pagination view of said table
  *           This will handle SORTING, FILTERING and OBTAINING data && Pagination
  * 
- * @params {string} projectId The project ID of the new task that is to be inserted
- * @params {string} duration The duration of the new task that is to be inserted
- * @params {string} sortBy The column to be sorted by
- * @params {string} page The page number that we are on / navigating to
- * @params {string} pageNum The number of tasks displayed on each page
+ * @param {string} projectId The project ID of the new task that is to be inserted
+ * @param {string} duration The duration of the new task that is to be inserted
+ * @param {string} sortBy The column to be sorted by
+ * @param {string} page The page number that we are on / navigating to
+ * @param {string} pageNum The number of tasks displayed on each page
  */
 function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
-    // Change the url back to advanced
     var url = `http://localhost:3000/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
 
     $.ajax({
@@ -399,11 +365,433 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
 };
 
 
+/**
+ * @function Obtaining the data to be shown in the basic resultViewer table and appending it directly to the table as well as using said data to create a graph that will provide a graphical view of the data
+ * 
+ * @param {String} projectId The project ID whose task lateness is to be computed
+ * @param {String} startDate The start date of the project
+ * @param {String} startTime The start time of the project
+ */
+function basic_obtainResult(projectId, startDate, startTime) {
+    // Define some correct values first -> REMOVE THIS
+    projectId = '1100000004';
+    startDate = '2020/01/01';
+    startTime = '0900'
+
+    var url = `http://localhost:3000/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+
+        /**
+         * @function Handling the event in which the ajax request call is a success
+         * 
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
+         */
+        success: function (data, textStatus, xhr) {
+            // Clear the table of data
+            $('#basic_resultTableBody').empty();
+
+            var allData = data.result;
+            var totalLateness = data.totalLateness;
+
+            // Task information
+            allData.forEach((data) => {
+                var dataHtml = `
+                   <tr class='dataRow' id='data_${data.taskId}'>
+                        <th scope="row" id="taskId_data">${data.taskId}</th>
+                        <th id="fromDate_data">${data.fromDate}</th>
+                        <th id="fromTime_data">${data.fromTime}</th>
+                        <th id="toDate_data">${data.toDate}</th>
+                        <th id="toTime_data">${data.toTime}</th>
+                        <th id="lateness_data">${data.lateness}</th>
+                    </tr>
+                `;
+                $('#basic_resultTableBody').append(dataHtml);
+            });
+
+            // Total lateness
+            latenessHtml = `
+                <tr class='dataRow' id='data_totalLateness'>
+                    <th scope='row'></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Total lateness:</th>
+                    <th id='totalLateness_data'>${totalLateness}</th>
+                </tr>
+            `;
+            $('#basic_resultTableBody').append(latenessHtml);
+
+
+
+            
+            // Create tasks
+            allTasks = []
+            categories = []
+            allData.forEach((data) => {
+                // Checking if there is a lateness. If so, deadline to end
+                if (data.lateness > 0) {
+                    task = {
+                        name: `TaskId: ${data.taskId}`,
+                        intervals: [{
+                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            label: `TaskId: ${data.taskId}`,
+                            tooltip_data: 'Assigned time to complete task',
+                            fromTime: data.fromTime,
+                            toTime: data.deadlineTime
+                        }],
+                        // Set the default color of the bar as light green -> indicates no lateness
+                        color: '#8FBC8F'
+                    }
+
+                    latenessInterval = {
+                        name: `TaskId: ${data.taskId}`,
+                        intervals: [{
+                            from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
+                            label: `TaskId: ${data.taskId}`,
+                            tooltip_data: 'Lateness period',
+                            fromTime: data.deadlineTime,
+                            toTime: data.toTime
+                        }],
+                        // Set the default color of the bar as light red -> indicates lateness
+                        color: '#CD5C5C'
+                    }
+                }
+                
+                // No lateness, start to end
+                else {
+                    // The assigned duration of task
+                    task = {
+                        name: `TaskId: ${data.taskId}`,
+                        intervals: [{
+                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
+                            label: `TaskId: ${data.taskId}`,
+                            tooltip_data: 'Assigned time to complete task',
+                            fromTime: data.fromTime,
+                            toTime: data.toTime
+                        }],
+                        // Set the default color of the bar as light green -> indicates no lateness
+                        color: '#8FBC8F'
+                    }
+                }   
+
+                allTasks.push(task);
+                if (data.lateness > 0) {
+                    allTasks.push(latenessInterval)
+                }
+
+                categories.push(`Task ${data.taskId}`);
+            })
+
+            function createGraph(allTasks, categories) {
+                // re-structure the tasks into line series
+                var series = [];
+                var skippedRows = 0;
+                var yValue = 0;
+                $.each(allTasks.reverse(), function(i, task) {
+                    var item = {
+                        name: task.name,
+                        data: [],
+                        color: task.color
+                    };
+
+                    // Change the yValue if there is a lateness (ensures that the lateness bar is plotted in the same row)
+                    if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
+                        yValue = i - 1;
+                        skippedRows += 1;
+                    }
+                    yValue = i - skippedRows;
+
+                    $.each(task.intervals, function(j, interval) {
+                        item.data.push({
+                            x: interval.from,
+                            y: yValue,
+                            label: interval.label,
+                            from: interval.from,
+                            to: interval.to,
+                            tooltip_data: interval.tooltip_data
+                        }, 
+                        {
+                            x: interval.to,
+                            y: yValue,
+                            label: interval.label,
+                            from: interval.from,
+                            to: interval.to,
+                            tooltip_data: interval.tooltip_data
+                        });
+                    });
+
+                    series.push(item);
+                });
+
+                // Creating the chart
+                const timezoneOffset = new Date().getTimezoneOffset()
+                new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'container'
+                    },
+
+                    title: {
+                        text: 'Graphical view of tasks'
+                    },
+
+                    xAxis: {
+                        startOnTick: true,
+                        type: 'datetime'
+                    },
+
+                    time: {
+                        timezoneOffset: timezoneOffset
+                    },
+                    global: {
+                        useUTC: false,
+                        timezoneOffset: timezoneOffset
+                    },
+
+                    yAxis: {
+                        min: 0,
+                        categories: categories,
+                        tickInterval: 1,            
+                        tickPixelInterval: 200,
+                        labels: {
+                            style: {
+                                color: '#525151',
+                                font: '12px Helvetica',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        startOnTick: false,
+                        endOnTick: false,
+                        title: {
+                            text: null
+                        },
+                        minPadding: 0.2,
+                        maxPadding: 0.2,
+                        fontSize:'15px'
+                    },
+
+                    legend: {
+                        enabled: false
+                    },
+                
+                    plotOptions: {
+                        line: {
+                            lineWidth: 10,
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                
+                    // Defining the tooltip of each task bar (hover over the relevant bars to view) 
+                    tooltip: {
+                        formatter: function() {
+                            var fromTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.from)) * 100) - (timezoneOffset / 60 * 100)
+                            var toTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.to) * 100)) - (timezoneOffset / 60 * 100)
+
+                            if (toTime > 2400) {
+                                extraDays = Math.floor(toTime / 2400)
+                                toTime = (toTime - (2400 * extraDays)).toString();
+                                
+                                while (toTime.length < 4) {
+                                    toTime = "0" + toTime
+                                }
+                            } 
+
+                            return (
+                            '<b>' + this.point.options.label + 
+                            '</b><br/>' + this.point.options.tooltip_data +
+                            '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
+                            ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
+                            '<br>' + fromTime +
+                            ' to ' + toTime +
+                            '</br>'
+                            ); 
+                        }
+                    },
+
+                    // Defining the dataset for the graph as the array 'series' defined at the start of the script
+                    series: series
+                });		         
+            };
+
+            categories = categories.reverse();
+            createGraph(allTasks, categories);
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred in: basic_obtainResult()");
+        }
+    })
+};
+
+
+function advanced_obtainResult(projectId) {
+    // Define some correct values first -> REMOVE THIS
+    projectId = '1005';
+    
+    var url = `http://localhost:3000/advance/result?projectId=${projectId}`;
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+
+        /**
+         * @function Handling the event in which the ajax request call is a success
+         * 
+         * @param {JSON} data The task data that we are getting from the server
+         * @param {string} textStatus A string stating whether the call was a success or failure
+         * @param xhr The XMLHttpRequest 
+         */
+        success: function(data, textStatus, xhr) {
+            var allData = data.result;
+            let memberCount = 0;
+
+            // Table
+            allData.forEach((member) => {
+                memberCount++;
+
+                var total_taskCount = member.length;
+                var taskCount = 0
+                var assignmentResults = []
+
+                var tasksAssigned = '';
+                var hoursAssigned = 0;
+
+                member.forEach((task) => {
+                    taskCount++;
+                    
+                    tasksAssigned += task.taskId + ", ";
+                    hoursAssigned += parseInt(task.duration);   
+                    
+                    if (taskCount == total_taskCount) {
+                        // Trim off the ending ", "
+                        tasksAssigned = tasksAssigned.slice(0, tasksAssigned.length - 2);
+
+                        assignmentResults.push(tasksAssigned);
+                        assignmentResults.push(hoursAssigned);
+                    };
+                });
+
+                var dataHtml = `
+                    <tr class='dataRow' id='data_${memberCount}'>
+                        <th scope="row" id="member_data">${memberCount}</th>
+                        <th id="tasksAssigned_data">${assignmentResults[0]}</th>
+                        <th id="hoursAssigned_data">${assignmentResults[1]}</th>
+                    </tr>
+                `;
+                $('#advanced_resultTableBody').append(dataHtml);
+            });
+
+
+
+
+            // Generate the data for the graph
+            var numMembers = allData.length;
+            var categories = [];
+            for (i = 0; i <= numMembers; i++) {
+                categories.push(`Member ${i + 1}`);
+            };
+
+            var series = []
+            var currentMember = 0;
+            allData.forEach((member) => {
+                currentMember++;
+
+                for (i = 0; i < member.length; i++) {
+                    var currentTask = member[i];
+
+                    item = {
+                        name: `Task ${currentTask.taskId}`,
+                        data: [parseInt(currentTask.duration)]
+                    };
+
+                    for (count = 1; count < currentMember; count++) {
+                        item.data.unshift(0)
+                    };
+
+                    series.push(item);
+                };
+            });
+
+
+            // Graph
+            new Highcharts.chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Distribution of tasks and hours assigned per member'
+                },
+
+                xAxis: {
+                    categories: categories,
+                    title: {
+                        text: 'Member'
+                    }
+                },
+
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Hours Assigned'
+                    }
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+
+                series: series
+            });
+        },
+
+        /**
+         * @function Handling the event in which the ajax request call has an error
+         * 
+         * @param xhr The XMLHttpRequest
+         * @param @param {string} textStatus A string stating whether the call was a success or failure
+         * @param err The error message / response sent back by the server
+         */
+        error: function(xhr, textStatus, err) {
+            console.log({
+                status: textStatus,
+                err: err
+            });
+            window.alert("An error occurred in: advanced_obtainResult()");
+        }
+    })
+}
+
+
 const allFunctions = {
-    edit_insertTask: edit_insertTask,
-    deleteData: deleteData,
     basic_obtainData: basic_obtainData,
-    advanced_obtainData: advanced_obtainData
+    advanced_obtainData: advanced_obtainData,
+    basic_obtainResult: basic_obtainResult,
+    advanced_obtainResult: advanced_obtainResult
 }
 
 module.exports = allFunctions;

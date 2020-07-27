@@ -76,6 +76,42 @@ const advancedDB = {
                 resolve(res);
             });
         });
+    },
+    /**
+     * @function
+     * Model call to select query the tasks with the given projectId
+     * This is mainly used to get the tasks involved for the advanced result API
+     * 
+     * @param {Number} projectId The projectId that you want to calculate the advanced result for
+     * 
+     * @returns {Promise} A promise call to get the tasks with that projectId from the db
+     * Note: The task are sorted by taskId
+     * 
+     * @throws {Promise.error} if there is a pg error
+     */
+    getResults(projectId){
+        return new Promise((resolve, reject) => {
+            this.pool.query(`
+            SELECT * FROM TASKSADVANCED
+            WHERE
+                projectid = ${projectId}
+            ORDER BY
+                taskid ASC
+            `, function(err, res){
+                if(err){
+                    reject(err);
+                    return;
+                }
+                if(res.rows.length === 0){
+                    err = new Error('projectId does not exists or no tasks are associated with this projectId');
+                    err.code = 'PROID';
+                    reject(err);
+                    return;
+                }
+                resolve(res);
+                return;
+            });
+        });
     }
 };
 
