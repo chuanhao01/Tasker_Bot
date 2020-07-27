@@ -12,6 +12,6 @@ Chuan Hao:
 
 ## What do I plan to do next week
 
-- Start on additional features
+- Look at weekly report 14 (Combined release)
 
 ## Additional Thoughts
