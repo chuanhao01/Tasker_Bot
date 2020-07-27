@@ -10,7 +10,7 @@ Sherisse:
 Chuan Hao:  
 - Advance result API
 - Migrated db to float datatype for HOUR
-- add More tested
+- Add More teste
 
 ## What do I plan to do next week
 
