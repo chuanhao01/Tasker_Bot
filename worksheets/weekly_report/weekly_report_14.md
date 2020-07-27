@@ -4,9 +4,10 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Chuan Hao:
+- Fixed api endpoints for results
+- Fixed up api docs so far
+- Fixed data types
 
 ## What do I plan to do next week
 
