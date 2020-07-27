@@ -4,6 +4,10 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
+Sherisse:
+- Advanced result viewer
+- Updated wireframe docs
+
 Chuan Hao:
 - Fixed api endpoints for results
 - Fixed up api docs so far
@@ -11,12 +15,6 @@ Chuan Hao:
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+-   Start on additional features
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.
