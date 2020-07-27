@@ -1,35 +1,57 @@
 # Wireframe & Justification
 
-This document should help you explain how your user interfaces are designed. You should have a wireframe to give a good overview and some screenshot with simple writeups to justify your designs.
-
 ## Wireframe
 
-> This is just an example, please find your own wireframe.
+Starting view:
 
-![Wireframe](assets/sample-wireframe-data-viewer-frontend.png)
+![Wireframe](justifications/resultViewer_start.PNG)
+
+After computation:
+
+![Wireframe](justifications/advance_resultViewer.PNG)
 
 ## Justifications
 
 ### Justification 1
 
-> This is just an example, please find your own justifications.
-
-![Justificaiton1](https://blog.nusmods.com/img/nusmods-r/timetable-desktop-dark.png)
+![Justification 1](justifications/Result_viewer_layout.png)
 
 #### Good Points
 
-1. Nice looking UI.
-2. Show data with start/end time appropriately.
+1. Layout is clean and simple, allows for overlapping timelines
+2. Able to view the status of each task: Complete, Incomplete, Slippage
 
 #### Bad Points
 
-1. Controls may not be relevent, need to redesign the controls.
-2. May be hard to implement.
+1. Date ticks are too far apart and inconsistent
+2. May be difficult to implement the stacked horizontal bars depending on library used 
+3. No fields for input computation
 
 ### Justification 2
 
-> Find more existing work for reference.
+![Justification 2](https://www.senseiprojectsolutions.com/wp-content/uploads/2019/10/02.-Portfolio-Timeline-1.png)
+
+#### Good Points
+
+1. Has a timeline and color-coded bars for better visualisation of the project tasks and deadlines
+2. Timeline can also be adjusted to show daily, weekly, monthly, etc views
+3. Able to show the members in the project 
+
+#### Bad Points
+
+1. No input computation fields
+2. Dotted line showing current date on the timeline may be difficult to implement and automate correctly
 
 ### Justification 3
 
-> Find more existing work for reference.
+![Justification 3](justifications/possible_wireframe.png)
+
+#### Good Points
+
+1. Timeline is neat and consistent
+2. Able to show multiple sub-tasks as well as the duration of the overarching task
+
+#### Bad Points
+
+1. Unable to determine the current status of each task
+2. Timeline is only on a daily basis which is not suitable for projects that may take longer than a week or two
