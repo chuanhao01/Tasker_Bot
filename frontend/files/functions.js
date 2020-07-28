@@ -371,11 +371,6 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
  * @param {String} startTime The start time of the project
  */
 function basic_obtainResult(projectId, startDate, startTime) {
-    // Define some correct values first -> REMOVE THIS
-    projectId = '1100000004';
-    startDate = '2020/01/01';
-    startTime = '0900'
-
     var url = `http://localhost:3000/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`;
 
     $.ajax({
@@ -644,9 +639,6 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
 
 function advanced_obtainResult(projectId) {
-    // Define some correct values first -> REMOVE THIS
-    projectId = '1005';
-    
     var url = `http://localhost:3000/advance/result?projectId=${projectId}`;
 
     $.ajax({
