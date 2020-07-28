@@ -40,10 +40,10 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
             allTaskData.forEach((task) => {
                 const taskHtml = `
                 <tr class="dataRow" id="data_${task.taskid}">
-                    <th scope="row" id="taskId_data">${task.taskid}</th>
-                    <th id="projectId_data">${task.projectid}</th>
-                    <th id="duedate_data">${task.duedate}</th>
-                    <th id="duetime_data">${task.duetime}</th>
+                    <th scope="row" id="taskId_data">${task.taskId}</th>
+                    <th id="projectId_data">${task.projectId}</th>
+                    <th id="duedate_data">${task.dueDate}</th>
+                    <th id="duetime_data">${task.dueTime}</th>
                     <th id="duration_data">${task.duration}</th>
                     <th>
                         <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
@@ -73,9 +73,7 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
 
             // Obtain the values of the lastPage (from the API endpoint) and the current page(argument)
             var lastPage = data.result.lastPage;
-            console.log("Page:" + page)
             var currentPage = parseInt(page.split('=')[1]);
-            console.log(currentPage)
             
             // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
             var nextPageHtml = `
@@ -222,9 +220,9 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
             // Appending each task to a row in the table
             allTaskData.forEach((task) => {
                 const taskHtml = `
-                <tr class="dataRow" id="data_${task.taskid}">
-                    <th scope="row" id="taskId_data">${task.taskid}</th>
-                    <th id="projectId_data">${task.projectid}</th>
+                <tr class="dataRow" id="data_${task.taskId}">
+                    <th scope="row" id="taskId_data">${task.taskId}</th>
+                    <th id="projectId_data">${task.projectId}</th>
                     <th id="duration_data">${task.duration}</th>
                     <th>
                         <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#insert_editModal" id="editBtn">Edit</button>
