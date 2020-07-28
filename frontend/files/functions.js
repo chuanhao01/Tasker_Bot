@@ -429,13 +429,17 @@ function basic_obtainResult(projectId, startDate, startTime) {
             allData.forEach((data) => {
                 // Checking if there is a lateness. If so, deadline to end
                 if (data.lateness > 0) {
+                    if (moment(data.fromTime).isAfter(moment(data.deadlineTime), 'hour')) {
+                        data.fromTime = data.deadlineTime;
+                    }
+
                     task = {
                         name: `TaskId: ${data.taskId}`,
                         intervals: [{
                             from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Assigned time to complete task',
+                            tooltip_data: 'Before appointed deadline',
                             fromTime: data.fromTime,
                             toTime: data.deadlineTime
                         }],
@@ -467,7 +471,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                             from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
                             to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
                             label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Assigned time to complete task',
+                            tooltip_data: 'Completion of task on schedule',
                             fromTime: data.fromTime,
                             toTime: data.toTime
                         }],
