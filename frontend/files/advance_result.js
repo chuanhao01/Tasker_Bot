@@ -1,5 +1,6 @@
 /**
- * @fileoverview This file deals with the various functions that makes Ajax calls to the backend
+ * @fileoverview This file contains the function(s) that will be needed for the advanced resultViewer
+ *      - advanced_obtainResult()
  * 
  * @author Sherisse Tan
  */
