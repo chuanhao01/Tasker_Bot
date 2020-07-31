@@ -642,6 +642,11 @@ function basic_obtainResult(projectId, startDate, startTime) {
 };
 
 
+/**
+ * @function Obtaining the data to be shown in the basic resultViewer table and appending it directly to the table as well as using said data to create a graph that will provide a graphical view of the data
+ * 
+ * @param {String} projectId The ID of the project whose tasks is to be separated 
+ */
 function advanced_obtainResult(projectId) {
     var url = `http://localhost:3000/advance/result?projectId=${projectId}`;
 
@@ -778,7 +783,7 @@ function advanced_obtainResult(projectId) {
             window.alert("An error occurred in: advanced_obtainResult()");
         }
     })
-}
+};
 
 
 const allFunctions = {
