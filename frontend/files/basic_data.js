@@ -73,14 +73,9 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
             $('#paginationDisplay').append(currentPageHtml);
 
             
-            for (i = 0; i <= lastPage; i++) {
-                // Ensure that the user is unable to click the currentPage again and that the first page is always shown 
-                if (i + 1 == currentPage && i != 0) {
-                    continue;
-                }
-
+            for (i = 1; i <= lastPage; i++) {
                 var paginationHtml = `
-                    <a class="dropdown-item">Page ${i + 1}</a>
+                    <a class="dropdown-item" id="page_${i}" href="#" onclick="changePage()">Page ${i}</a>
                 `;
                 $('#paginationDisplay').append(paginationHtml);
             }
