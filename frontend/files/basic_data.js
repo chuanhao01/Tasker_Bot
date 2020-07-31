@@ -62,106 +62,27 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
             // Clear the current pagination display
             $('#paginationDisplay').empty();
 
-            // Always append the first page to the pagination display
-            var defaultPaginationHtml = `
-            <li class="page-item" id="defaultPage">
-                <a class="page-link" id="page_1" href="#" onclick="changePage()">1</a>
-            </li>
-            `;
-            $('#paginationDisplay').append(defaultPaginationHtml);
-
-
             // Obtain the values of the lastPage (from the API endpoint) and the current page(argument)
             var lastPage = data.result.lastPage;
             var currentPage = parseInt(page.split('=')[1]);
-            
-            // Define preset html codes to either append / prepend to the pagination (#paginationDisplay)
-            var nextPageHtml = `
-            <li class="page-item">
-                <a class="page-link" id="page_${currentPage + 1}" href="#" onclick="changePage()">${currentPage + 1}</a>
-            </li>
-            `;
 
+            // Indication of the current page that the user is on
             var currentPageHtml = `
-            <li class="page-item active">
-                <a class="page-link" id="page_${currentPage}" href="#" onclick="changePage()">${currentPage}</a>
-            </li>
+                <h6 class="dropdown-header">Current page: ${currentPage}</h6>
             `;
+            $('#paginationDisplay').append(currentPageHtml);
 
-            var previousPageHtml = `
-            <li class="page-item">
-                <a class="page-link" id="page_${currentPage - 1}" href="#" onclick="changePage()">${currentPage - 1}</a>
-            </li>
-            `;
+            
+            for (i = 0; i <= lastPage; i++) {
+                // Ensure that the user is unable to click the currentPage again and that the first page is always shown 
+                if (i + 1 == currentPage && i != 0) {
+                    continue;
+                }
 
-            var nextPageHtml_symbol = `
-            <li class="page-item">
-                <a class="page-link" id="page_next" href="#!" aria-label="Next" onclick="changePage()">&raquo;</a>
-            </li>
-            `;
-
-            var previousPageHtml_symbol = `
-            <li class="page-item">
-                <a class="page-link" id="page_previous" href="#" aria-label="Previous" onclick="changePage()">&laquo;</a>
-            </li>
-            `;
-
-
-            // Adding default page indication when currentPage == 1
-            if (currentPage == 1) {
-                $('#page_1').parent().addClass("active");
-            }
-
-            // Second page
-            if (currentPage == 2) {
-                var paginationHtml_prepend = `
-                    ${previousPageHtml_symbol}
+                var paginationHtml = `
+                    <a class="dropdown-item">Page ${i + 1}</a>
                 `;
-                $('#paginationDisplay').prepend(paginationHtml_prepend);
-
-                var paginationHtml_append = `
-                    ${currentPageHtml}
-                `;
-                $('#paginationDisplay').append(paginationHtml_append);
-            }
-
-            // Last page with other pages before it
-            else if (currentPage == lastPage && currentPage != 1) {
-                var paginationHtml_prepend = `
-                    ${previousPageHtml_symbol}
-                `;
-                $('#paginationDisplay').prepend(paginationHtml_prepend);
-
-                var paginationHtml_append = `
-                    ...
-                    ${previousPageHtml}
-                    ${currentPageHtml}
-                `;
-                $('#paginationDisplay').append(paginationHtml_append);
-            }
-
-            // Any other pages
-            else if (currentPage != 1 && lastPage > 1) {
-                var paginationHtml_prepend = `
-                    ${previousPageHtml_symbol}
-                `;
-                $('#paginationDisplay').prepend(paginationHtml_prepend);
-
-                var paginationHtml_append = `
-                    ...
-                    ${previousPageHtml}
-                    ${currentPageHtml}
-                `;
-                $('#paginationDisplay').append(paginationHtml_append);
-            };
-
-            // For all pages, append the page-link for pagination to the next page where appropriate
-            if (lastPage > currentPage) {
-                var paginationHtml_append = `
-                    ${nextPageHtml}
-                    ${nextPageHtml_symbol}
-                `;
-                $('#paginationDisplay').append(paginationHtml_append);
+                $('#paginationDisplay').append(paginationHtml);
             }
         },
 
