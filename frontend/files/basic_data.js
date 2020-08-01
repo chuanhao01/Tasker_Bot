@@ -90,6 +90,7 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
          * @param err The error message / response sent back by the server
          */
         error: function(xhr, textStatus, err) {
+            console.log("Error")
             // Defining and appending the error message ( bootstrap modal )
             var errorHtml = `
                 <div class="modal fade" role="dialog" id="errorModal">
@@ -113,8 +114,6 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
             </div>
             `;
             $('.basic_dataViewer').append(errorHtml)
-
-            document.querySelector('.modal').style.display = "block";
         }
     }); // End of ajax call
 };
