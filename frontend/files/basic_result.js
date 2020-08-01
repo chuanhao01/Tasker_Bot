@@ -275,11 +275,58 @@ function basic_obtainResult(projectId, startDate, startTime) {
          * @param err The error message / response sent back by the server
          */
         error: function(xhr, textStatus, err) {
-            console.log({
-                status: textStatus,
-                err: err
+            // Defining the appropriate error messages and log the actual error to the console
+            var statusCode = xhr.status;
+            var errorMsg = '';
+            var error_console = "Error: " + statusCode + ", " + err;
+            switch(statusCode) {
+                case 400:
+                    errorMsg = "An unexpected error occurred, please check your inputs..";
+                    console.log(error_console);
+                    break;
+
+                case 404:
+                    errorMsg = "Invalid projectId value detected, please check your input..";
+                    console.log(error_console)
+                    break;
+                
+                case 500:
+                    errorMsg = "An unexpected error occurred.. Please try again later..";
+                    console.log(error_console);
+                    break;
+
+                default:
+                    errorMsg = "Oops.. something went wrong. Please check your inputs and try again later..";
+                    console.log(error_console)
+            };
+
+
+            // Defining and appending the error message in the form of a bootstrap modal
+            var errorHtml = `
+                <div class="modal" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorMsg_modal" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="errorMsg_modal">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="dismissModal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ${errorMsg}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.innerHTML += errorHtml;
+            $('#errorModal').modal('show');
+
+            // Refresh the page
+            $('#dismissModal').click(() => {
+                location.reload()
             });
-            window.alert("An error occurred in: basic_obtainResult()");
         }
     })
 };
