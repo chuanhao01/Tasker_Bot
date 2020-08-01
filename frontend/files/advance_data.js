@@ -32,7 +32,6 @@ function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
-            console.log(data)
             // Clear the previous data from the table
             $('#advanced_tableBody').empty();
 
