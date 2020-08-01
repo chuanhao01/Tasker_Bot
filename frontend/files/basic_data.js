@@ -90,11 +90,31 @@ function basic_obtainData(projectId, duration, page, pageNum, sortBy) {
          * @param err The error message / response sent back by the server
          */
         error: function(xhr, textStatus, err) {
-            console.log({
-                status: textStatus,
-                err: err
-            });
-            window.alert("An error occurred in: basic_obtainData()");
+            // Defining and appending the error message ( bootstrap modal )
+            var errorHtml = `
+                <div class="modal fade" role="dialog" id="errorModal">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="errorModal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="errorModal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            `;
+            $('.basic_dataViewer').append(errorHtml)
+
+            document.querySelector('.modal').style.display = "block";
         }
     }); // End of ajax call
 };
