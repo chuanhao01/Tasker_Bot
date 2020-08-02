@@ -17,7 +17,6 @@
 function createGraph(allTasks, categories, graphType) {
     // re-structure the tasks into line series
     var series = [];
-    var skippedRows = 0;
     var yValue = 0;
     $.each(allTasks.reverse(), function(i, task) {
         var item = {
@@ -25,13 +24,6 @@ function createGraph(allTasks, categories, graphType) {
             data: [],
             color: task.color
         };
-
-        // Change the yValue if there is a lateness (ensures that the lateness bar is plotted in the same row)
-        if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
-            yValue = i - 1;
-            skippedRows += 1;
-        }
-        yValue = i - skippedRows;
 
         $.each(task.intervals, function(j, interval) {
             item.data.push({
@@ -50,6 +42,9 @@ function createGraph(allTasks, categories, graphType) {
                 to: interval.to,
                 tooltip_data: interval.tooltip_data
             });
+
+            // Increment the yValue with each row of data
+            yValue++;
         });
 
         series.push(item);
@@ -297,11 +292,11 @@ function basic_obtainResult(projectId, startDate, startTime) {
                         lateness = {
                             name: `TaskId: ${data.taskId}`,
                             intervals: [{
-                                from: null,
-                                to: null
+                                from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                                to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate()
                             }],
                             // Set the default color of the bar as light red -> indicates lateness
-                            color: '#CD5C5C'
+                            color: '#FFFFFF'
                         }
                     };
 
