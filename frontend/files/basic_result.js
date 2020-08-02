@@ -76,64 +76,22 @@ function basic_obtainResult(projectId, startDate, startTime) {
             allTasks = []
             categories = []
             allData.forEach((data) => {
-                // Checking if there is a lateness. If so, deadline to end
-                if (data.lateness > 0) {
-                    if (moment(data.fromTime).isAfter(moment(data.deadlineTime), 'hour')) {
-                        data.fromTime = data.deadlineTime;
-                    }
-
-                    task = {
-                        name: `TaskId: ${data.taskId}`,
-                        intervals: [{
-                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Before appointed deadline',
-                            fromTime: data.fromTime,
-                            toTime: data.deadlineTime
-                        }],
-                        // Set the default color of the bar as light green -> indicates no lateness
-                        color: '#8FBC8F'
-                    }
-
-                    latenessInterval = {
-                        name: `TaskId: ${data.taskId}`,
-                        intervals: [{
-                            from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
-                            label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Lateness period',
-                            fromTime: data.deadlineTime,
-                            toTime: data.toTime
-                        }],
-                        // Set the default color of the bar as light red -> indicates lateness
-                        color: '#CD5C5C'
-                    }
+                // The assigned duration of task
+                task = {
+                    name: `TaskId: ${data.taskId}`,
+                    intervals: [{
+                        from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                        to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
+                        label: `TaskId: ${data.taskId}`,
+                        tooltip_data: 'Duration spent working on the task',
+                        fromTime: data.fromTime,
+                        toTime: data.toTime
+                    }],
+                    // Set the default color of the bar as light green -> indicates no lateness
+                    color: '#8FBC8F'
                 }
-                
-                // No lateness, start to end
-                else {
-                    // The assigned duration of task
-                    task = {
-                        name: `TaskId: ${data.taskId}`,
-                        intervals: [{
-                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
-                            label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Completion of task on schedule',
-                            fromTime: data.fromTime,
-                            toTime: data.toTime
-                        }],
-                        // Set the default color of the bar as light green -> indicates no lateness
-                        color: '#8FBC8F'
-                    }
-                }   
 
                 allTasks.push(task);
-                if (data.lateness > 0) {
-                    allTasks.push(latenessInterval)
-                }
-
                 categories.push(`Task ${data.taskId}`);
             })
 
@@ -186,7 +144,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     },
 
                     title: {
-                        text: 'Graphical view of tasks'
+                        text: 'Time spent working on the task (Duration)'
                     },
 
                     xAxis: {
@@ -197,6 +155,7 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     time: {
                         timezoneOffset: timezoneOffset
                     },
+        
                     global: {
                         useUTC: false,
                         timezoneOffset: timezoneOffset
