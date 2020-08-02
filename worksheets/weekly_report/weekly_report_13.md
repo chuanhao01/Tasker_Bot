@@ -4,18 +4,16 @@ This report is for you to document the progres of your project. You should also 
 
 ## What have I done last week
 
--   Worked on...
--   Worked on...
--   Changed....
+Sherisse:
+- Basic result viewer (Table & Graph)
+
+Chuan Hao:  
+- Advance result API
+- Migrated db to float datatype for HOUR
+- Add More teste
 
 ## What do I plan to do next week
 
--   Worked on...
--   Worked on...
--   Changed....
+- Look at weekly report 14 (Combined release)
 
 ## Additional Thoughts
-
--   VSCode is sick.
--   This addon is fabulous.
--   Lecturer is awesome.

@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"     
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+    crossorigin="anonymous"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
-    crossorigin="anonymous"></script>
 
     <!-- Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
@@ -22,7 +22,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <!-- External Scripts -->
-    <script src="./functions.js"></script>
+    <script src="basic_data.js"></script>
     <script src="./script.js"></script>
 
     <title>JiBaBoom Basic Data Viewer</title>
@@ -67,11 +67,6 @@
         <div class="row">
             <!-- Input group above the table => inserting task and filtering data -->
             <div class="input-group p-2">
-                <!-- Insert new task -->
-                <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
-                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#insert_editModal" id="addNewBtn">+ Add new</button>
-                </div>
-
                 <div class="col-sm-0 col-md-3 col-lg-3 d-flex justify-content-end" id="resetBtn">&orarr;</div>
 
                 <!-- Filtering data: Choose attribue to filter by -->
@@ -127,10 +122,11 @@
             <!-- pagination & page size display -->
             <div class="row">
                 <!-- page -->
-                <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                    <ul class="pagination" id="paginationDisplay">
-                    </ul>
-                </nav>
+                <div class="dropdown open">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="paginationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Page</button>
+                    <div class="dropdown-menu" id="paginationDisplay" style="max-height:200px; overflow-y:auto">
+                    </div>
+                </div>
     
                 <!-- pageNum -->
                 <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
@@ -144,46 +140,6 @@
             </div>
         </div>
         <!-- End of basic Data Viewer -->
-    </div>
-
-    <!-- Pop-up form for adding new tasks (Bootstrap Modals) -->
-    <div class="modal" id="insert_editModal" tabindex="1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" id="addNewTask_closeBtn">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <label for="taskID">Task ID</label>
-                            <input type="text" class="form-control" id="taskID" placeholder="1">
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <label for="projectID">Project ID</label>
-                            <input type="text" class="form-control" id="projectID" placeholder="1">
-                        </div>
-                    </div>
-
-                    <label for="dueDate">Due Date</label>
-                    <input type="text" class="form-control" id="dueDate" placeholder="YYYY/MM/DD">
-
-                    <label for="dueTime">Due Time</label>
-                    <input type="text" class="form-control" id="dueTime" placeholder="0000">
-
-                    <label for="duration">Duration (in Hours)</label>
-                    <input type="text" class="form-control" id='duration' placeholder="4">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="insertData">Insert</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     
