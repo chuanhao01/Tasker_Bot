@@ -243,13 +243,31 @@ function basic_obtainResult(projectId, startDate, startTime) {
                     }],
                     // Set the default color of the bar as light green -> indicates no lateness
                     color: '#8FBC8F'
-                }
+                };
 
                 allTasks.push(task);
                 categories.push(`Task ${data.taskId}`);
-            })
+            });
 
-            
+
+            // Check if there is any lateness
+            if (totalLateness > 0) {
+                // Append to toggle buttons only if there is a lateness to be shown in a separate graph
+                var toggleHtml = `
+                        <div class="pt-4 pb-2 d-flex justify-content-center btn-group btn-group-toggle" id="toggleRadio" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked> Active
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="option2" autocomplete="off"> Radio
+                            </label>
+                        </div>
+                `;
+                $('.resultGraph').prepend(toggleHtml);
+
+                // Center the radio toggle buttons without affecting the width
+                $('#toggleRadio').find('*').css('flex', 'none');
+            }
 
             categories = categories.reverse();
             createGraph(allTasks, categories, 'duration');
