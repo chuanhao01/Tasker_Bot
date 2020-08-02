@@ -1,9 +1,158 @@
 /**
  * @fileoverview This file contains the function(s) that will be needed for the basic resultViewer
  *      - basic_obtainResult()
+ *      - createGraph()
  * 
  * @author Sherisse Tan
  */
+
+
+/**
+ * @function Creating the graph (duration / lateness) to be shown in the basic resultViewer using the Highcharts Gantt API
+ * 
+ * @param {array} allTasks An array containing all the task values to be shown in the graph
+ * @param {array} categories An array containing all the taskId in the computed project
+ * @param {string} graphType A string denoting the type of graph (duration v lateness)
+ */
+function createGraph(allTasks, categories, graphType) {
+    // re-structure the tasks into line series
+    var series = [];
+    var yValue = 0;
+    $.each(allTasks.reverse(), function(i, task) {
+        var item = {
+            name: task.name,
+            data: [],
+            color: task.color
+        };
+
+        $.each(task.intervals, function(j, interval) {
+            item.data.push({
+                x: interval.from,
+                y: yValue,
+                label: interval.label,
+                from: interval.from,
+                to: interval.to,
+                tooltip_data: interval.tooltip_data
+            }, 
+            {
+                x: interval.to,
+                y: yValue,
+                label: interval.label,
+                from: interval.from,
+                to: interval.to,
+                tooltip_data: interval.tooltip_data
+            });
+
+            // Increment the yValue with each row of data
+            yValue++;
+        });
+
+        series.push(item);
+    });
+
+    var renderElement = '';
+    var graphTitle = '';
+
+    if (graphType == 'duration') {
+        renderElement = 'durationGraph';
+        graphTitle = 'Time spent working on the task (duration)';
+    }
+    else {
+        renderElement = 'latenessGraph';
+        graphTitle = 'Lateness of tasks';
+    }
+
+    // Creating the chart
+    const timezoneOffset = new Date().getTimezoneOffset()
+    new Highcharts.Chart({
+        chart: {
+            renderTo: renderElement
+        },
+
+        title: {
+            text: graphTitle
+        },
+
+        xAxis: {
+            startOnTick: true,
+            type: 'datetime'
+        },
+
+        time: {
+            timezoneOffset: timezoneOffset
+        },
+
+        global: {
+            useUTC: false,
+            timezoneOffset: timezoneOffset
+        },
+
+        yAxis: {
+            min: 0,
+            categories: categories,
+            tickInterval: 1,            
+            tickPixelInterval: 200,
+            labels: {
+                style: {
+                    color: '#525151',
+                    font: '12px Helvetica',
+                    fontWeight: 'bold'
+                }
+            },
+            startOnTick: false,
+            endOnTick: false,
+            title: {
+                text: null
+            },
+            minPadding: 0.2,
+            maxPadding: 0.2,
+            fontSize:'15px'
+        },
+
+        legend: {
+            enabled: false
+        },
+    
+        plotOptions: {
+            line: {
+                lineWidth: 10,
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+    
+        // Defining the tooltip of each task bar (hover over the relevant bars to view) 
+        tooltip: {
+            formatter: function() {
+                var fromTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.from)) * 100) - (timezoneOffset / 60 * 100)
+                var toTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.to) * 100)) - (timezoneOffset / 60 * 100)
+
+                if (toTime > 2400) {
+                    extraDays = Math.floor(toTime / 2400)
+                    toTime = (toTime - (2400 * extraDays)).toString();
+                    
+                    while (toTime.length < 4) {
+                        toTime = "0" + toTime
+                    }
+                } 
+
+                return (
+                '<b>' + this.point.options.label + 
+                '</b><br/>' + this.point.options.tooltip_data +
+                '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
+                ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
+                '<br>' + fromTime +
+                ' to ' + toTime +
+                '</br>'
+                ); 
+            }
+        },
+
+        // Defining the dataset for the graph as the array 'series' defined at the start of the script
+        series: series
+    });		         
+};
 
 
 /**
@@ -73,204 +222,89 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
             
             // Create tasks
-            allTasks = []
-            categories = []
+            allTasks = [];
+            categories = [];
+            latenessVals = [];
             allData.forEach((data) => {
-                // Checking if there is a lateness. If so, deadline to end
-                if (data.lateness > 0) {
-                    if (moment(data.fromTime).isAfter(moment(data.deadlineTime), 'hour')) {
-                        data.fromTime = data.deadlineTime;
-                    }
-
-                    task = {
-                        name: `TaskId: ${data.taskId}`,
-                        intervals: [{
-                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Before appointed deadline',
-                            fromTime: data.fromTime,
-                            toTime: data.deadlineTime
-                        }],
-                        // Set the default color of the bar as light green -> indicates no lateness
-                        color: '#8FBC8F'
-                    }
-
-                    latenessInterval = {
-                        name: `TaskId: ${data.taskId}`,
-                        intervals: [{
-                            from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
-                            label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Lateness period',
-                            fromTime: data.deadlineTime,
-                            toTime: data.toTime
-                        }],
-                        // Set the default color of the bar as light red -> indicates lateness
-                        color: '#CD5C5C'
-                    }
-                }
-                
-                // No lateness, start to end
-                else {
-                    // The assigned duration of task
-                    task = {
-                        name: `TaskId: ${data.taskId}`,
-                        intervals: [{
-                            from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
-                            to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
-                            label: `TaskId: ${data.taskId}`,
-                            tooltip_data: 'Completion of task on schedule',
-                            fromTime: data.fromTime,
-                            toTime: data.toTime
-                        }],
-                        // Set the default color of the bar as light green -> indicates no lateness
-                        color: '#8FBC8F'
-                    }
-                }   
+                // The assigned duration of task
+                task = {
+                    name: `TaskId: ${data.taskId}`,
+                    intervals: [{
+                        from: moment(`${data.fromDate} ${data.fromTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                        to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(), 
+                        label: `TaskId: ${data.taskId}`,
+                        tooltip_data: 'Duration spent working on the task',
+                        fromTime: data.fromTime,
+                        toTime: data.toTime
+                    }],
+                    // Set the default color of the bar as light green -> indicates no lateness
+                    color: '#8FBC8F'
+                };
 
                 allTasks.push(task);
-                if (data.lateness > 0) {
-                    allTasks.push(latenessInterval)
-                }
-
                 categories.push(`Task ${data.taskId}`);
-            })
-
-            function createGraph(allTasks, categories) {
-                // re-structure the tasks into line series
-                var series = [];
-                var skippedRows = 0;
-                var yValue = 0;
-                $.each(allTasks.reverse(), function(i, task) {
-                    var item = {
-                        name: task.name,
-                        data: [],
-                        color: task.color
-                    };
-
-                    // Change the yValue if there is a lateness (ensures that the lateness bar is plotted in the same row)
-                    if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
-                        yValue = i - 1;
-                        skippedRows += 1;
-                    }
-                    yValue = i - skippedRows;
-
-                    $.each(task.intervals, function(j, interval) {
-                        item.data.push({
-                            x: interval.from,
-                            y: yValue,
-                            label: interval.label,
-                            from: interval.from,
-                            to: interval.to,
-                            tooltip_data: interval.tooltip_data
-                        }, 
-                        {
-                            x: interval.to,
-                            y: yValue,
-                            label: interval.label,
-                            from: interval.from,
-                            to: interval.to,
-                            tooltip_data: interval.tooltip_data
-                        });
-                    });
-
-                    series.push(item);
-                });
-
-                // Creating the chart
-                const timezoneOffset = new Date().getTimezoneOffset()
-                new Highcharts.Chart({
-                    chart: {
-                        renderTo: 'durationGraph'
-                    },
-
-                    title: {
-                        text: 'Graphical view of tasks'
-                    },
-
-                    xAxis: {
-                        startOnTick: true,
-                        type: 'datetime'
-                    },
-
-                    time: {
-                        timezoneOffset: timezoneOffset
-                    },
-                    global: {
-                        useUTC: false,
-                        timezoneOffset: timezoneOffset
-                    },
-
-                    yAxis: {
-                        min: 0,
-                        categories: categories,
-                        tickInterval: 1,            
-                        tickPixelInterval: 200,
-                        labels: {
-                            style: {
-                                color: '#525151',
-                                font: '12px Helvetica',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        startOnTick: false,
-                        endOnTick: false,
-                        title: {
-                            text: null
-                        },
-                        minPadding: 0.2,
-                        maxPadding: 0.2,
-                        fontSize:'15px'
-                    },
-
-                    legend: {
-                        enabled: false
-                    },
-                
-                    plotOptions: {
-                        line: {
-                            lineWidth: 10,
-                            marker: {
-                                enabled: false
-                            }
-                        }
-                    },
-                
-                    // Defining the tooltip of each task bar (hover over the relevant bars to view) 
-                    tooltip: {
-                        formatter: function() {
-                            var fromTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.from)) * 100) - (timezoneOffset / 60 * 100)
-                            var toTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.to) * 100)) - (timezoneOffset / 60 * 100)
-
-                            if (toTime > 2400) {
-                                extraDays = Math.floor(toTime / 2400)
-                                toTime = (toTime - (2400 * extraDays)).toString();
-                                
-                                while (toTime.length < 4) {
-                                    toTime = "0" + toTime
-                                }
-                            } 
-
-                            return (
-                            '<b>' + this.point.options.label + 
-                            '</b><br/>' + this.point.options.tooltip_data +
-                            '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
-                            ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
-                            '<br>' + fromTime +
-                            ' to ' + toTime +
-                            '</br>'
-                            ); 
-                        }
-                    },
-
-                    // Defining the dataset for the graph as the array 'series' defined at the start of the script
-                    series: series
-                });		         
-            };
+            });
 
             categories = categories.reverse();
-            createGraph(allTasks, categories);
+            createGraph(allTasks, categories, 'duration');
+
+
+            // Check if there is any lateness
+            if (totalLateness > 0) {
+                // Append to toggle buttons only if there is a lateness to be shown in a separate graph
+                var toggleHtml = `
+                        <div class="pt-4 pb-2 d-flex justify-content-center btn-group btn-group-toggle" id="toggleRadio" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="toggleGraph" id="toggleGraph_duration" autocomplete="off" checked> Duration graph
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="toggleGraph" id="toggleGraph_lateness" autocomplete="off"> Lateness graph
+                            </label>
+                        </div>
+                `;
+                $('.resultGraph').prepend(toggleHtml);
+
+                // Center the radio toggle buttons without affecting the width
+                $('#toggleRadio').find('*').css('flex', 'none');
+
+
+                // Lateness graph values
+                allData.forEach((data) => {
+                    // Lateness (show lateness period)
+                    if (data.lateness > 0) {
+                        lateness = {
+                            name: `TaskId: ${data.taskId}`,
+                            intervals: [{
+                                from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                                to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                                label: `TaskId: ${data.taskId}`,
+                                tooltip_data: 'Lateness of task',
+                                fromTime: data.deadlineTime,
+                                toTime: data.toTime
+                            }],
+                            // Set the default color of the bar as light red -> indicates lateness
+                            color: '#CD5C5C'
+                        }
+                    }
+
+                    // No lateness (blank row)
+                    else {
+                        lateness = {
+                            name: `TaskId: ${data.taskId}`,
+                            intervals: [{
+                                from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                                to: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate()
+                            }],
+                            // Set the default color of the bar as light red -> indicates lateness
+                            color: '#FFFFFF'
+                        }
+                    };
+
+                    latenessVals.push(lateness);
+                });
+
+                createGraph(latenessVals, categories, 'lateness');
+            };
         },
 
         /**

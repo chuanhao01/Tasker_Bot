@@ -120,8 +120,8 @@
 
     <!-- Chart -->
     <div class="resultGraph">
-	    <div class="p-5 pt-0" id="durationGraph"></div>
-        <div class="p-5 pt-0" id="latenessGraph"></div>
+	    <div class="pt-0" id="durationGraph"></div>
+        <div class="pt-0" id="latenessGraph" hidden></div>
     </div>
 	
 
@@ -134,7 +134,12 @@
 
             basic_obtainResult(projectId, startDate, startTime);
             $('.resultViewer').removeAttr('hidden')
-		});
+        });
+        
+        $(document).on('change', 'input:radio[name="toggleGraph"]', function() {
+            document.querySelector('#durationGraph').toggleAttribute('hidden');
+            document.querySelector('#latenessGraph').toggleAttribute('hidden')
+        })
     </script>
 </body>
 </html>
