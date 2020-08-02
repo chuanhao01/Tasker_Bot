@@ -163,12 +163,6 @@ function createGraph(allTasks, categories, graphType) {
  * @param {String} startTime The start time of the project
  */
 function basic_obtainResult(projectId, startDate, startTime) {
-    // REMOVE THIS
-    projectId = '1100000003';
-    startDate = '2020/01/01';
-    startTime = '0900';
-
-
     var url = `http://localhost:3000/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`;
 
     $.ajax({
