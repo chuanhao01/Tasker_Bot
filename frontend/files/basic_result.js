@@ -255,10 +255,10 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 var toggleHtml = `
                         <div class="pt-4 pb-2 d-flex justify-content-center btn-group btn-group-toggle" id="toggleRadio" data-toggle="buttons">
                             <label class="btn btn-secondary active">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked> Active
+                                <input type="radio" name="toggleGraph" id="toggleGraph_duration" autocomplete="off" checked> Duration graph
                             </label>
                             <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option2" autocomplete="off"> Radio
+                                <input type="radio" name="toggleGraph" id="toggleGraph_lateness" autocomplete="off"> Lateness graph
                             </label>
                         </div>
                 `;
