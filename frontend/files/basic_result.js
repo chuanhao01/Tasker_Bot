@@ -1,9 +1,163 @@
 /**
  * @fileoverview This file contains the function(s) that will be needed for the basic resultViewer
  *      - basic_obtainResult()
+ *      - createGraph()
  * 
  * @author Sherisse Tan
  */
+
+
+/**
+ * @function Creating the graph (duration / lateness) to be shown in the basic resultViewer using the Highcharts Gantt API
+ * 
+ * @param {array} allTasks An array containing all the task values to be shown in the graph
+ * @param {array} categories An array containing all the taskId in the computed project
+ * @param {string} graphType A string denoting the type of graph (duration v lateness)
+ */
+function createGraph(allTasks, categories, graphType) {
+    // re-structure the tasks into line series
+    var series = [];
+    var skippedRows = 0;
+    var yValue = 0;
+    $.each(allTasks.reverse(), function(i, task) {
+        var item = {
+            name: task.name,
+            data: [],
+            color: task.color
+        };
+
+        // Change the yValue if there is a lateness (ensures that the lateness bar is plotted in the same row)
+        if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
+            yValue = i - 1;
+            skippedRows += 1;
+        }
+        yValue = i - skippedRows;
+
+        $.each(task.intervals, function(j, interval) {
+            item.data.push({
+                x: interval.from,
+                y: yValue,
+                label: interval.label,
+                from: interval.from,
+                to: interval.to,
+                tooltip_data: interval.tooltip_data
+            }, 
+            {
+                x: interval.to,
+                y: yValue,
+                label: interval.label,
+                from: interval.from,
+                to: interval.to,
+                tooltip_data: interval.tooltip_data
+            });
+        });
+
+        series.push(item);
+    });
+
+    var renderElement = '';
+    var graphTitle = '';
+
+    if (graphType == 'duration') {
+        renderElement = 'durationGraph';
+        graphTitle = 'Time spent working on the task (duration)';
+    }
+    else {
+        renderElement = 'latenessGraph';
+        graphTitle = 'Lateness of tasks';
+    }
+
+    // Creating the chart
+    const timezoneOffset = new Date().getTimezoneOffset()
+    new Highcharts.Chart({
+        chart: {
+            renderTo: renderElement
+        },
+
+        title: {
+            text: graphTitle
+        },
+
+        xAxis: {
+            startOnTick: true,
+            type: 'datetime'
+        },
+
+        time: {
+            timezoneOffset: timezoneOffset
+        },
+
+        global: {
+            useUTC: false,
+            timezoneOffset: timezoneOffset
+        },
+
+        yAxis: {
+            min: 0,
+            categories: categories,
+            tickInterval: 1,            
+            tickPixelInterval: 200,
+            labels: {
+                style: {
+                    color: '#525151',
+                    font: '12px Helvetica',
+                    fontWeight: 'bold'
+                }
+            },
+            startOnTick: false,
+            endOnTick: false,
+            title: {
+                text: null
+            },
+            minPadding: 0.2,
+            maxPadding: 0.2,
+            fontSize:'15px'
+        },
+
+        legend: {
+            enabled: false
+        },
+    
+        plotOptions: {
+            line: {
+                lineWidth: 10,
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+    
+        // Defining the tooltip of each task bar (hover over the relevant bars to view) 
+        tooltip: {
+            formatter: function() {
+                var fromTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.from)) * 100) - (timezoneOffset / 60 * 100)
+                var toTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.to) * 100)) - (timezoneOffset / 60 * 100)
+
+                if (toTime > 2400) {
+                    extraDays = Math.floor(toTime / 2400)
+                    toTime = (toTime - (2400 * extraDays)).toString();
+                    
+                    while (toTime.length < 4) {
+                        toTime = "0" + toTime
+                    }
+                } 
+
+                return (
+                '<b>' + this.point.options.label + 
+                '</b><br/>' + this.point.options.tooltip_data +
+                '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
+                ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
+                '<br>' + fromTime +
+                ' to ' + toTime +
+                '</br>'
+                ); 
+            }
+        },
+
+        // Defining the dataset for the graph as the array 'series' defined at the start of the script
+        series: series
+    });		         
+};
 
 
 /**
@@ -95,141 +249,10 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 categories.push(`Task ${data.taskId}`);
             })
 
-            function createGraph(allTasks, categories) {
-                // re-structure the tasks into line series
-                var series = [];
-                var skippedRows = 0;
-                var yValue = 0;
-                $.each(allTasks.reverse(), function(i, task) {
-                    var item = {
-                        name: task.name,
-                        data: [],
-                        color: task.color
-                    };
-
-                    // Change the yValue if there is a lateness (ensures that the lateness bar is plotted in the same row)
-                    if(i != 0 && task.name.split('_')[0] == allTasks[i - 1].name.split('_')[0]) {
-                        yValue = i - 1;
-                        skippedRows += 1;
-                    }
-                    yValue = i - skippedRows;
-
-                    $.each(task.intervals, function(j, interval) {
-                        item.data.push({
-                            x: interval.from,
-                            y: yValue,
-                            label: interval.label,
-                            from: interval.from,
-                            to: interval.to,
-                            tooltip_data: interval.tooltip_data
-                        }, 
-                        {
-                            x: interval.to,
-                            y: yValue,
-                            label: interval.label,
-                            from: interval.from,
-                            to: interval.to,
-                            tooltip_data: interval.tooltip_data
-                        });
-                    });
-
-                    series.push(item);
-                });
-
-                // Creating the chart
-                const timezoneOffset = new Date().getTimezoneOffset()
-                new Highcharts.Chart({
-                    chart: {
-                        renderTo: 'durationGraph'
-                    },
-
-                    title: {
-                        text: 'Time spent working on the task (Duration)'
-                    },
-
-                    xAxis: {
-                        startOnTick: true,
-                        type: 'datetime'
-                    },
-
-                    time: {
-                        timezoneOffset: timezoneOffset
-                    },
-        
-                    global: {
-                        useUTC: false,
-                        timezoneOffset: timezoneOffset
-                    },
-
-                    yAxis: {
-                        min: 0,
-                        categories: categories,
-                        tickInterval: 1,            
-                        tickPixelInterval: 200,
-                        labels: {
-                            style: {
-                                color: '#525151',
-                                font: '12px Helvetica',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        startOnTick: false,
-                        endOnTick: false,
-                        title: {
-                            text: null
-                        },
-                        minPadding: 0.2,
-                        maxPadding: 0.2,
-                        fontSize:'15px'
-                    },
-
-                    legend: {
-                        enabled: false
-                    },
-                
-                    plotOptions: {
-                        line: {
-                            lineWidth: 10,
-                            marker: {
-                                enabled: false
-                            }
-                        }
-                    },
-                
-                    // Defining the tooltip of each task bar (hover over the relevant bars to view) 
-                    tooltip: {
-                        formatter: function() {
-                            var fromTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.from)) * 100) - (timezoneOffset / 60 * 100)
-                            var toTime = (parseInt(Highcharts.dateFormat('%H', this.point.options.to) * 100)) - (timezoneOffset / 60 * 100)
-
-                            if (toTime > 2400) {
-                                extraDays = Math.floor(toTime / 2400)
-                                toTime = (toTime - (2400 * extraDays)).toString();
-                                
-                                while (toTime.length < 4) {
-                                    toTime = "0" + toTime
-                                }
-                            } 
-
-                            return (
-                            '<b>' + this.point.options.label + 
-                            '</b><br/>' + this.point.options.tooltip_data +
-                            '<br>' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.from) +
-                            ' to ' + Highcharts.dateFormat('%d-%m-%Y', this.point.options.to) +
-                            '<br>' + fromTime +
-                            ' to ' + toTime +
-                            '</br>'
-                            ); 
-                        }
-                    },
-
-                    // Defining the dataset for the graph as the array 'series' defined at the start of the script
-                    series: series
-                });		         
-            };
+            
 
             categories = categories.reverse();
-            createGraph(allTasks, categories);
+            createGraph(allTasks, categories, 'duration');
         },
 
         /**
