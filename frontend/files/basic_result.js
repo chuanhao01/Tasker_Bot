@@ -227,8 +227,9 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
             
             // Create tasks
-            allTasks = []
-            categories = []
+            allTasks = [];
+            categories = [];
+            latenessVals = [];
             allData.forEach((data) => {
                 // The assigned duration of task
                 task = {
@@ -249,6 +250,9 @@ function basic_obtainResult(projectId, startDate, startTime) {
                 categories.push(`Task ${data.taskId}`);
             });
 
+            categories = categories.reverse();
+            createGraph(allTasks, categories, 'duration');
+
 
             // Check if there is any lateness
             if (totalLateness > 0) {
@@ -267,10 +271,45 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
                 // Center the radio toggle buttons without affecting the width
                 $('#toggleRadio').find('*').css('flex', 'none');
-            }
 
-            categories = categories.reverse();
-            createGraph(allTasks, categories, 'duration');
+
+                // Lateness graph values
+                allData.forEach((data) => {
+                    // Lateness (show lateness period)
+                    if (data.lateness > 0) {
+                        lateness = {
+                            name: `TaskId: ${data.taskId}`,
+                            intervals: [{
+                                from: moment(`${data.deadlineDate} ${data.deadlineTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                                to: moment(`${data.toDate} ${data.toTime}`, 'YYYY/MM/DD HHmm').toDate(),
+                                label: `TaskId: ${data.taskId}`,
+                                tooltip_data: 'Lateness of task',
+                                fromTime: data.deadlineTime,
+                                toTime: data.toTime
+                            }],
+                            // Set the default color of the bar as light red -> indicates lateness
+                            color: '#CD5C5C'
+                        }
+                    }
+
+                    // No lateness (blank row)
+                    else {
+                        lateness = {
+                            name: `TaskId: ${data.taskId}`,
+                            intervals: [{
+                                from: null,
+                                to: null
+                            }],
+                            // Set the default color of the bar as light red -> indicates lateness
+                            color: '#CD5C5C'
+                        }
+                    };
+
+                    latenessVals.push(lateness);
+                });
+
+                createGraph(latenessVals, categories, 'lateness');
+            };
         },
 
         /**
