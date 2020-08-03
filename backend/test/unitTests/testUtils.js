@@ -19,15 +19,15 @@ const expect = require('chai').expect;
 const utils = require('../../utils/index');
 
 // Tests below
-describe('Utils test', function(){
-    describe('Testing for dbPraser', function(){
-        describe('Testing for the all/common parsers', function(){
-            describe('Testing the get data query params parser', function(){
-                it('Testing default, when no query params', function(){
+describe('Utils test suite', function(){
+    describe('dbPraser', function(){
+        describe('all/common parsers', function(){
+            describe('Get Data Query Parameters Parser', function(){
+                it('Default, no query params', function(){
                     const result = utils.dbParser.all.getDataQueryParams({});
                     expect(result).to.be.equal(`LIMIT 10`);
                 });
-                it('Testing projectId only', function(){
+                it('projectId only', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "projectId": {
                             ">": "1"
@@ -35,7 +35,15 @@ describe('Utils test', function(){
                     });
                     expect(result).to.be.equal('WHERE \nprojectId > 1 \nLIMIT 10 ');
                 });
-                it('Testing projectId and duration', function(){
+                it('duration only', function(){
+                    const result = utils.dbParser.all.getDataQueryParams({
+                        "duration": {
+                            "<=": "10"
+                        },
+                    });
+                    expect(result).to.be.equal('WHERE \nduration <= 10 \nLIMIT 10 ');
+                });
+                it('projectId and duration', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "projectId": {
                             ">": "1"
@@ -46,32 +54,38 @@ describe('Utils test', function(){
                     });
                     expect(result).to.be.equal('WHERE \nprojectId > 1 \nAND \nduration <= 10 \nLIMIT 10 ');
                 });
-                it('Testing sortBy', function(){
+                it('sortBy Single', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
-                        "sortBy": "projectId.asc,taskId.asc",
+                        "sortBy": "projectId.asc",
                     });
-                    expect(result).to.be.equal('ORDER BY \nprojectId asc, taskId asc\nLIMIT 10 ');
+                    expect(result).to.be.equal('ORDER BY \nprojectId asc\nLIMIT 10 ');
                 });
-                it('Testing page only', function(){
+                it('sortBy Multiple', function(){
+                    const result = utils.dbParser.all.getDataQueryParams({
+                        "sortBy": "projectId.asc,taskId.desc",
+                    });
+                    expect(result).to.be.equal('ORDER BY \nprojectId asc, taskId desc\nLIMIT 10 ');
+                });
+                it('page only', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "page": "10",
                     });
                     expect(result).to.be.equal('LIMIT 10 OFFSET 90');
                 });
-                it('Testing pageNum only', function(){
+                it('pageNum only', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "pageNum": "5"
                     });
                     expect(result).to.be.equal('LIMIT 5 ');
                 });
-                it('Testing pageNum and page', function(){
+                it('page and pageNum', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "page": "5",
                         "pageNum": "5"
                     });
                     expect(result).to.be.equal('LIMIT 5 OFFSET 20');
                 });
-                it('Testing all at once', function(){
+                it('Testing all queries at once', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "projectId": {
                             ">": "1"
@@ -87,9 +101,9 @@ describe('Utils test', function(){
                 });
             });
         });
-        describe('For the basic parser', function(){
-            describe('Testing bulk insert', function(){
-                it('Functionality test', function(){
+        describe('basic parsers', function(){
+            describe('Basic Bulk Insert', function(){
+                it('Basic Functionality', function(){
                     const testTasks = [
                         {
                             "taskId": 11,
@@ -112,9 +126,9 @@ describe('Utils test', function(){
                 });
             });
         });
-        describe('For the advacned parser', function(){
-            describe('Testing bulk insert parser', function(){
-                it('Functionality Test', function(){
+        describe('advacned parsers', function(){
+            describe('Advanced Bulk Insert', function(){
+                it('Basic Functionality', function(){
                     const testTasks = [
                         {
                             "taskId": 11,
@@ -134,9 +148,9 @@ describe('Utils test', function(){
             });
         });
     });
-    describe('Testing for custom validator', function(){
-        describe('For the basic validator', function(){
-            describe('Testing the get data sortBy query params', function(){
+    describe('validator', function(){
+        describe('basic validator', function(){
+            describe('sortBy query validator', function(){
                 it('Query param exists', function(){
                     const result = utils.v.basic.getSortByQuery('');
                     expect(result).to.be.false;
@@ -172,18 +186,10 @@ describe('Utils test', function(){
             });
         });
     });
-    describe('Test for data parser', function(){
-        describe('For basic parser', function(){
-            describe('Parsing get data', function(){
-                // To do
-                it('Making sure format is done correctly', function(){
-                    /*
-                    Note I am writing this here because there is a slight bug with node-pg
-                    For date 1998-02-02 it returns as the string 1998-02-01T16:00:00.000Z
-                    But using moment to parse it, it changes to 1998-02-02T00:00:00.000Z
-                    But when parsed back to string, it is still 1998-02-01T16:00:00.000Z
-                    So this test if for both
-                    */
+    describe('dataParser', function(){
+        describe('basic parser', function(){
+            describe('basic Get Data parser', function(){
+                it('Basic Functionality', function(){
                     const testModelData = [
                         {
                             'rows': [
@@ -191,7 +197,7 @@ describe('Utils test', function(){
                                     taskid: '6',
                                     duedate: moment('1998-02-02', 'YYYY-MM-DD'),
                                     duetime: '01:32:00',
-                                    duration: 2,
+                                    duration: 2.3211,
                                     projectid: '11'
                                 },
                                 {
@@ -206,7 +212,7 @@ describe('Utils test', function(){
                         {
                             'rows': [
                                 {
-                                    'count': 1
+                                    'count': 2
                                 }
                             ]
                         }
@@ -215,26 +221,26 @@ describe('Utils test', function(){
                     const expectedResult = {
                         'data': [
                             {
-                                'taskid': '6',
-                                'duedate': '1998/02/02', 
-                                'duetime': '0132',
-                                'duration': '2',
-                                'projectid': '11'
+                                'dueDate': '1998/02/02', 
+                                'dueTime': '0132',
+                                'duration': 2.321,
+                                'projectId': 11,
+                                'taskId': 6,
                             },
                             {
-                                'taskid': '7',
-                                'duedate': '1998/02/02',
-                                'duetime': '0132',
-                                'duration': '2',
-                                'projectid': '11'
+                                'dueDate': '1998/02/02',
+                                'dueTime': '0132',
+                                'duration': 2,
+                                'projectId': 11,
+                                'taskId': 7,
                             },
                         ],
-                        'lastPage': '1'
+                        'lastPage': 1
                     };
                     expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
             });
-            describe('Parsing the calculated results', function(){
+            describe('basic Get Result Parser', function(){
                 it('Basic Functionality', function(){
                     const testResults = {
                         'data': [
@@ -275,158 +281,108 @@ describe('Utils test', function(){
                                 fromDate: '2020/01/01',
                                 fromTime: '1200',
                                 toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: 2
-                            }
+                                toTime: '1307',
+                                lateness: 2.123
+                            },
                         ],
-                        'totalLateness': 3
+                        'totalLateness': 3.123
                     };
                     const data = utils.dataParser.basic.getResults(testResults);
                     const expectedData = {
                         'result': [
                             {
-                                taskId:'1000000001',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '0900',
-                                toDate: '2020/01/01',
-                                toTime: '1000',
-                                lateness: '0'
+                                'taskId': 1000000001,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '0900',
+                                'toDate': '2020/01/01',
+                                'toTime': '1000',
+                                'lateness': 0
                             },
                             {
-                                taskId:'1000000002',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1000',
-                                toDate: '2020/01/01',
-                                toTime: '1100',
-                                lateness: '0'
+                                'taskId': 1000000002,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '1000',
+                                'toDate': '2020/01/01',
+                                'toTime': '1100',
+                                'lateness': 0
                             },
                             {
-                                taskId:'1000000003',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1100',
-                                toDate: '2020/01/01',
-                                toTime: '1200',
-                                lateness: '1'
+                                'taskId': 1000000003,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '1100',
+                                'toDate': '2020/01/01',
+                                'toTime': '1200',
+                                'lateness': 1
                             },
                             {
-                                taskId:'1000000004',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1200',
-                                toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: '2'
+                                'taskId': 1000000004,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '1200',
+                                'toDate': '2020/01/01',
+                                'toTime': '1307',
+                                'lateness': 2.123
                             }
                         ],
-                        'totalLateness': '3'
-                    };
-                    expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
-                });
-                it('3dp rounding functionality', function(){
-                    const testResults = {
-                        'data': [
-                            {
-                                taskId:'1000000001',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '0900',
-                                toDate: '2020/01/01',
-                                toTime: '1000',
-                                lateness: 1.33333333333333333
-                            },
-                            {
-                                taskId:'1000000002',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '1000',
-                                toDate: '2020/01/01',
-                                toTime: '1100',
-                                lateness: 0.123333333333333
-                            },
-                            {
-                                taskId:'1000000003',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '1100',
-                                toDate: '2020/01/01',
-                                toTime: '1200',
-                                lateness: 4.999999999999999
-                            },
-                            {
-                                taskId:'1000000004',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '1200',
-                                toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: 10.23451111111111
-                            }
-                        ],
-                        'totalLateness': 16.691177777777774
-                    };
-                    const data = utils.dataParser.basic.getResults(testResults);
-                    const expectedData = {
-                        'result': [
-                            {
-                                taskId:'1000000001',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '0900',
-                                toDate: '2020/01/01',
-                                toTime: '1000',
-                                lateness: '1.333'
-                            },
-                            {
-                                taskId:'1000000002',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1000',
-                                toDate: '2020/01/01',
-                                toTime: '1100',
-                                lateness: '0.123'
-                            },
-                            {
-                                taskId:'1000000003',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1100',
-                                toDate: '2020/01/01',
-                                toTime: '1200',
-                                lateness: '5'
-                            },
-                            {
-                                taskId:'1000000004',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1200',
-                                toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: '10.235'
-                            }
-                        ],
-                        'totalLateness': '16.691'
+                        'totalLateness': 3.123
                     };
                     expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
                 });
             });
         });
         describe('For the advanced parser', function(){
-            describe('Parsing the calculated results for the equally split', function(){
+            describe('advanced Get Data Parser', function(){
+                it('Basic Functionality', function(){
+                    const testModelData = [
+                        {
+                            'rows': [
+                                {
+                                    projectid: '11',
+                                    taskid: '6',
+                                    duration: 2.3211,
+                                },
+                                {
+                                    projectid: '11',
+                                    taskid: '7',
+                                    duration: 2,
+                                },
+                            ]
+                        },
+                        {
+                            'rows': [
+                                {
+                                    'count': 2
+                                }
+                            ]
+                        }
+                    ];
+                    const result = utils.dataParser.advanced.getData(testModelData, 10);
+                    const expectedResult = {
+                        'data': [
+                            {
+                                'projectId': 11,
+                                'taskId': 6,
+                                'duration': 2.321,
+                            },
+                            {
+                                'projectId': 11,
+                                'taskId': 7,
+                                'duration': 2,
+                            },
+                        ],
+                        'lastPage': 1
+                    };
+                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
+                });
+            });
+            describe('advanced Get Result, equal split, Parser', function(){
                 it('Basic Functionality', function(){
                     const results = [
                         [
@@ -438,7 +394,7 @@ describe('Utils test', function(){
                             {
                                 'projectId': '1',
                                 'taskId': '4',
-                                'duration': 2,
+                                'duration': 2.12,
                             }
                         ],
                         [
@@ -450,7 +406,7 @@ describe('Utils test', function(){
                             {
                                 'projectId': '1',
                                 'taskId': '3',
-                                'duration': 2,
+                                'duration': 2.123,
                             }
                         ]
                     ];
@@ -459,94 +415,26 @@ describe('Utils test', function(){
                         "result": [
                             [
                                 {
-                                    'projectId': '1',
-                                    'taskId': '2',
-                                    'duration': '1',
+                                    'projectId': 1,
+                                    'taskId': 2,
+                                    'duration': 1,
                                 },
                                 {
-                                    'projectId': '1',
-                                    'taskId': '4',
-                                    'duration': '2',
+                                    'projectId': 1,
+                                    'taskId': 4,
+                                    'duration': 2.12,
                                 }
                             ],
                             [
                                 {
-                                    'projectId': '1',
-                                    'taskId': '1',
-                                    'duration': '1',
+                                    'projectId': 1,
+                                    'taskId': 1,
+                                    'duration': 1,
                                 },
                                 {
-                                    'projectId': '1',
-                                    'taskId': '3',
-                                    'duration': '2',
-                                }
-                            ]
-                        ]
-                    };
-                    expect(JSON.stringify(parsedResults)).to.be.equal(JSON.stringify(expectedParsedResults));
-                });
-                it('Basic Functionality 2', function(){
-                    const results = [
-                        [
-                            {
-                                'projectId': '1',
-                                'taskId': '2',
-                                'duration': 1,
-                            },
-                            {
-                                'projectId': '1',
-                                'taskId': '4',
-                                'duration': 2,
-                            },
-                            {
-                                'projectId': '1',
-                                'taskId': '5',
-                                'duration': 1,
-                            }
-                        ],
-                        [
-                            {
-                                'projectId': '1',
-                                'taskId': '1',
-                                'duration': 1,
-                            },
-                            {
-                                'projectId': '1',
-                                'taskId': '3',
-                                'duration': 2,
-                            }
-                        ]
-                    ];
-                    const parsedResults = utils.dataParser.advanced.getEqualSplitResults(results);
-                    const expectedParsedResults = {
-                        "result": [
-                            [
-                                {
-                                    'projectId': '1',
-                                    'taskId': '2',
-                                    'duration': '1',
-                                },
-                                {
-                                    'projectId': '1',
-                                    'taskId': '4',
-                                    'duration': '2',
-                                },
-                                {
-                                    'projectId': '1',
-                                    'taskId': '5',
-                                    'duration': '1',
-                                }
-                            ],
-                            [
-                                {
-                                    'projectId': '1',
-                                    'taskId': '1',
-                                    'duration': '1',
-                                },
-                                {
-                                    'projectId': '1',
-                                    'taskId': '3',
-                                    'duration': '2',
+                                    'projectId': 1,
+                                    'taskId': 3,
+                                    'duration': 2.123,
                                 }
                             ]
                         ]
