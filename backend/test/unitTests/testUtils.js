@@ -240,7 +240,7 @@ describe('Utils test suite', function(){
                     expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
             });
-            describe('Parsing the calculated results', function(){
+            describe('basic Get Result Parser', function(){
                 it('Basic Functionality', function(){
                     const testResults = {
                         'data': [
@@ -281,151 +281,57 @@ describe('Utils test suite', function(){
                                 fromDate: '2020/01/01',
                                 fromTime: '1200',
                                 toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: 2
-                            }
+                                toTime: '1307',
+                                lateness: 2.123
+                            },
                         ],
-                        'totalLateness': 3
+                        'totalLateness': 3.123
                     };
                     const data = utils.dataParser.basic.getResults(testResults);
                     const expectedData = {
                         'result': [
                             {
-                                taskId:'1000000001',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '0900',
-                                toDate: '2020/01/01',
-                                toTime: '1000',
-                                lateness: '0'
+                                'taskId': 1000000001,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '0900',
+                                'toDate': '2020/01/01',
+                                'toTime': '1000',
+                                'lateness': 0
                             },
                             {
-                                taskId:'1000000002',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1000',
-                                toDate: '2020/01/01',
-                                toTime: '1100',
-                                lateness: '0'
+                                'taskId': 1000000002,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '1000',
+                                'toDate': '2020/01/01',
+                                'toTime': '1100',
+                                'lateness': 0
                             },
                             {
-                                taskId:'1000000003',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1100',
-                                toDate: '2020/01/01',
-                                toTime: '1200',
-                                lateness: '1'
+                                'taskId': 1000000003,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '1100',
+                                'toDate': '2020/01/01',
+                                'toTime': '1200',
+                                'lateness': 1
                             },
                             {
-                                taskId:'1000000004',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1200',
-                                toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: '2'
+                                'taskId': 1000000004,
+                                'deadlineDate': '2020/01/01',
+                                'deadlineTime': '1100',
+                                'fromDate': '2020/01/01',
+                                'fromTime': '1200',
+                                'toDate': '2020/01/01',
+                                'toTime': '1307',
+                                'lateness': 2.123
                             }
                         ],
-                        'totalLateness': '3'
-                    };
-                    expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
-                });
-                it('3dp rounding functionality', function(){
-                    const testResults = {
-                        'data': [
-                            {
-                                taskId:'1000000001',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '0900',
-                                toDate: '2020/01/01',
-                                toTime: '1000',
-                                lateness: 1.33333333333333333
-                            },
-                            {
-                                taskId:'1000000002',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '1000',
-                                toDate: '2020/01/01',
-                                toTime: '1100',
-                                lateness: 0.123333333333333
-                            },
-                            {
-                                taskId:'1000000003',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '1100',
-                                toDate: '2020/01/01',
-                                toTime: '1200',
-                                lateness: 4.999999999999999
-                            },
-                            {
-                                taskId:'1000000004',
-                                deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
-                                deadlineTime:"11:00:00",
-                                fromDate: '2020/01/01',
-                                fromTime: '1200',
-                                toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: 10.23451111111111
-                            }
-                        ],
-                        'totalLateness': 16.691177777777774
-                    };
-                    const data = utils.dataParser.basic.getResults(testResults);
-                    const expectedData = {
-                        'result': [
-                            {
-                                taskId:'1000000001',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '0900',
-                                toDate: '2020/01/01',
-                                toTime: '1000',
-                                lateness: '1.333'
-                            },
-                            {
-                                taskId:'1000000002',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1000',
-                                toDate: '2020/01/01',
-                                toTime: '1100',
-                                lateness: '0.123'
-                            },
-                            {
-                                taskId:'1000000003',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1100',
-                                toDate: '2020/01/01',
-                                toTime: '1200',
-                                lateness: '5'
-                            },
-                            {
-                                taskId:'1000000004',
-                                deadlineDate: '2020/01/01',
-                                deadlineTime: '1100',
-                                fromDate: '2020/01/01',
-                                fromTime: '1200',
-                                toDate: '2020/01/01',
-                                toTime: '1300',
-                                lateness: '10.235'
-                            }
-                        ],
-                        'totalLateness': '16.691'
+                        'totalLateness': 3.123
                     };
                     expect(JSON.stringify(data)).to.be.equal(JSON.stringify(expectedData));
                 });
