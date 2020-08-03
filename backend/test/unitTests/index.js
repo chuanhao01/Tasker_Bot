@@ -10,6 +10,7 @@
  */
 
 
+require('dotenv').config();
 // Loading dotenv for the test
 before('Making sure dotenv is loaded', function(){
     // Loading the testing libs

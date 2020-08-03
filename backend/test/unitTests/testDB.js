@@ -14,26 +14,12 @@
  * 
  */
 
-// Setting up date parser for pg
-var types = require('pg').types;
-var moment = require('moment');
-// Setting up custom parsing for datatypes
-// For the DATE data type
-types.setTypeParser(1082, function(val) {
-    return val === null ? null : moment(val, 'YYYY-MM-DD');
-});
-// For the DECIMAL data type
-types.setTypeParser(1700, parseFloat);
-// For the FLOAT data type
-types.setTypeParser(701, parseFloat);
-
 // Importing libs needed to run the test
-const {Pool} = require('pg');
 const expect = require('chai').expect;
-const rewire = require('rewire');
+var moment = require('moment');
 
 // Importing the db/model to test
-const model = rewire('../../db/index');
+const model = require('../../db/index');
 
 // Define global var for pool
 let pool;
@@ -44,15 +30,7 @@ const scripts = require('../../scripts/index');
 describe('Model Test Suite', function(){
     before('Setting up the pool for the db test', function(){
         // Init the pool used for the unit test
-        pool = new Pool({
-            connectionString: process.env.PG_URL,
-            max: 5,
-        });
-
-        // Monkey patching and mocking the pool used in the model module
-        model.__set__({
-            'pool': pool
-        });
+        pool = model.pool;
     });
     beforeEach('Init the db', function(done){
         // Using the script to reset and set up the db with the test db setup
