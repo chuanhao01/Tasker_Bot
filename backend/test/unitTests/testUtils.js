@@ -148,9 +148,9 @@ describe('Utils test suite', function(){
             });
         });
     });
-    describe('Testing for custom validator', function(){
-        describe('For the basic validator', function(){
-            describe('Testing the get data sortBy query params', function(){
+    describe('validator', function(){
+        describe('basic validator', function(){
+            describe('sortBy query validator', function(){
                 it('Query param exists', function(){
                     const result = utils.v.basic.getSortByQuery('');
                     expect(result).to.be.false;
