@@ -42,9 +42,8 @@ let pool;
 const scripts = require('../../scripts/index');
 
 describe('Model Test Suite', function(){
-    // Init the testing db
     before('Setting up the pool for the db test', function(){
-        // Init the pool used for the test
+        // Init the pool used for the unit test
         pool = new Pool({
             connectionString: process.env.PG_URL,
             max: 5,
@@ -56,7 +55,7 @@ describe('Model Test Suite', function(){
         });
     });
     beforeEach('Init the db', function(done){
-        // Using the script to set up the db with the test db setup
+        // Using the script to reset and set up the db with the test db setup
         scripts.db.dbInit(pool)
         .then(
             function(){
@@ -65,8 +64,8 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    describe('Checking DB internals', function(){
-        it('Checking if DB initialized properly ', function(done){
+    describe('DB set script and schema', function(){
+        it('Check schema of DB', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
             c.relname as "Name",                                                                                                                                                                        
@@ -110,7 +109,7 @@ describe('Model Test Suite', function(){
                 }
             );
         });
-        it('Checking is parsers are working correctly', function(done){
+        it('Check custom pg types parsers', function(done){
             new Promise((resolve, reject) => {
                 pool.query(`
                 INSERT INTO TASKSBASIC
