@@ -526,9 +526,9 @@ describe('Algo Test Suite', function(){
             });
         });
     });
-    describe('Advanced problem', function(){
-        describe('Problem to equally split tasks, among 2 ppl', function(){
-            it('Basic Functionality', function(){
+    describe('advacedAlgo', function(){
+        describe('Advanced Result, Equal Split, Algo', function(){
+            it('Basic Functionality 1', function(){
                 const tasks = [
                     {
                         'projectid': '1',
@@ -550,6 +550,38 @@ describe('Algo Test Suite', function(){
                 expect(JSON.stringify(advancedResults)).to.be.equal(JSON.stringify(expectedResults));
             });
             it('Basic Functionality 2', function(){
+                const tasks = [
+                    {
+                        'projectid': '1',
+                        'taskid': '1',
+                        'duration': 1,
+                    },
+                    {
+                        'projectid': '1',
+                        'taskid': '2',
+                        'duration': 1,
+                    },
+                ];
+                const advancedResults = algo.advanced.splitEqual.calculateResults(tasks);
+                const expectedResults = [
+                    [
+                        {
+                            'projectId': '1',
+                            'taskId': '2',
+                            'duration': 1,
+                        },
+                    ],
+                    [
+                        {
+                            'projectId': '1',
+                            'taskId': '1',
+                            'duration': 1,
+                        },
+                    ]
+                ];
+                expect(JSON.stringify(advancedResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
+            it('Basic Functionality 3', function(){
                 const tasks = [
                     {
                         'projectid': '1',
@@ -601,7 +633,7 @@ describe('Algo Test Suite', function(){
                 ];
                 expect(JSON.stringify(advancedResults)).to.be.equal(JSON.stringify(expectedResults));
             });
-            it('Basic Functionality 3', function(){
+            it('Basic Functionality 4', function(){
                 const tasks = [
                     {
                         'projectid': '1',
@@ -663,7 +695,7 @@ describe('Algo Test Suite', function(){
                 ];
                 expect(JSON.stringify(advancedResults)).to.be.equal(JSON.stringify(expectedResults));
             });
-            it('Basic Functionality 4', function(){
+            it('Basic Functionality 5', function(){
                 const tasks = [
                     {
                         'projectid': '1',
