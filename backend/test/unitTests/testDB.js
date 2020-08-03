@@ -429,8 +429,8 @@ describe('Model Test Suite', function(){
                 );
             });
         });
-        describe('Result Problem statement', function(){
-            it('Basic Functionality', function(done){
+        describe('Basic Result Query', function(){
+            it('Basic Functionality 1', function(done){
                 const projectId = 1100000004;
                 new Promise((resolve) => {
                     resolve(
@@ -482,7 +482,7 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
-            it('ProjectId does not exists', function(done){
+            it('Basic Functionality 2', function(done){
                 const projectId = 123;
                 new Promise((resolve) => {
                     resolve(
@@ -530,67 +530,8 @@ describe('Model Test Suite', function(){
                 done();
             });
         });
-        describe('Inserting data into the database', function(){
-            it('Basic Functionality', function(done){
-                const testTasks = ['(11, 11, 2)', '(21, 11, 22)'];
-                new Promise((resolve) => {
-                    resolve(
-                        model.advanced.insertTask(testTasks)
-                        .catch(
-                            function(err){
-                                done(err);
-                            }
-                        )
-                    );
-                })
-                .then(
-                    function(){
-                        return new Promise((resolve, reject) => {
-                            pool.query(`
-                            SELECT * FROM TASKSADVANCED
-                            WHERE taskId IN (11, 21)
-                            `, function(err, res){
-                                if(err){
-                                    reject(err);
-                                }
-                                resolve(res);
-                            });
-                        })
-                        .catch(
-                            function(err){
-                                done(err);
-                            }
-                        );
-                    }
-                )
-                .then(
-                    function(res){
-                        const expectedResult = [
-                        {
-                            taskid: '11',
-                            duration: 2,
-                            projectid: '11'
-                        },
-                        {
-                            taskid: '21',
-                            duration: 22,
-                            projectid: '11'
-                        }
-                        ];
-                        // Checking if the result is as expected
-                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
-                        done();
-                    }
-                )
-                .catch(
-                    function(err){
-                        done(err);
-                    }
-                );
-            });
-        });
-        describe('Query and get data from the database', function(){
-            it('Basic Functionality', function(done){
+        describe('Advanced Get Data Query', function(){
+            it('Basic Functionality 1', function(done){
                 const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
                 model.advanced.getData(queryCondition)
                 .then(
@@ -633,9 +574,136 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
+            it('Basic Functionality 2', function(done){
+                const queryCondition = 'LIMIT 10';
+                model.advanced.getData(queryCondition)
+                .then(
+                    function(pgRes){
+                        const expectedDataResult = [
+                            {
+                                'taskid': '1',
+                                'duration': 2,
+                                'projectid': '11',
+                            },
+                            {
+                                'taskid': '2',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '3',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '4',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '5',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '6',
+                                'duration': 2,
+                                'projectid': '11',
+                            },
+                            {
+                                'taskid': '7',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '8',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '9',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '10',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                        ];
+                        const expectedCountResult = [{
+                            'count': '13'
+                        }];
+                        expect(pgRes).to.have.lengthOf(2);
+                        expect(JSON.stringify(pgRes[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(pgRes[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(done);
+            });
+        });
+        describe('Advanced Bulk Insert Data Query', function(){
+            it('Basic Functionality', function(done){
+                const testTasks = ['(11, 11, 2.222)', '(21, 11, 22)'];
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.insertTask(testTasks)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(){
+                        return new Promise((resolve, reject) => {
+                            pool.query(`
+                            SELECT * FROM TASKSADVANCED
+                            WHERE taskId IN (11, 21)
+                            `, function(err, res){
+                                if(err){
+                                    reject(err);
+                                }
+                                resolve(res);
+                            });
+                        })
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        );
+                    }
+                )
+                .then(
+                    function(res){
+                        const expectedResult = [
+                        {
+                            taskid: '11',
+                            duration: 2.222,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '21',
+                            duration: 22,
+                            projectid: '11'
+                        }
+                        ];
+                        // Checking if the result is as expected
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
         });
         describe('Result Problem statement', function(){
-            it('Basic Functionality', function(done){
+            it('Basic Functionality 1', function(done){
                 const projectId = 1001;
                 new Promise((resolve) => {
                     resolve(
@@ -667,7 +735,7 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
-            it('ProjectId does not exists', function(done){
+            it('Basic Functionality 2', function(done){
                 const projectId = 10000;
                 new Promise((resolve) => {
                     resolve(
