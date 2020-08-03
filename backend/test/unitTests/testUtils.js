@@ -382,7 +382,7 @@ describe('Utils test suite', function(){
                     expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
             });
-            describe('Parsing the calculated results for the equally split', function(){
+            describe('advanced Get Result, equal split, Parser', function(){
                 it('Basic Functionality', function(){
                     const results = [
                         [
@@ -394,7 +394,7 @@ describe('Utils test suite', function(){
                             {
                                 'projectId': '1',
                                 'taskId': '4',
-                                'duration': 2,
+                                'duration': 2.12,
                             }
                         ],
                         [
@@ -406,7 +406,7 @@ describe('Utils test suite', function(){
                             {
                                 'projectId': '1',
                                 'taskId': '3',
-                                'duration': 2,
+                                'duration': 2.123,
                             }
                         ]
                     ];
@@ -415,94 +415,26 @@ describe('Utils test suite', function(){
                         "result": [
                             [
                                 {
-                                    'projectId': '1',
-                                    'taskId': '2',
-                                    'duration': '1',
+                                    'projectId': 1,
+                                    'taskId': 2,
+                                    'duration': 1,
                                 },
                                 {
-                                    'projectId': '1',
-                                    'taskId': '4',
-                                    'duration': '2',
+                                    'projectId': 1,
+                                    'taskId': 4,
+                                    'duration': 2.12,
                                 }
                             ],
                             [
                                 {
-                                    'projectId': '1',
-                                    'taskId': '1',
-                                    'duration': '1',
+                                    'projectId': 1,
+                                    'taskId': 1,
+                                    'duration': 1,
                                 },
                                 {
-                                    'projectId': '1',
-                                    'taskId': '3',
-                                    'duration': '2',
-                                }
-                            ]
-                        ]
-                    };
-                    expect(JSON.stringify(parsedResults)).to.be.equal(JSON.stringify(expectedParsedResults));
-                });
-                it('Basic Functionality 2', function(){
-                    const results = [
-                        [
-                            {
-                                'projectId': '1',
-                                'taskId': '2',
-                                'duration': 1,
-                            },
-                            {
-                                'projectId': '1',
-                                'taskId': '4',
-                                'duration': 2,
-                            },
-                            {
-                                'projectId': '1',
-                                'taskId': '5',
-                                'duration': 1,
-                            }
-                        ],
-                        [
-                            {
-                                'projectId': '1',
-                                'taskId': '1',
-                                'duration': 1,
-                            },
-                            {
-                                'projectId': '1',
-                                'taskId': '3',
-                                'duration': 2,
-                            }
-                        ]
-                    ];
-                    const parsedResults = utils.dataParser.advanced.getEqualSplitResults(results);
-                    const expectedParsedResults = {
-                        "result": [
-                            [
-                                {
-                                    'projectId': '1',
-                                    'taskId': '2',
-                                    'duration': '1',
-                                },
-                                {
-                                    'projectId': '1',
-                                    'taskId': '4',
-                                    'duration': '2',
-                                },
-                                {
-                                    'projectId': '1',
-                                    'taskId': '5',
-                                    'duration': '1',
-                                }
-                            ],
-                            [
-                                {
-                                    'projectId': '1',
-                                    'taskId': '1',
-                                    'duration': '1',
-                                },
-                                {
-                                    'projectId': '1',
-                                    'taskId': '3',
-                                    'duration': '2',
+                                    'projectId': 1,
+                                    'taskId': 3,
+                                    'duration': 2.123,
                                 }
                             ]
                         ]
