@@ -19,15 +19,15 @@ const expect = require('chai').expect;
 const utils = require('../../utils/index');
 
 // Tests below
-describe('Utils test', function(){
-    describe('Testing for dbPraser', function(){
-        describe('Testing for the all/common parsers', function(){
-            describe('Testing the get data query params parser', function(){
-                it('Testing default, when no query params', function(){
+describe('Utils test suite', function(){
+    describe('dbPraser', function(){
+        describe('all/common parsers', function(){
+            describe('Get Data Query Parameters Parser', function(){
+                it('Default, no query params', function(){
                     const result = utils.dbParser.all.getDataQueryParams({});
                     expect(result).to.be.equal(`LIMIT 10`);
                 });
-                it('Testing projectId only', function(){
+                it('projectId only', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "projectId": {
                             ">": "1"
@@ -35,7 +35,15 @@ describe('Utils test', function(){
                     });
                     expect(result).to.be.equal('WHERE \nprojectId > 1 \nLIMIT 10 ');
                 });
-                it('Testing projectId and duration', function(){
+                it('duration only', function(){
+                    const result = utils.dbParser.all.getDataQueryParams({
+                        "duration": {
+                            "<=": "10"
+                        },
+                    });
+                    expect(result).to.be.equal('WHERE \nduration <= 10 \nLIMIT 10 ');
+                });
+                it('projectId and duration', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "projectId": {
                             ">": "1"
@@ -46,32 +54,38 @@ describe('Utils test', function(){
                     });
                     expect(result).to.be.equal('WHERE \nprojectId > 1 \nAND \nduration <= 10 \nLIMIT 10 ');
                 });
-                it('Testing sortBy', function(){
+                it('sortBy Single', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
-                        "sortBy": "projectId.asc,taskId.asc",
+                        "sortBy": "projectId.asc",
                     });
-                    expect(result).to.be.equal('ORDER BY \nprojectId asc, taskId asc\nLIMIT 10 ');
+                    expect(result).to.be.equal('ORDER BY \nprojectId asc\nLIMIT 10 ');
                 });
-                it('Testing page only', function(){
+                it('sortBy Multiple', function(){
+                    const result = utils.dbParser.all.getDataQueryParams({
+                        "sortBy": "projectId.asc,taskId.desc",
+                    });
+                    expect(result).to.be.equal('ORDER BY \nprojectId asc, taskId desc\nLIMIT 10 ');
+                });
+                it('page only', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "page": "10",
                     });
                     expect(result).to.be.equal('LIMIT 10 OFFSET 90');
                 });
-                it('Testing pageNum only', function(){
+                it('pageNum only', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "pageNum": "5"
                     });
                     expect(result).to.be.equal('LIMIT 5 ');
                 });
-                it('Testing pageNum and page', function(){
+                it('page and pageNum', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "page": "5",
                         "pageNum": "5"
                     });
                     expect(result).to.be.equal('LIMIT 5 OFFSET 20');
                 });
-                it('Testing all at once', function(){
+                it('Testing all queries at once', function(){
                     const result = utils.dbParser.all.getDataQueryParams({
                         "projectId": {
                             ">": "1"
