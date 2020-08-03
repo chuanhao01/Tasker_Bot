@@ -338,6 +338,50 @@ describe('Utils test suite', function(){
             });
         });
         describe('For the advanced parser', function(){
+            describe('advanced Get Data Parser', function(){
+                it('Basic Functionality', function(){
+                    const testModelData = [
+                        {
+                            'rows': [
+                                {
+                                    projectid: '11',
+                                    taskid: '6',
+                                    duration: 2.3211,
+                                },
+                                {
+                                    projectid: '11',
+                                    taskid: '7',
+                                    duration: 2,
+                                },
+                            ]
+                        },
+                        {
+                            'rows': [
+                                {
+                                    'count': 2
+                                }
+                            ]
+                        }
+                    ];
+                    const result = utils.dataParser.advanced.getData(testModelData, 10);
+                    const expectedResult = {
+                        'data': [
+                            {
+                                'projectId': 11,
+                                'taskId': 6,
+                                'duration': 2.321,
+                            },
+                            {
+                                'projectId': 11,
+                                'taskId': 7,
+                                'duration': 2,
+                            },
+                        ],
+                        'lastPage': 1
+                    };
+                    expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
+                });
+            });
             describe('Parsing the calculated results for the equally split', function(){
                 it('Basic Functionality', function(){
                     const results = [
