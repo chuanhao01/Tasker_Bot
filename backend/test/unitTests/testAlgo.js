@@ -494,6 +494,36 @@ describe('Algo Test Suite', function(){
                 };
                 expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
             });
+            it('Deadline with minutes, lateness calculation', function(){
+                // Single Task not within deadline
+                const tasks = [
+                    {
+                        "taskid":'1000000001',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:06:00",
+                        "duration":3,
+                        "projectid":'1100000001'
+                    }
+                ];
+                const startDate = '2020/01/01', startTime = '0900';
+                const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
+                const expectedResults = {
+                    'data': [
+                        {
+                            taskId:'1000000001',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:06:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '0900',
+                            toDate: '2020/01/01',
+                            toTime: '1200',
+                            lateness: 0.9
+                        }
+                    ],
+                    'totalLateness': 0.9
+                };
+                expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
             // it('Testing normal functionality with decimal 1', function(){
             //     const tasks = [
             //         {
