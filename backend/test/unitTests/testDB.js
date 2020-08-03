@@ -64,7 +64,7 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    describe('DB set script and schema', function(){
+    describe('DB setup script and schema', function(){
         it('Check schema of DB', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
@@ -195,8 +195,8 @@ describe('Model Test Suite', function(){
                 done();
             });
         });
-        describe('Query and Get Data from the database', function(){
-            it('Basic Functionality', function(done){
+        describe('Basic Get Data Query', function(){
+            it('Basic Functionality 1', function(done){
                 const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
                 new Promise((resolve) => {
                     resolve(
@@ -250,6 +250,108 @@ describe('Model Test Suite', function(){
                         ];
                         const expectedCountResult = [{
                             'count': '26'
+                        }];
+                        expect(res).to.be.lengthOf(2);
+                        expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
+            it('Basic Functionality 2', function(done){
+                const queryCondition = 'LIMIT 10';
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getData(queryCondition)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(res){
+                        const expectedDataResult = [
+                            {
+                                taskid: '1',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '2',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '3',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '4',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '5',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '6',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '7',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '8',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '9',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '10',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            }
+
+                        ];
+                        const expectedCountResult = [{
+                            'count': '27'
                         }];
                         expect(res).to.be.lengthOf(2);
                         expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
