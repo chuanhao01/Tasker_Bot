@@ -101,9 +101,9 @@ describe('Utils test suite', function(){
                 });
             });
         });
-        describe('For the basic parser', function(){
-            describe('Testing bulk insert', function(){
-                it('Functionality test', function(){
+        describe('basic parsers', function(){
+            describe('Basic Bulk Insert', function(){
+                it('Basic Functionality', function(){
                     const testTasks = [
                         {
                             "taskId": 11,
@@ -126,9 +126,9 @@ describe('Utils test suite', function(){
                 });
             });
         });
-        describe('For the advacned parser', function(){
-            describe('Testing bulk insert parser', function(){
-                it('Functionality Test', function(){
+        describe('advacned parsers', function(){
+            describe('Advanced Bulk Insert', function(){
+                it('Basic Functionality', function(){
                     const testTasks = [
                         {
                             "taskId": 11,
