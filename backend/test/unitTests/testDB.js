@@ -366,7 +366,7 @@ describe('Model Test Suite', function(){
                 );
             });
         });
-        describe('Inserting data into the database', function(){
+        describe('Basic Bulk insert data Query', function(){
             it('Basic Functionality', function(done){
                 const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
                 new Promise((resolve) => {
