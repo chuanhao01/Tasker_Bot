@@ -186,18 +186,10 @@ describe('Utils test suite', function(){
             });
         });
     });
-    describe('Test for data parser', function(){
-        describe('For basic parser', function(){
-            describe('Parsing get data', function(){
-                // To do
-                it('Making sure format is done correctly', function(){
-                    /*
-                    Note I am writing this here because there is a slight bug with node-pg
-                    For date 1998-02-02 it returns as the string 1998-02-01T16:00:00.000Z
-                    But using moment to parse it, it changes to 1998-02-02T00:00:00.000Z
-                    But when parsed back to string, it is still 1998-02-01T16:00:00.000Z
-                    So this test if for both
-                    */
+    describe('dataParser', function(){
+        describe('basic parser', function(){
+            describe('basic Get Data parser', function(){
+                it('Basic Functionality', function(){
                     const testModelData = [
                         {
                             'rows': [
@@ -205,7 +197,7 @@ describe('Utils test suite', function(){
                                     taskid: '6',
                                     duedate: moment('1998-02-02', 'YYYY-MM-DD'),
                                     duetime: '01:32:00',
-                                    duration: 2,
+                                    duration: 2.3211,
                                     projectid: '11'
                                 },
                                 {
@@ -220,7 +212,7 @@ describe('Utils test suite', function(){
                         {
                             'rows': [
                                 {
-                                    'count': 1
+                                    'count': 2
                                 }
                             ]
                         }
@@ -229,21 +221,21 @@ describe('Utils test suite', function(){
                     const expectedResult = {
                         'data': [
                             {
-                                'taskid': '6',
-                                'duedate': '1998/02/02', 
-                                'duetime': '0132',
-                                'duration': '2',
-                                'projectid': '11'
+                                'dueDate': '1998/02/02', 
+                                'dueTime': '0132',
+                                'duration': 2.321,
+                                'projectId': 11,
+                                'taskId': 6,
                             },
                             {
-                                'taskid': '7',
-                                'duedate': '1998/02/02',
-                                'duetime': '0132',
-                                'duration': '2',
-                                'projectid': '11'
+                                'dueDate': '1998/02/02',
+                                'dueTime': '0132',
+                                'duration': 2,
+                                'projectId': 11,
+                                'taskId': 7,
                             },
                         ],
-                        'lastPage': '1'
+                        'lastPage': 1
                     };
                     expect(JSON.stringify(result)).to.be.equal(JSON.stringify(expectedResult));
                 });
