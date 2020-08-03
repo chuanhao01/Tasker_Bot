@@ -306,6 +306,194 @@ describe('Algo Test Suite', function(){
                 };
                 expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
             });
+            it('Basic Functionality with decimal durations 1', function(){
+                // Single Task within deadline
+                const tasks = [
+                    {
+                        "taskid":'1000000001',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":0.9,
+                        "projectid":'1100000001'
+                    }
+                ];
+                const startDate = '2020/01/01', startTime = '0900';
+                const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
+                const expectedResults = {
+                    'data': [
+                        {
+                            taskId:'1000000001',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '0900',
+                            toDate: '2020/01/01',
+                            toTime: '0954',
+                            lateness: 0
+                        }
+                    ],
+                    'totalLateness': 0
+                };
+                expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
+            it('Basic Functionality with decimal durations 2', function(){
+                // Single Task not within deadline
+                const tasks = [
+                    {
+                        "taskid":'1000000001',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":3.123,
+                        "projectid":'1100000001'
+                    }
+                ];
+                const startDate = '2020/01/01', startTime = '0900';
+                const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
+                const expectedResults = {
+                    'data': [
+                        {
+                            taskId:'1000000001',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '0900',
+                            toDate: '2020/01/01',
+                            toTime: '1207',
+                            lateness: 1.123
+                        }
+                    ],
+                    'totalLateness': 1.123
+                };
+                expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
+            it('Basic Functionality with decimal durations 3', function(){
+                // Multiple (2) tasks within deadlines
+                const tasks = [
+                    {
+                        "taskid":'1000000001',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":0.9,
+                        "projectid":'1100000001'
+                    },
+                    {
+                        "taskid":'1000000002',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":1,
+                        "projectid":'1100000001'
+                    },
+                ];
+                const startDate = '2020/01/01', startTime = '0900';
+                const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
+                const expectedResults = {
+                    'data': [
+                        {
+                            taskId:'1000000001',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '0900',
+                            toDate: '2020/01/01',
+                            toTime: '0954',
+                            lateness: 0
+                        },
+                        {
+                            taskId:'1000000002',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '0954',
+                            toDate: '2020/01/01',
+                            toTime: '1054',
+                            lateness: 0
+                        },
+                    ],
+                    'totalLateness': 0
+                };
+                expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
+            it('Basic Functionality with decimal durations 4', function(){
+                // Multiple (4) tasks some not within deadlines
+                const tasks = [
+                    {
+                        "taskid":'1000000001',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":1,
+                        "projectid":'1100000001'
+                    },
+                    {
+                        "taskid":'1000000002',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":1,
+                        "projectid":'1100000001'
+                    },
+                    {
+                        "taskid":'1000000003',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":1,
+                        "projectid":'1100000001'
+                    },
+                    {
+                        "taskid":'1000000004',
+                        "duedate":moment("2020/01/01", "YYYY/MM/DD"),
+                        "duetime":"11:00:00",
+                        "duration":1.123,
+                        "projectid":'1100000001'
+                    }
+                ];
+                const startDate = '2020/01/01', startTime = '0900';
+                const basicResults = algo.basic.calculateResults(tasks, startDate, startTime);
+                const expectedResults = {
+                    'data': [
+                        {
+                            taskId:'1000000001',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '0900',
+                            toDate: '2020/01/01',
+                            toTime: '1000',
+                            lateness: 0
+                        },
+                        {
+                            taskId:'1000000002',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '1000',
+                            toDate: '2020/01/01',
+                            toTime: '1100',
+                            lateness: 0
+                        },
+                        {
+                            taskId:'1000000003',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '1100',
+                            toDate: '2020/01/01',
+                            toTime: '1200',
+                            lateness: 1
+                        },
+                        {
+                            taskId:'1000000004',
+                            deadlineDate:moment("2020/01/01", "YYYY/MM/DD"),
+                            deadlineTime:"11:00:00",
+                            fromDate: '2020/01/01',
+                            fromTime: '1200',
+                            toDate: '2020/01/01',
+                            toTime: '1307',
+                            lateness: 2.123
+                        }
+                    ],
+                    'totalLateness': 3.123
+                };
+                expect(JSON.stringify(basicResults)).to.be.equal(JSON.stringify(expectedResults));
+            });
             // it('Testing normal functionality with decimal 1', function(){
             //     const tasks = [
             //         {
