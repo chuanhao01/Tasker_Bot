@@ -30,8 +30,15 @@
 
 ###### Data Viewer
 
-![Data-viewer-wireframe](../worksheets/wireframes/justifications/Data_viewer_wireframe.png)
+![Data-viewer-wireframe](../worksheets/wireframes/justifications/dataViewer.PNG)
 
 ###### Result Viewer
 
-![Result-viewer-wireframe](../worksheets/wireframes/justifications/result_viewer_wireframe.png)
+Basic :
+
+![Result-viewer-wireframe](../worksheets/wireframes/justifications/basic_resultViewer.PNG)
+
+
+Advance :
+
+![Result-viewer-wireframe](../worksheets/wireframes/justifications/advance_resultViewer.PNG)
