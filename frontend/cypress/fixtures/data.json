@@ -2,25 +2,25 @@
     "result": {
         "data": [
             {
-                "taskid": 10,
-                "duedate": "12/12/2020",
-                "duetime": "2000",
+                "taskId": 10,
+                "dueDate": "12/12/2020",
+                "dueTime": "2000",
                 "duration": 10,
-                "projectid": 99999999
+                "projectId": 99999999
             },
             {
-                "taskid": 100,
-                "duedate": "18/12/2020",
-                "duetime": "0000",
+                "taskId": 100,
+                "dueDate": "18/12/2020",
+                "dueTime": "0000",
                 "duration": 6,
-                "projectid": 19999999
+                "projectId": 19999999
             },
             {
-                "taskid": 20,
-                "duedate": "10/12/2020",
-                "duetime": "2040",
+                "taskId": 20,
+                "dueDate": "10/12/2020",
+                "dueTime": "2040",
                 "duration": 1,
-                "projectid": 29999999
+                "projectId": 29999999
             }
         ],
         "lastPage": 1

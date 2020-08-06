@@ -16,22 +16,19 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 
 
-describe("Test ajax call for basic data viewer", () => {
-    it("Perform an ajax call and respond with mock data", () => {
-        cy.stubBackend("http://127.0.0.1:8080/index.html", "basic", "data", 'basicData');
+const baseUrl = "http://127.0.0.1:8080";
+
+
+describe("Integration testing for data viewer - basic & advance", () => {
+    var basicResult_type = 'data';
+
+
+    it("Perform an ajax call with default params and responds with pre-determined mock data", () => {
+        cy.stubBackend(`${baseUrl}/index.html`, "basic", basicResult_type, 'basicData');
+        cy.stubBackend(`${baseUrl}/advanced_data.html`, "advance", basicResult_type, 'advanceData');
     });
-});
 
-
-describe("Test ajax call for advanced data viewer", () => {
-    it("Perform an ajax call and respond with mock data", () => {
-        cy.stubBackend("http://127.0.0.1:8080/advanced_data.html", "advance", "data", 'advanceData');
-    });
-});
-
-
-describe("Test ajax call for filter feature", () => {
-    it("Uses a cypress command to ensure that the filter feature is working as intended (url)", () => {
-        cy.checkFilterFeature("http://127.0.0.1:8080/index.html", "basic", "data", "projectId", "Equal to", "19999999");
+    it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url", () => {
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Equal to", "19999999");
     });
 });
