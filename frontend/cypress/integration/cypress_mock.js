@@ -29,6 +29,15 @@ describe("Integration testing for data viewer - basic & advance", () => {
     });
 
     it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url", () => {
+        /* ProjectId */
+
+        // Equal to
         cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Equal to", "19999999");
+
+        // Less than
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Less than", "0");
+
+        // Greater than
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Greater than", "10");
     });
 });

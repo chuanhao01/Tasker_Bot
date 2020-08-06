@@ -42,7 +42,7 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
     else if (filterOperation == 'Greater than') {
         filterOperation = '>'
     }
-    else {
+    else if (filterOperation == 'Less than') {
         filterOperation = '<'
     }
 
