@@ -53,8 +53,39 @@ describe("Integration testing for data viewer - basic & advance", () => {
         cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "duration", "Greater than", "10");
     });
 
-    it("Uses a cypress command to ensure that the pageNum feature is able to provide the accurate url ", () => {
+    it("Uses a cypress command to ensure that the pageNum feature is able to provide the accurate url - basic", () => {
         var pageNum = 5;
         cy.checkPageNumFeature(`${baseUrl}/index.html`, "basic", dataResult_type, pageNum);
+    })
+
+    it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url - advance; projectId", () => {
+        /* ProjectId */
+
+        // Equal to
+        cy.checkFilterFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, "projectId", "Equal to", "19999999");
+
+        // Less than
+        cy.checkFilterFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, "projectId", "Less than", "0");
+
+        // Greater than
+        cy.checkFilterFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, "projectId", "Greater than", "10");
+    });
+
+    it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url - advance; duration", () => {
+         /* duration */
+
+        // Equal to
+        cy.checkFilterFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, "duration", "Equal to", "19999999");
+
+        // Less than
+        cy.checkFilterFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, "duration", "Less than", "0");
+
+        // Greater than
+        cy.checkFilterFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, "duration", "Greater than", "10");
+    });
+
+    it("Uses a cypress command to ensure that the pageNum feature is able to provide the accurate url - advance", () => {
+        var pageNum = 5;
+        cy.checkPageNumFeature(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, pageNum);
     })
 });
