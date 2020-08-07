@@ -8,9 +8,12 @@
 
 
 /**
+ * @function Stub any backend request and return a fixed data JSON object from fixtures/data.json
+ * 
  * @param {string} url  A string containing the url of the html page that will automatically perform an ajax call when navigated to
  * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
  * @param {string} dataResult   A string that contains either 'data' or 'result'
+ * @param {string} featureType  A string denoting what type of feature being tested
  */
 Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult, featureType) => {
     // Enable response stubbing
@@ -26,6 +29,16 @@ Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult, featureType)
 });
 
 
+/**
+ * @function 
+ * 
+ * @param {string} url  A string containing the url of the html page that will automatically perform an ajax call when navigated to
+ * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
+ * @param {string} dataResult   A string that contains either 'data' or 'result'
+ * @param {string} filterAttribute A string denoting whether the filter attribute is 'projectId' or 'duration
+ * @param {string} filterOperation A string denoting whether the filter input is '>', '<' or '='
+ * @param {string} filterInput A string denoting what the value of the equation is
+ */
 Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filterAttribute, filterOperation, filterInput) => {
     var featureType = 'filter'
     cy.stubBackend(url, basicAdvance, dataResult, featureType);
@@ -68,3 +81,4 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
         expect(filterArg).to.equal(testArg);
     });
 });
+
