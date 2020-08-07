@@ -20,24 +20,37 @@ const baseUrl = "http://127.0.0.1:8080";
 
 
 describe("Integration testing for data viewer - basic & advance", () => {
-    var basicResult_type = 'data';
+    var dataResult_type = 'data';
 
 
     it("Perform an ajax call with default params and responds with pre-determined mock data", () => {
-        cy.stubBackend(`${baseUrl}/index.html`, "basic", basicResult_type, 'basicData');
-        cy.stubBackend(`${baseUrl}/advanced_data.html`, "advance", basicResult_type, 'advanceData');
+        cy.stubBackend(`${baseUrl}/index.html`, "basic", dataResult_type, 'basicData');
+        cy.stubBackend(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, 'advanceData');
     });
 
-    it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url", () => {
+    it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url - basic; projectId", () => {
         /* ProjectId */
 
         // Equal to
-        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Equal to", "19999999");
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "projectId", "Equal to", "19999999");
 
         // Less than
-        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Less than", "0");
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "projectId", "Less than", "0");
 
         // Greater than
-        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", basicResult_type, "projectId", "Greater than", "10");
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "projectId", "Greater than", "10");
+    });
+
+    it("Uses a cypress command to ensure that the filter feature is able to provide the accurate url - basic; duration", () => {
+         /* duration */
+
+        // Equal to
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "duration", "Equal to", "19999999");
+
+        // Less than
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "duration", "Less than", "0");
+
+        // Greater than
+        cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "duration", "Greater than", "10");
     });
 });

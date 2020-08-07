@@ -55,9 +55,16 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
     cy.wait(`@${featureType}`);
     cy.get(`@${featureType}`).then(function (xhr) {
         var requestUrl = xhr.xhr.url;
-        console.log('url: ' + requestUrl);
+        var filterArg = '';
+        //console.log('url: ' + requestUrl);
 
-        var filterArg = requestUrl.split('?')[1].split('&')[0];
+        if (filterAttribute == 'projectId') {
+            filterArg = requestUrl.split('?')[1].split('&')[0];
+        }
+        else if (filterAttribute == 'duration') {
+            filterArg = requestUrl.split('?')[1].split('&')[1];
+        }
+        
         expect(filterArg).to.equal(testArg);
     });
 });
