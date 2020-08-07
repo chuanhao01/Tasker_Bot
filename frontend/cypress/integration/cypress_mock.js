@@ -22,7 +22,6 @@ const baseUrl = "http://127.0.0.1:8080";
 describe("Integration testing for data viewer - basic & advance", () => {
     var dataResult_type = 'data';
 
-
     it("Perform an ajax call with default params and responds with pre-determined mock data", () => {
         cy.stubBackend(`${baseUrl}/index.html`, "basic", dataResult_type, 'basicData');
         cy.stubBackend(`${baseUrl}/advanced_data.html`, "advance", dataResult_type, 'advanceData');
@@ -53,4 +52,9 @@ describe("Integration testing for data viewer - basic & advance", () => {
         // Greater than
         cy.checkFilterFeature(`${baseUrl}/index.html`, "basic", dataResult_type, "duration", "Greater than", "10");
     });
+
+    it("Uses a cypress command to ensure that the pageNum feature is able to provide the accurate url ", () => {
+        var pageNum = 5;
+        cy.checkPageNumFeature(`${baseUrl}/index.html`, "basic", dataResult_type, pageNum);
+    })
 });
