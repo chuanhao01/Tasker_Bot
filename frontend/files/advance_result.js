@@ -33,38 +33,41 @@ function advanced_obtainResult(projectId) {
 
             // Table
             allData.forEach((member) => {
-                memberCount++;
+                // Ensuring that the current member has tasks
+                if (member.length > 0) {
+                    memberCount++;
 
-                var total_taskCount = member.length;
-                var taskCount = 0
-                var assignmentResults = []
+                    var total_taskCount = member.length;
+                    var taskCount = 0
+                    var assignmentResults = []
 
-                var tasksAssigned = '';
-                var hoursAssigned = 0;
+                    var tasksAssigned = '';
+                    var hoursAssigned = 0;
 
-                member.forEach((task) => {
-                    taskCount++;
-                    
-                    tasksAssigned += task.taskId + ", ";
-                    hoursAssigned += parseInt(task.duration);   
-                    
-                    if (taskCount == total_taskCount) {
-                        // Trim off the ending ", "
-                        tasksAssigned = tasksAssigned.slice(0, tasksAssigned.length - 2);
+                    member.forEach((task) => {
+                        taskCount++;
+                        
+                        tasksAssigned += task.taskId + ", ";
+                        hoursAssigned += parseInt(task.duration);   
+                        
+                        if (taskCount == total_taskCount) {
+                            // Trim off the ending ", "
+                            tasksAssigned = tasksAssigned.slice(0, tasksAssigned.length - 2);
 
-                        assignmentResults.push(tasksAssigned);
-                        assignmentResults.push(hoursAssigned);
-                    };
-                });
+                            assignmentResults.push(tasksAssigned);
+                            assignmentResults.push(hoursAssigned);
+                        };
+                    });
 
-                var dataHtml = `
-                    <tr class='dataRow' id='data_${memberCount}'>
-                        <th scope="row" id="member_data">${memberCount}</th>
-                        <th id="tasksAssigned_data">${assignmentResults[0]}</th>
-                        <th id="hoursAssigned_data">${assignmentResults[1]}</th>
-                    </tr>
-                `;
-                $('#advanced_resultTableBody').append(dataHtml);
+                    var dataHtml = `
+                        <tr class='dataRow' id='data_${memberCount}'>
+                            <th scope="row" id="member_data">${memberCount}</th>
+                            <th id="tasksAssigned_data">${assignmentResults[0]}</th>
+                            <th id="hoursAssigned_data">${assignmentResults[1]}</th>
+                        </tr>
+                    `;
+                    $('#advanced_resultTableBody').append(dataHtml);
+                }
             });
 
 
