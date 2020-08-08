@@ -23,10 +23,11 @@
 1. cd frontend/files (workspaceFolder == fsp-jibaboom-2a11-team_name)
 2. npx http-server -c-1
 
-### Cypress (cypress_spec.js / cypress_mock.js)
+### Cypress (cypress_mock.js / cypress_acceptance.js)
 
 1. cd frontend
-2. node_modules\.bin\cypress open
+2.  node_modules\.bin\cypress open, OR 
+    node_modules\.bin\cypress run --spec "cypress/integration/{file_name}" ( To run headless, in cli )
 
 ###### Data Viewer
 
