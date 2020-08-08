@@ -17,7 +17,8 @@
  * @param {string} pageNum The number of tasks displayed on each page
  */
 function advanced_obtainData(projectId, duration, page, pageNum, sortBy) {
-    var url = `http://localhost:3000/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+    // var url = `http://localhost:3000/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`;
+    var url = `${baseUrl}/advance/data?${projectId}&${duration}&${sortBy}&${page}&${pageNum}`
 
     $.ajax({
         type: 'GET',

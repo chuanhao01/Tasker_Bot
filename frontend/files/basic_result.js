@@ -163,7 +163,8 @@ function createGraph(allTasks, categories, graphType) {
  * @param {String} startTime The start time of the project
  */
 function basic_obtainResult(projectId, startDate, startTime) {
-    var url = `http://localhost:3000/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`;
+    // var url = `http://localhost:3000/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`;
+    var url = `${baseUrl}/basic/result?projectId=${projectId}&startDate=${startDate}&startTime=${startTime}`
 
     $.ajax({
         type: 'GET',

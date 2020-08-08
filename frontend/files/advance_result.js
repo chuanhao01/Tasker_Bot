@@ -12,7 +12,8 @@
  * @param {String} projectId The ID of the project whose tasks is to be separated 
  */
 function advanced_obtainResult(projectId) {
-    var url = `http://localhost:3000/advance/result?projectId=${projectId}`;
+    // var url = `http://localhost:3000/advance/result?projectId=${projectId}`;
+    var url = `${baseUrl}/advance/result?projectId=${projectId}`
 
     $.ajax({
         type: 'GET',
