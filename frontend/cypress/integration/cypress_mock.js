@@ -99,3 +99,47 @@ describe("Integration testing for data viewer - advance", () => {
         cy.checkPageNumFeature(url, "advance", dataResult_type, pageNum);
     })
 });
+
+
+describe("Integration testing for result viewer - basic", () => {
+    var url = `${baseUrl}/basic_results.html`;
+
+    it("Perform an ajax call with default params and responds with pre-determined mock data", () => {
+        cy.visit(url);
+
+        // Defining query params
+        var arg_projectId = 'projectId=1100000001';
+        var arg_startDate = 'startDate=2020/01/01';
+        var arg_startTime = 'startTime=0900'
+
+        // Enable response stubbing
+        cy.server();
+
+        // Reroute request and respond with pre-determined mock data (../fixtures/data.json)
+        cy.fixture('result').then((resultData) => {
+            cy.route('GET', `/basic/result?${arg_projectId}&${arg_startDate}&${arg_startTime}`, resultData).as('basicResult');
+        });
+
+        // Fill in the input fields and compute
+        cy.get('#compute_projectId').type(arg_projectId.split('=')[1]);
+        cy.get('#compute_startDate').type(arg_startDate.split('=')[1]);
+        cy.get('#compute_startTime').type(arg_startTime.split('=')[1]);
+
+        cy.get('#computeBtn').click();
+
+        // Wait for the routing to finish and the mock response to be sent before obtaining the url
+        cy.wait('@basicResult');
+        cy.get('@basicResult').then(function (xhr) {
+            var requestUrl = xhr.xhr.url;
+            console.log('url: ' + requestUrl);
+
+            var filterArg_projectId = requestUrl.split('?')[1].split('&')[0];
+            var filterArg_startDate = requestUrl.split('?')[1].split('&')[1];
+            var filterArg_startTime = requestUrl.split('?')[1].split('&')[2];
+        
+            expect(filterArg_projectId).to.equal(arg_projectId);
+            expect(filterArg_startDate).to.equal(arg_startDate);
+            expect(filterArg_startTime).to.equal(arg_startTime);
+        });
+    })
+})
