@@ -246,6 +246,9 @@ function basic_obtainResult(projectId, startDate, startTime) {
 
             // Check if there is any lateness
             if (totalLateness > 0) {
+                // Remove the toggleHtml if it already exists
+                $('#toggleRadio').remove()
+
                 // Append to toggle buttons only if there is a lateness to be shown in a separate graph
                 var toggleHtml = `
                         <div class="pt-4 pb-2 d-flex justify-content-center btn-group btn-group-toggle" id="toggleRadio" data-toggle="buttons">
