@@ -1,0 +1,28 @@
+{
+    "result": [
+        [
+            {
+                "duration": 3,
+                "projectId": 11,
+                "taskId": 1
+            },
+            {
+                "duration": 3,
+                "projectId": 11,
+                "taskId": 12
+            }
+        ],
+        [
+            {
+                "duration": 3,
+                "projectId": 11,
+                "taskId": 2
+            },
+            {
+                "duration": 3,
+                "projectId": 11,
+                "taskId": 13
+            }
+        ]
+    ]
+}
