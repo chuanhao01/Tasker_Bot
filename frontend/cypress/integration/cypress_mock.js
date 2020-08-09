@@ -220,4 +220,36 @@ describe("Integration testing for result viewer - basic", () => {
             expect(filterArg_projectId).to.equal(arg_projectId);
         });
     });
+
+    it("Performs another ajax call to check whether multiple computations can be made without reloading the page", () => {
+        // Defining query params
+        var arg_projectId = 'projectId=9999';
+
+        // Enable response stubbing
+        cy.server();
+
+        // Reroute request and respond with pre-determined mock data (../fixtures/data.json)
+        cy.fixture('advance_result').then((resultData) => {
+            cy.route('GET', `/advance/result?${arg_projectId}`, resultData).as('advanceResult');
+        });
+
+        // Clear the input field
+        cy.get('#compute_projectId').clear()
+
+        // Fill in the input field and compute
+        cy.get('#compute_projectId').type(arg_projectId.split('=')[1]);
+
+        cy.get('#computeBtn').click();
+
+        // Wait for the routing to finish and the mock response to be sent before obtaining the url
+        cy.wait('@advanceResult');
+        cy.get('@advanceResult').then(function (xhr) {
+            var requestUrl = xhr.xhr.url;
+            console.log('url: ' + requestUrl);
+
+            var filterArg_projectId = requestUrl.split('?')[1].split('&')[0];
+        
+            expect(filterArg_projectId).to.equal(arg_projectId);
+        });
+    })
 })
