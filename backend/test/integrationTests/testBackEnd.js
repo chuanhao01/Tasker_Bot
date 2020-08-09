@@ -114,7 +114,18 @@ describe('Integration testing for the whole backend server', function(){
                     (18, 1, 4),
                     (19, 1, 4),
                     (20, 1, 5),
-                    (21, 1, 3)
+                    (21, 1, 3),
+                    (22, 2, 1.41),
+                    (23, 2, 2.141),
+                    (24, 2, 1.76),
+                    (25, 2, 4.91),
+                    (26, 2, 3.611),
+                    (101, 101, 3),
+                    (102, 101, 3),
+                    (103, 101, 3),
+                    (104, 102, 3),
+                    (105, 102, 3),
+                    (106, 102, 4);
                     `;
                     pool.query(`
                     INSERT INTO TASKSADVANCED
@@ -699,164 +710,12 @@ describe('Integration testing for the whole backend server', function(){
                 });
             });
             describe('GET /basic/result', function(){
-                describe('Checking errors', function(){
-                    it('Making sure query params are required', function(done){
-                        chai.request(app)
-                        .get('/basic/result')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking projectId cannot be missing', function(done){
-                        chai.request(app)
-                        .get('/basic/result?startTime=2130&startDate=2020/01/01')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking startTime cannot be missing', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=1000000001&startDate=2020/01/01')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking startDate cannot be empty', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=1000000001&startTime=2130')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking the startDate format', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=1000000001&startTime=2130&startDate=2020-01-01')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking the startTime format', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=1000000001&startTime=21:30&startDate=2020/01/01')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking the projectId bounds, Over 10 digits', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=10000000001&startTime=2130&startDate=2020/01/01')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Checking the projectId bounds, Negative', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=-1&startTime=2130&startDate=2020/01/01')
-                        .send()
-                        .end(function(err, res){
-                            if(err){
-                                done(err);
-                            }
-                            // Check res code
-                            expect(res).to.have.status(400);
-                            // Checking if there was a body with a response
-                            expect(res).to.have.property('body');
-                            expect(res.body).to.have.property('error');
-                            expect(res.body).to.have.property('code');
-                            expect(res.body.error).to.be.equal('Wrong syntax for query params');
-                            expect(res.body.code).to.be.equal(400);
-                            done();
-                        });
-                    });
-                    it('Basic Functionality', function(done){
-                        chai.request(app)
-                        .get('/basic/result?projectId=1100000001&startTime=0900&startDate=2020/01/01')
-                        .send()
-                        .end(function(err, res){
+                it('Basic Functionality 1', function(done){
+                    chai.request(app)
+                    .get('/basic/result?projectId=1100000001&startTime=0900&startDate=2020/01/01')
+                    .send()
+                    .end(
+                        function(err, res){
                             if(err){
                                 done(err);
                             }
@@ -867,158 +726,625 @@ describe('Integration testing for the whole backend server', function(){
                             expect(res.body).to.have.property('result');
                             expect(res.body).to.have.property('totalLateness');
                             const expectedBody = {
-                                'result': [
+                                "result": [
                                     {
-                                        taskId:'1000000001',
-                                        fromDate: '2020/01/01',
-                                        fromTime: '0900',
-                                        toDate: '2020/01/01',
-                                        toTime: '1000',
-                                        lateness: '0'
+                                        "taskId": 1000000001,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1100",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "0900",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1000",
+                                        "lateness": 0
                                     },
                                     {
-                                        taskId:'1000000002',
-                                        fromDate: '2020/01/01',
-                                        fromTime: '1000',
-                                        toDate: '2020/01/01',
-                                        toTime: '1100',
-                                        lateness: '0'
+                                        "taskId": 1000000002,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1100",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "1000",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1100",
+                                        "lateness": 0
                                     },
                                     {
-                                        taskId:'1000000003',
-                                        fromDate: '2020/01/01',
-                                        fromTime: '1100',
-                                        toDate: '2020/01/01',
-                                        toTime: '1200',
-                                        lateness: '1'
+                                        "taskId": 1000000003,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1100",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "1100",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1200",
+                                        "lateness": 1
                                     },
                                     {
-                                        taskId:'1000000004',
-                                        fromDate: '2020/01/01',
-                                        fromTime: '1200',
-                                        toDate: '2020/01/01',
-                                        toTime: '1300',
-                                        lateness: '2'
+                                        "taskId": 1000000004,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1100",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "1200",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1300",
+                                        "lateness": 2
                                     }
                                 ],
-                                'totalLateness': '3'
+                                "totalLateness": 3
                             };
                             expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
                             done();
-                        });
-                    });
+                        }
+                    );
                 });
+                it('Basic Functionality 2', function(done){
+                    chai.request(app)
+                    .get('/basic/result?projectId=1100000002&startTime=0900&startDate=2020/01/01')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body).to.have.property('totalLateness');
+                            const expectedBody = {
+                                "result": [
+                                    {
+                                        "taskId": 1000000005,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1400",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "0900",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1000",
+                                        "lateness": 0
+                                    },
+                                    {
+                                        "taskId": 1000000006,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1400",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "1000",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1200",
+                                        "lateness": 0
+                                    },
+                                    {
+                                        "taskId": 1000000007,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1400",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "1200",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1500",
+                                        "lateness": 1
+                                    },
+                                    {
+                                        "taskId": 1000000008,
+                                        "deadlineDate": "2020/01/01",
+                                        "deadlineTime": "1400",
+                                        "fromDate": "2020/01/01",
+                                        "fromTime": "1500",
+                                        "toDate": "2020/01/01",
+                                        "toTime": "1900",
+                                        "lateness": 5
+                                    }
+                                ],
+                                "totalLateness": 6
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                // it('Basic Functionality template', function(done){
+                //     chai.request(app)
+                //     .get('/basic/result?projectId=1100000001&startTime=0900&startDate=2020/01/01')
+                //     .send()
+                //     .end(
+                //         function(err, res){
+                //             if(err){
+                //                 done(err);
+                //             }
+                //             // Check res code
+                //             expect(res).to.have.status(200);
+                //             // Checking if there was a body with a response
+                //             expect(res).to.have.property('body');
+                //             expect(res.body).to.have.property('result');
+                //             expect(res.body).to.have.property('totalLateness');
+                //             const expectedBody = {
+
+                //             };
+                //             expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                //             done();
+                //         }
+                //     );
+                // }).skip();
+                // it('Template for error', function(done){
+                //     chai.request(app)
+                //     .get('/basic/result')
+                //     .send()
+                //     .end(
+                //         function(err, res){
+                //             if(err){
+                //                 done(err);
+                //             }
+                //             // Check res code
+                //             expect(res).to.have.status(400);
+                //             // Checking if there was a body with a response
+                //             expect(res).to.have.property('body');
+                //             expect(res.body).to.have.property('error');
+                //             expect(res.body).to.have.property('code');
+                //             expect(res.body.error).to.be.equal('Wrong syntax for query params');
+                //             expect(res.body.code).to.be.equal(400);
+                //             done();
+                //         }
+                //     );
+                // }).skip();
             });
         });
-        describe('For the Advanced Problem', function(){
+        describe('Advanced Problem', function(){
             describe('GET /advance/data', function(){
-                it('Checking normal request', function(done){
+                it('Default Functionality', function(done){
                     chai.request(app)
                     .get('/advance/data')
                     .send()
-                    .end(function(err, res){
-                        if(err){
-                            done(err);
-                        }
-                        // Check res code
-                        expect(res).to.have.status(200);
-                        // Checking if there was a body with a response
-                        expect(res).to.have.property('body');
-                        expect(res.body).to.have.property('result');
-                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
-                        // Checking the response as a whole
-                        const expectedRes = {
-                            'result': {
-                                'data': [
-                                    {
-                                        taskid: '1',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '2',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '3',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '4',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '5',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '6',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '7',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '8',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '9',
-                                        duration: '3',
-                                        projectid: '1'
-                                    },
-                                    {
-                                        taskid: '10',
-                                        duration: '3',
-                                        projectid: '11'
-                                    }
-                                ],
-                                'lastPage': '3'
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
                             }
-                        };
-                        expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
-                        done();
-                    });
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 1,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 2,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 3,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 4,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 5,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 6,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 7,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 8,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 9,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 11,
+                                            "taskId": 10,
+                                            "duration": 3
+                                        }
+                                    ],
+                                    "lastPage": 4
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
                 });
-                it('Checking duration with decimal place', function(done){
+                it('projectId Filter Only', function(done){
                     chai.request(app)
-                    .get('/advance/data?duration[<]=2&pageNum=1')
+                    .get('/advance/data?projectId[=]=1')
                     .send()
-                    .end(function(err, res){
-                        if(err){
-                            done(err);
-                        }
-                        // Check res code
-                        expect(res).to.have.status(200);
-                        // Checking if there was a body with a response
-                        expect(res).to.have.property('body');
-                        expect(res.body).to.have.property('result');
-                        expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
-                        // Checking the response as a whole
-                        const expectedRes = {
-                            'result': {
-                                'data': [
-                                    {
-                                        "taskid":"13",
-                                        "duration":"1.211",
-                                        "projectid":"12"
-                                    }
-                                ],
-                                'lastPage': '1'
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
                             }
-                        };
-                        expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedRes));
-                        done();
-                    });
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 1,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 2,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 3,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 4,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 5,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 6,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 7,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 8,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 9,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 18,
+                                            "duration": 4
+                                        }
+                                    ],
+                                    "lastPage": 2
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
                 });
+                it('duration Filter Only', function(done){
+                    chai.request(app)
+                    .get('/advance/data?duration[<]=2')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 13,
+                                            "duration": 1.211
+                                        },
+                                        {
+                                            "projectId": 2,
+                                            "taskId": 22,
+                                            "duration": 1.41
+                                        },
+                                        {
+                                            "projectId": 2,
+                                            "taskId": 24,
+                                            "duration": 1.76
+                                        }
+                                    ],
+                                    "lastPage": 1
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                it('sortBy Filter only', function(done){
+                    chai.request(app)
+                    .get('/advance/data?sortBy=projectId.desc')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 102,
+                                            "taskId": 105,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 102,
+                                            "taskId": 104,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 102,
+                                            "taskId": 106,
+                                            "duration": 4
+                                        },
+                                        {
+                                            "projectId": 101,
+                                            "taskId": 101,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 101,
+                                            "taskId": 102,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 101,
+                                            "taskId": 103,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 14,
+                                            "taskId": 17,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 13,
+                                            "taskId": 16,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 14,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 12,
+                                            "duration": 3
+                                        }
+                                    ],
+                                    "lastPage": 4
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                it('page Only', function(done){
+                    chai.request(app)
+                    .get('/advance/data?page=2')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 11,
+                                            "taskId": 11,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 12,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 13,
+                                            "duration": 1.211
+                                        },
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 14,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 12,
+                                            "taskId": 15,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 13,
+                                            "taskId": 16,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 14,
+                                            "taskId": 17,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 18,
+                                            "duration": 4
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 19,
+                                            "duration": 4
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 20,
+                                            "duration": 5
+                                        }
+                                    ],
+                                    "lastPage": 4
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                it('pageNum Filter Only', function(done){
+                    chai.request(app)
+                    .get('/advance/data?pageNum=3')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 1,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 2,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 1,
+                                            "taskId": 3,
+                                            "duration": 3
+                                        }
+                                    ],
+                                    "lastPage": 11
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                it('Expected Functionality', function(done){
+                    chai.request(app)
+                    .get('/advance/data?projectId[>]=7&duration[>]=2&sortBy=projectId.desc&page=2&pageNum=3')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            expect(res.body.result).to.have.all.keys(['data', 'lastPage']);
+                            const expectedBody = {
+                                "result": {
+                                    "data": [
+                                        {
+                                            "projectId": 101,
+                                            "taskId": 103,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 101,
+                                            "taskId": 101,
+                                            "duration": 3
+                                        },
+                                        {
+                                            "projectId": 101,
+                                            "taskId": 102,
+                                            "duration": 3
+                                        }
+                                    ],
+                                    "lastPage": 5
+                                }
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                // it('Basic Functionality template', function(done){
+                //     chai.request(app)
+                //     .get('/advance/data')
+                //     .send()
+                //     .end(
+                //         function(err, res){
+                //             if(err){
+                //                 done(err);
+                //             }
+                //             // Check res code
+                //             expect(res).to.have.status(200);
+                //             // Checking if there was a body with a response
+                //             expect(res).to.have.property('body');
+                //             expect(res.body).to.have.property('result');
+                //             expect(res.body).to.have.property('totalLateness');
+                //             const expectedBody = {
+
+                //             };
+                //             expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                //             done();
+                //         }
+                //     );
+                // }).skip();
             });
             describe('GET /advance/result', function(){
                 it('Basic Functionality');
