@@ -97,7 +97,7 @@ describe("Integration testing for data viewer - advance", () => {
     it("Uses a cypress command to ensure that the pageNum feature is able to provide the accurate url - advance", () => {
         var pageNum = 5;
         cy.checkPageNumFeature(url, "advance", dataResult_type, pageNum);
-    })
+    });
 });
 
 
@@ -141,7 +141,49 @@ describe("Integration testing for result viewer - basic", () => {
             expect(filterArg_startDate).to.equal(arg_startDate);
             expect(filterArg_startTime).to.equal(arg_startTime);
         });
-    })
+    });
+
+    it("Performs another ajax call to check whether multiple computations can be made without reloading the page", () => {
+        // Defining query params
+        var arg_projectId = 'projectId=1';
+        var arg_startDate = 'startDate=2000/09/01';
+        var arg_startTime = 'startTime=1200'
+
+        // Enable response stubbing
+        cy.server();
+
+        // Reroute request and respond with pre-determined mock data (../fixtures/data.json)
+        cy.fixture('basic_result').then((resultData) => {
+            cy.route('GET', `/basic/result?${arg_projectId}&${arg_startDate}&${arg_startTime}`, resultData).as('basicResult');
+        });
+
+        // Clear the input fields
+        cy.get('#compute_projectId').clear()
+        cy.get('#compute_startDate').clear()
+        cy.get('#compute_startTime').clear()
+
+        // Fill in the input fields and compute
+        cy.get('#compute_projectId').type(arg_projectId.split('=')[1]);
+        cy.get('#compute_startDate').type(arg_startDate.split('=')[1]);
+        cy.get('#compute_startTime').type(arg_startTime.split('=')[1]);
+
+        cy.get('#computeBtn').click();
+
+        // Wait for the routing to finish and the mock response to be sent before obtaining the url
+        cy.wait('@basicResult');
+        cy.get('@basicResult').then(function (xhr) {
+            var requestUrl = xhr.xhr.url;
+            console.log('url: ' + requestUrl);
+
+            var filterArg_projectId = requestUrl.split('?')[1].split('&')[0];
+            var filterArg_startDate = requestUrl.split('?')[1].split('&')[1];
+            var filterArg_startTime = requestUrl.split('?')[1].split('&')[2];
+        
+            expect(filterArg_projectId).to.equal(arg_projectId);
+            expect(filterArg_startDate).to.equal(arg_startDate);
+            expect(filterArg_startTime).to.equal(arg_startTime);
+        });
+    });
 });
 
 
@@ -177,5 +219,5 @@ describe("Integration testing for result viewer - basic", () => {
         
             expect(filterArg_projectId).to.equal(arg_projectId);
         });
-    })
+    });
 })
