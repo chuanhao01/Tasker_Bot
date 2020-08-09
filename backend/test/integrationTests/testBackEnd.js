@@ -26,7 +26,7 @@ const pool = require('../../db/index').pool;
 const app = require('../../app');
 const scripts = require('../../scripts/index');
 
-describe('Integration testing for the whole backend server', function(){
+describe('Integration test suite for the Back End server (Non-insert APIs)', function(){
     before('Init the db', function(done){
         // For async calls to be done before the test
         // Making sure the db is initialized
