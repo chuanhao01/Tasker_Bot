@@ -1347,8 +1347,87 @@ describe('Integration testing for the whole backend server', function(){
                 // }).skip();
             });
             describe('GET /advance/result', function(){
-                it('Basic Functionality');
-                it('Invalid projectId format');
+                it('Equal Split (INT) Basic Functionality 1', function(done){
+                    chai.request(app)
+                    .get('/advance/result?projectId=11')
+                    .send()
+                    .end(
+                        function(err, res){
+                            if(err){
+                                done(err);
+                            }
+                            // Check res code
+                            expect(res).to.have.status(200);
+                            // Checking if there was a body with a response
+                            expect(res).to.have.property('body');
+                            expect(res.body).to.have.property('result');
+                            const expectedBody = {
+                                "result": [
+                                    [
+                                        {
+                                            "projectId": 11,
+                                            "taskId": 11,
+                                            "duration": 3
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "projectId": 11,
+                                            "taskId": 10,
+                                            "duration": 3
+                                        }
+                                    ]
+                                ]
+                            };
+                            expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                            done();
+                        }
+                    );
+                });
+                // it('Equal Split (INT) Basic Functionality 2', function(done){
+                //     chai.request(app)
+                //     .get('/advance/result?projectId=2')
+                //     .send()
+                //     .end(
+                //         function(err, res){
+                //             if(err){
+                //                 done(err);
+                //             }
+                //             // Check res code
+                //             expect(res).to.have.status(200);
+                //             // Checking if there was a body with a response
+                //             expect(res).to.have.property('body');
+                //             expect(res.body).to.have.property('result');
+                //             const expectedBody = {
+
+                //             };
+                //             expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                //             done();
+                //         }
+                //     );
+                // });
+                // it('Basic Functionality template', function(done){
+                //     chai.request(app)
+                //     .get('/advance/result')
+                //     .send()
+                //     .end(
+                //         function(err, res){
+                //             if(err){
+                //                 done(err);
+                //             }
+                //             // Check res code
+                //             expect(res).to.have.status(200);
+                //             // Checking if there was a body with a response
+                //             expect(res).to.have.property('body');
+                //             expect(res.body).to.have.property('result');
+                //             const expectedBody = {
+
+                //             };
+                //             expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expectedBody));
+                //             done();
+                //         }
+                //     );
+                // }).skip();
             });
         });
     });
