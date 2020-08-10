@@ -28,6 +28,9 @@ function advanced_obtainResult(projectId) {
          * @param xhr The XMLHttpRequest 
          */
         success: function(data, textStatus, xhr) {
+            // Clear the table data
+            $('#advanced_resultTableBody').empty();
+
             var allData = data.result;
             let memberCount = 0;
 

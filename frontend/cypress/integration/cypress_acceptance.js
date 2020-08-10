@@ -292,3 +292,48 @@ describe("Acceptance test for basic resultViewer", () => {
         });
     });
 })
+
+
+describe("Acceptance test for advance resultViewer", () => {
+    it("Provides some values for computation and checks the returned data", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/advanced_results.html`);
+
+        cy.get('#compute_projectId').type('102');
+        cy.get('#computeBtn').click();
+
+        // Force a waiting time
+        cy.wait(2000);
+
+        // Check that the computed data displays has at least 1 member
+        cy.get('#member_data').should(($th) => {
+            expect($th).to.contain('1');
+        });
+
+        // Check that the computed data displays has a taskId
+        cy.get('#tasksAssigned_data').should(($th) => {
+            expect($th).to.contain('104');
+        });
+    });
+
+    it("Provides some values for computation and checks the returned data", () => {
+        // Clear the input fields
+        cy.get('#compute_projectId').clear();
+
+        cy.get('#compute_projectId').type('101');
+        cy.get('#computeBtn').click();
+
+        // Force a waiting time
+        cy.wait(2000);
+
+        // Check that the computed data displays has at least 1 member
+        cy.get('#member_data').should(($th) => {
+            expect($th).to.contain('1');
+        });
+
+        // Check that the computed data displays has a taskId
+        cy.get('#tasksAssigned_data').should(($th) => {
+            expect($th).to.contain('102');
+        });
+    });
+})
