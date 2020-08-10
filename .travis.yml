@@ -54,7 +54,7 @@ jobs:
         - secure: "BP/zNDrtLn1MXVsWNHd3/qjsXGuXOhay7mSdwZbaNvGusxs/JYxuIAxeKyO8UwJv3tNSDrPqAt1F05r9QFrXMuRDZOOhOwe9JYneXwglk2rhAHEuwTWjM4TA6/JZj67vq7Jy+V5cmXMF2hHM9tBR75DFWlddAv39+wLVLo6W52NTxlsXpEn8tpJiEBXsHE9sgV2w39CbtN8XgqV/+odmhtaO+mHiDN/CFvIAQx61I4bIyyZ5f78Vm8aFrZPDgbt4VWFaeb1j5Pm7RjmR7K2kHTnDNNx0UqQGu/IMBbKYfvrK+pKox2Oci+YYiKBujaltoRSBoJJu7PhacJ/HXjpNkzm2Lxx94posbkRCMDuJXlDNNdep5EcGcgROV6YPLiQty7LUCER/Go+L5KirpuZLo9+1VwKFyESrhbhXE/wtiAT9yhyrUT8YEWSWU2K0/5l+yIdfNjbmuU9VydUq2E+1mGBETvEQBD1Yost9kn8iojlPO4rDPQqir4tif8JIDFcncKDb/heqPF82naJJU4Vg0P0qo0InevbsOoLqTTcWdES0rNHfFkZdGTZZIWiRccUCdWyEvrc9vLK9sMaCtRC73MylBdMxT+zDf9Id1D/nSfipd2IMZS22ZvUVab3+3lNoQ5P0nkdVg2W/9Bsrs8s8wtNfx7EmTpBwjHi7mecJffg="
         - NODE_ENV=INT_TEST
       script:
-        - echo 'pass int'
+        - npm run int
     
     - &node_12_frontend_base
       stage: integration test
