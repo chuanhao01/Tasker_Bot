@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+    crossorigin="anonymous"></script>
+    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
-    crossorigin="anonymous"></script>
 
     <!-- Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
@@ -28,7 +28,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 
     <!-- External Scripts -->
-    <script src="./functions.js"></script>
+    <script src="./configs.js"></script>
+    <script src="./advance_result.js"></script>
     <script src="./script.js"></script>
 
     <title>JiBaBoom Advanced Result Viewer</title>
@@ -92,12 +93,12 @@
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th id="sortBtn">Members &#9660;</th>
-                            <th id="sortBtn">Tasks Assigned &#9660;</th>
-                            <th id="sortBtn">Hours Assigned &#9660;</th>
+                            <th id="sortBtn">Members</th>
+                            <th id="sortBtn">Tasks Assigned</th>
+                            <th id="sortBtn">Hours Assigned</th>
                         </tr>
 					</thead>
-					
+                    
                     <tbody id='advanced_resultTableBody'>
                     </tbody>
                 </table>

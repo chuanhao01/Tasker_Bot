@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+    crossorigin="anonymous"></script>
+    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
-    crossorigin="anonymous"></script>
 
     <!-- Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
@@ -28,7 +28,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 
     <!-- External Scripts -->
-    <script src="./functions.js"></script>
+    <script src="./configs.js"></script>
+    <script src="./basic_result.js"></script>
     <script src="./script.js"></script>
 
     <title>JiBaBoom Basic Result Viewer</title>
@@ -102,12 +103,12 @@
                 <table class="table border mb-1 text-center">
                     <thead class="thead-light">
                         <tr>
-                            <th id="sortBtn">Task ID &#9660;</th>
-                            <th id="sortBtn">From date &#9660;</th>
-                            <th id="sortBtn">From time &#9660;</th>
-                            <th id="sortBtn">To date &#9660;</th>
-                            <th id="sortBtn">To time &#9660;</th>
-                            <th id="sortBtn">Lateness (in Hrs) &#9660;</th>
+                            <th id="sortBtn">Task ID</th>
+                            <th id="sortBtn">From date</th>
+                            <th id="sortBtn">From time</th>
+                            <th id="sortBtn">To date</th>
+                            <th id="sortBtn">To time</th>
+                            <th id="sortBtn">Lateness (in Hrs)</th>
                         </tr>
 					</thead>
 					
@@ -119,7 +120,10 @@
     </div>
 
     <!-- Chart -->
-	<div class="p-5 pt-0" id="container"></div>
+    <div class="resultGraph">
+	    <div class="pt-0" id="durationGraph"></div>
+        <div class="pt-0" id="latenessGraph" hidden></div>
+    </div>
 	
 
 	<script>
@@ -131,7 +135,12 @@
 
             basic_obtainResult(projectId, startDate, startTime);
             $('.resultViewer').removeAttr('hidden')
-		});
+        });
+        
+        $(document).on('change', 'input:radio[name="toggleGraph"]', function() {
+            document.querySelector('#durationGraph').toggleAttribute('hidden');
+            document.querySelector('#latenessGraph').toggleAttribute('hidden')
+        })
     </script>
 </body>
 </html>
