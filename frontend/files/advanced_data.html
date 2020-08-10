@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+    crossorigin="anonymous"></script>
+    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
-    crossorigin="anonymous"></script>
 
     <!-- Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
@@ -22,7 +22,8 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <!-- External Scripts -->
-    <script src="./functions.js"></script>
+    <script src="./configs.js"></script>
+    <script src="./advance_data.js"></script>
     <script src="./script.js"></script>
 
     <title>JiBaBoom Advanced Data Viewer</title>
@@ -67,11 +68,6 @@
         <div class="row">
             <!-- Input group above the table => inserting task and filtering data -->
             <div class="input-group p-2">
-                <!-- Insert new task -->
-                <div class="col-sm-2 col-md-2 col-lg-2 p-0 align-self-center">
-                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#insert_editModal" id="addNewBtn">+ Add new</button>
-                </div>
-
                 <div class="col-sm-0 col-md-3 col-lg-3 d-flex justify-content-end" id="resetBtn">&orarr;</div>
 
                 <!-- Filtering data: Choose attribue to filter by -->
@@ -126,10 +122,11 @@
         <!-- pagination & page size display -->
         <div class="row">
             <!-- page -->
-            <nav class="mr-auto p-2 col-lg-6 col-md-6 col-sm-6" aria-label="Pagination">
-                <ul class="pagination" id="paginationDisplay">
-                </ul>
-            </nav>
+            <div class="dropdown open">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="paginationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Page</button>
+                <div class="dropdown-menu" id="paginationDisplay">
+                </div>
+            </div>
 
             <!-- pageNum -->
             <div class="ml-auto p-2 col-lg-2 col-md-2 col-sm-2">
