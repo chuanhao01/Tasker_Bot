@@ -14,26 +14,12 @@
  * 
  */
 
-// Setting up date parser for pg
-var types = require('pg').types;
-var moment = require('moment');
-// Setting up custom parsing for datatypes
-// For the DATE data type
-types.setTypeParser(1082, function(val) {
-    return val === null ? null : moment(val, 'YYYY-MM-DD');
-});
-// For the DECIMAL data type
-types.setTypeParser(1700, parseFloat);
-// For the FLOAT data type
-types.setTypeParser(701, parseFloat);
-
 // Importing libs needed to run the test
-const {Pool} = require('pg');
 const expect = require('chai').expect;
-const rewire = require('rewire');
+var moment = require('moment');
 
 // Importing the db/model to test
-const model = rewire('../../db/index');
+const model = require('../../db/index');
 
 // Define global var for pool
 let pool;
@@ -42,21 +28,12 @@ let pool;
 const scripts = require('../../scripts/index');
 
 describe('Model Test Suite', function(){
-    // Init the testing db
     before('Setting up the pool for the db test', function(){
-        // Init the pool used for the test
-        pool = new Pool({
-            connectionString: process.env.PG_URL,
-            max: 5,
-        });
-
-        // Monkey patching and mocking the pool used in the model module
-        model.__set__({
-            'pool': pool
-        });
+        // Init the pool used for the unit test
+        pool = model.pool;
     });
     beforeEach('Init the db', function(done){
-        // Using the script to set up the db with the test db setup
+        // Using the script to reset and set up the db with the test db setup
         scripts.db.dbInit(pool)
         .then(
             function(){
@@ -65,8 +42,8 @@ describe('Model Test Suite', function(){
         )
         .catch(done);
     });
-    describe('Checking DB internals', function(){
-        it('Checking if DB initialized properly ', function(done){
+    describe('DB setup script and schema', function(){
+        it('Check schema of DB', function(done){
             const checkQuery = `
             SELECT n.nspname as "Schema",                                                                                                                                                                 
             c.relname as "Name",                                                                                                                                                                        
@@ -110,7 +87,7 @@ describe('Model Test Suite', function(){
                 }
             );
         });
-        it('Checking is parsers are working correctly', function(done){
+        it('Check custom pg types parsers', function(done){
             new Promise((resolve, reject) => {
                 pool.query(`
                 INSERT INTO TASKSBASIC
@@ -196,8 +173,8 @@ describe('Model Test Suite', function(){
                 done();
             });
         });
-        describe('Query and Get Data from the database', function(){
-            it('Basic Functionality', function(done){
+        describe('Basic Get Data Query', function(){
+            it('Basic Functionality 1', function(done){
                 const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
                 new Promise((resolve) => {
                     resolve(
@@ -264,8 +241,110 @@ describe('Model Test Suite', function(){
                     }
                 );
             });
+            it('Basic Functionality 2', function(done){
+                const queryCondition = 'LIMIT 10';
+                new Promise((resolve) => {
+                    resolve(
+                        model.basic.getData(queryCondition)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(res){
+                        const expectedDataResult = [
+                            {
+                                taskid: '1',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '2',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '3',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '4',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '5',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '6',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '7',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '8',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '9',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            },
+                            {
+                                taskid: '10',
+                                duedate: moment('1998-02-02', 'YYYY-MM-DD'),
+                                duetime: '01:32:00',
+                                duration: 2,
+                                projectid: '11'
+                            }
+
+                        ];
+                        const expectedCountResult = [{
+                            'count': '27'
+                        }];
+                        expect(res).to.be.lengthOf(2);
+                        expect(JSON.stringify(res[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(res[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
         });
-        describe('Inserting data into the database', function(){
+        describe('Basic Bulk insert data Query', function(){
             it('Basic Functionality', function(done){
                 const testTasks = ['(11, 11, \'1998-02-01\', \'13:07:00\', 2)', '(21, 11, \'1998-02-02\', \'01:32:00\', 22)'];
                 new Promise((resolve) => {
@@ -328,8 +407,8 @@ describe('Model Test Suite', function(){
                 );
             });
         });
-        describe('Result Problem statement', function(){
-            it('Basic Functionality', function(done){
+        describe('Basic Result Query', function(){
+            it('Basic Functionality 1', function(done){
                 const projectId = 1100000004;
                 new Promise((resolve) => {
                     resolve(
@@ -381,7 +460,7 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
-            it('ProjectId does not exists', function(done){
+            it('Basic Functionality 2', function(done){
                 const projectId = 123;
                 new Promise((resolve) => {
                     resolve(
@@ -429,67 +508,8 @@ describe('Model Test Suite', function(){
                 done();
             });
         });
-        describe('Inserting data into the database', function(){
-            it('Basic Functionality', function(done){
-                const testTasks = ['(11, 11, 2)', '(21, 11, 22)'];
-                new Promise((resolve) => {
-                    resolve(
-                        model.advanced.insertTask(testTasks)
-                        .catch(
-                            function(err){
-                                done(err);
-                            }
-                        )
-                    );
-                })
-                .then(
-                    function(){
-                        return new Promise((resolve, reject) => {
-                            pool.query(`
-                            SELECT * FROM TASKSADVANCED
-                            WHERE taskId IN (11, 21)
-                            `, function(err, res){
-                                if(err){
-                                    reject(err);
-                                }
-                                resolve(res);
-                            });
-                        })
-                        .catch(
-                            function(err){
-                                done(err);
-                            }
-                        );
-                    }
-                )
-                .then(
-                    function(res){
-                        const expectedResult = [
-                        {
-                            taskid: '11',
-                            duration: 2,
-                            projectid: '11'
-                        },
-                        {
-                            taskid: '21',
-                            duration: 22,
-                            projectid: '11'
-                        }
-                        ];
-                        // Checking if the result is as expected
-                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
-                        done();
-                    }
-                )
-                .catch(
-                    function(err){
-                        done(err);
-                    }
-                );
-            });
-        });
-        describe('Query and get data from the database', function(){
-            it('Basic Functionality', function(done){
+        describe('Advanced Get Data Query', function(){
+            it('Basic Functionality 1', function(done){
                 const queryCondition = 'WHERE \nprojectId > 1 \nAND \nduration <= 10 \nORDER BY \nprojectId asc, taskId asc\nLIMIT 5 OFFSET 5';
                 model.advanced.getData(queryCondition)
                 .then(
@@ -532,9 +552,136 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
+            it('Basic Functionality 2', function(done){
+                const queryCondition = 'LIMIT 10';
+                model.advanced.getData(queryCondition)
+                .then(
+                    function(pgRes){
+                        const expectedDataResult = [
+                            {
+                                'taskid': '1',
+                                'duration': 2,
+                                'projectid': '11',
+                            },
+                            {
+                                'taskid': '2',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '3',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '4',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '5',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '6',
+                                'duration': 2,
+                                'projectid': '11',
+                            },
+                            {
+                                'taskid': '7',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '8',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '9',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                            {
+                                'taskid': '10',
+                                'duration': 2,
+                                'projectid': '11'
+                            },
+                        ];
+                        const expectedCountResult = [{
+                            'count': '13'
+                        }];
+                        expect(pgRes).to.have.lengthOf(2);
+                        expect(JSON.stringify(pgRes[0].rows)).to.be.equal(JSON.stringify(expectedDataResult));
+                        expect(JSON.stringify(pgRes[1].rows)).to.be.equal(JSON.stringify(expectedCountResult));
+                        done();
+                    }
+                )
+                .catch(done);
+            });
+        });
+        describe('Advanced Bulk Insert Data Query', function(){
+            it('Basic Functionality', function(done){
+                const testTasks = ['(11, 11, 2.222)', '(21, 11, 22)'];
+                new Promise((resolve) => {
+                    resolve(
+                        model.advanced.insertTask(testTasks)
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        )
+                    );
+                })
+                .then(
+                    function(){
+                        return new Promise((resolve, reject) => {
+                            pool.query(`
+                            SELECT * FROM TASKSADVANCED
+                            WHERE taskId IN (11, 21)
+                            `, function(err, res){
+                                if(err){
+                                    reject(err);
+                                }
+                                resolve(res);
+                            });
+                        })
+                        .catch(
+                            function(err){
+                                done(err);
+                            }
+                        );
+                    }
+                )
+                .then(
+                    function(res){
+                        const expectedResult = [
+                        {
+                            taskid: '11',
+                            duration: 2.222,
+                            projectid: '11'
+                        },
+                        {
+                            taskid: '21',
+                            duration: 22,
+                            projectid: '11'
+                        }
+                        ];
+                        // Checking if the result is as expected
+                        expect(JSON.stringify(res.rows)).to.be.equal(JSON.stringify(expectedResult));
+                        done();
+                    }
+                )
+                .catch(
+                    function(err){
+                        done(err);
+                    }
+                );
+            });
         });
         describe('Result Problem statement', function(){
-            it('Basic Functionality', function(done){
+            it('Basic Functionality 1', function(done){
                 const projectId = 1001;
                 new Promise((resolve) => {
                     resolve(
@@ -566,7 +713,7 @@ describe('Model Test Suite', function(){
                 )
                 .catch(done);
             });
-            it('ProjectId does not exists', function(done){
+            it('Basic Functionality 2', function(done){
                 const projectId = 10000;
                 new Promise((resolve) => {
                     resolve(

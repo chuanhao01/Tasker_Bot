@@ -11,6 +11,7 @@
 
 
 // Loading dotenv for the test
+require('dotenv').config();
 before('Making sure dotenv is loaded', function(){
     // Loading the testing libs
     const { expect } = require('chai');

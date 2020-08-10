@@ -8,9 +8,12 @@
 
 
 /**
+ * @function Stub any backend request and return a fixed data JSON object from fixtures/data.json
+ * 
  * @param {string} url  A string containing the url of the html page that will automatically perform an ajax call when navigated to
  * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
  * @param {string} dataResult   A string that contains either 'data' or 'result'
+ * @param {string} featureType  A string denoting what type of feature being tested
  */
 Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult, featureType) => {
     // Enable response stubbing
@@ -26,6 +29,16 @@ Cypress.Commands.add("stubBackend", (url, basicAdvance, dataResult, featureType)
 });
 
 
+/**
+ * @function 
+ * 
+ * @param {string} url  A string containing the url of the html page that will automatically perform an ajax call when navigated to
+ * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
+ * @param {string} dataResult   A string that contains either 'data' or 'result'
+ * @param {string} filterAttribute A string denoting whether the filter attribute is 'projectId' or 'duration
+ * @param {string} filterOperation A string denoting whether the filter input is '>', '<' or '='
+ * @param {string} filterInput A string denoting what the value of the equation is
+ */
 Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filterAttribute, filterOperation, filterInput) => {
     var featureType = 'filter'
     cy.stubBackend(url, basicAdvance, dataResult, featureType);
@@ -42,7 +55,7 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
     else if (filterOperation == 'Greater than') {
         filterOperation = '>'
     }
-    else {
+    else if (filterOperation == 'Less than') {
         filterOperation = '<'
     }
 
@@ -55,9 +68,49 @@ Cypress.Commands.add("checkFilterFeature", (url, basicAdvance, dataResult, filte
     cy.wait(`@${featureType}`);
     cy.get(`@${featureType}`).then(function (xhr) {
         var requestUrl = xhr.xhr.url;
+        var filterArg = '';
         console.log('url: ' + requestUrl);
 
-        var filterArg = requestUrl.split('?')[1].split('&')[0];
+        if (filterAttribute == 'projectId') {
+            filterArg = requestUrl.split('?')[1].split('&')[0];
+        }
+        else if (filterAttribute == 'duration') {
+            filterArg = requestUrl.split('?')[1].split('&')[1];
+        }
+        
+        expect(filterArg).to.equal(testArg);
+    });
+});
+
+
+/**
+ * @function 
+ * 
+ * @param {string} url  A string containing the url of the html page that will automatically perform an ajax call when navigated to
+ * @param {string} basicAdvance A string that contains either 'basic' or 'advance'
+ * @param {string} dataResult   A string that contains either 'data' or 'result'
+ * @param {int} pageNum            The number of records in a page (* The data will not change due to the mocked backend)
+ */
+Cypress.Commands.add("checkPageNumFeature", (url, basicAdvance, dataResult, pageNum) => {
+    var featureType = 'pageNum';
+    cy.stubBackend(url, basicAdvance, dataResult, featureType);
+
+    // Defining the appropriate filter argument that should be passed in
+    var testArg = `${featureType}=${pageNum}`;;
+
+    // Change pageNum
+    cy.get('#input_pageNum').type(`${pageNum} {enter}`);
+
+
+    // Wait for the routing to finish and the mock response to be sent before obtaining the url
+    cy.wait(`@${featureType}`);
+    cy.get(`@${featureType}`).then(function (xhr) {
+        var requestUrl = xhr.xhr.url;
+        var filterArg = '';
+        console.log('url: ' + requestUrl);
+
+        filterArg = requestUrl.split('?')[1].split('&')[4];
+        
         expect(filterArg).to.equal(testArg);
     });
 });

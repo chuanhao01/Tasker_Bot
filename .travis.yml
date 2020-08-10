@@ -1,0 +1,125 @@
+language: node_js
+
+os: linux
+
+dist: xenial
+
+branches:
+  except:
+    - docs
+
+cache:
+  npm: true
+  directories:
+    - ~/.cache
+
+stages:
+  - unit test
+  - integration test
+  - name: acceptance test
+    if: branch IN (master, dev)
+  - name: staging build
+    if: (
+      branch = dev
+      AND
+      type = push
+      )
+  - name: deploy
+    if: (
+      branch = master
+      AND
+      type = push
+      )
+
+jobs:
+  include:
+    # For base alias
+    - &node_12_backend_base
+      stage: unit test
+      node_js: 12
+      os: linux
+      install:
+        - cd backend;
+          npm install;
+      env:
+        - secure: "BP/zNDrtLn1MXVsWNHd3/qjsXGuXOhay7mSdwZbaNvGusxs/JYxuIAxeKyO8UwJv3tNSDrPqAt1F05r9QFrXMuRDZOOhOwe9JYneXwglk2rhAHEuwTWjM4TA6/JZj67vq7Jy+V5cmXMF2hHM9tBR75DFWlddAv39+wLVLo6W52NTxlsXpEn8tpJiEBXsHE9sgV2w39CbtN8XgqV/+odmhtaO+mHiDN/CFvIAQx61I4bIyyZ5f78Vm8aFrZPDgbt4VWFaeb1j5Pm7RjmR7K2kHTnDNNx0UqQGu/IMBbKYfvrK+pKox2Oci+YYiKBujaltoRSBoJJu7PhacJ/HXjpNkzm2Lxx94posbkRCMDuJXlDNNdep5EcGcgROV6YPLiQty7LUCER/Go+L5KirpuZLo9+1VwKFyESrhbhXE/wtiAT9yhyrUT8YEWSWU2K0/5l+yIdfNjbmuU9VydUq2E+1mGBETvEQBD1Yost9kn8iojlPO4rDPQqir4tif8JIDFcncKDb/heqPF82naJJU4Vg0P0qo0InevbsOoLqTTcWdES0rNHfFkZdGTZZIWiRccUCdWyEvrc9vLK9sMaCtRC73MylBdMxT+zDf9Id1D/nSfipd2IMZS22ZvUVab3+3lNoQ5P0nkdVg2W/9Bsrs8s8wtNfx7EmTpBwjHi7mecJffg="
+        - NODE_ENV=UNIT_TEST
+      script:
+        - npm run unit
+
+    # Int test
+    - <<: *node_12_backend_base
+      stage: integration test
+      env:
+        - secure: "BP/zNDrtLn1MXVsWNHd3/qjsXGuXOhay7mSdwZbaNvGusxs/JYxuIAxeKyO8UwJv3tNSDrPqAt1F05r9QFrXMuRDZOOhOwe9JYneXwglk2rhAHEuwTWjM4TA6/JZj67vq7Jy+V5cmXMF2hHM9tBR75DFWlddAv39+wLVLo6W52NTxlsXpEn8tpJiEBXsHE9sgV2w39CbtN8XgqV/+odmhtaO+mHiDN/CFvIAQx61I4bIyyZ5f78Vm8aFrZPDgbt4VWFaeb1j5Pm7RjmR7K2kHTnDNNx0UqQGu/IMBbKYfvrK+pKox2Oci+YYiKBujaltoRSBoJJu7PhacJ/HXjpNkzm2Lxx94posbkRCMDuJXlDNNdep5EcGcgROV6YPLiQty7LUCER/Go+L5KirpuZLo9+1VwKFyESrhbhXE/wtiAT9yhyrUT8YEWSWU2K0/5l+yIdfNjbmuU9VydUq2E+1mGBETvEQBD1Yost9kn8iojlPO4rDPQqir4tif8JIDFcncKDb/heqPF82naJJU4Vg0P0qo0InevbsOoLqTTcWdES0rNHfFkZdGTZZIWiRccUCdWyEvrc9vLK9sMaCtRC73MylBdMxT+zDf9Id1D/nSfipd2IMZS22ZvUVab3+3lNoQ5P0nkdVg2W/9Bsrs8s8wtNfx7EmTpBwjHi7mecJffg="
+        - NODE_ENV=INT_TEST
+      script:
+        - npm run int
+    
+    - &node_12_frontend_base
+      stage: integration test
+      node_js: 12
+      os: linux
+      install:
+        - cd frontend;
+          npm install
+      before_script:
+        - npx http-server files -c-1 &
+      script:
+        - npm run cy_int_test
+
+    # Acceptance test
+    - stage: acceptance test
+      node_js: 12
+      os: linux
+      env:
+        - secure: "iOywgORQKHPRTAM/27kM548fSCGGShiuGIJgkFZnV6gepapa+gmM+9wUVkS15xj8rS7kExkgwlAF4Y/cmxCDp40FizC0u5PUFd3pTgpGOba/uGrOObsVSKj2zEP9JOM/eSXRMcrtF07x4rPah6YS4xOAayeHbQXfcIZDKBFj9EUhtuR4vvltPBoRA5/oTONfslzcTS1z76XEz+UKthPttkunK7zbe1Zq86E7Nk/guMAOG9ZOTLc7NHj2wmUVWpIQgvrgE1qbhdrNsHqGQzrnCaZ29Jn4rtg2ulWwAwVdCFqS1m52jzRNirZJ30Hd1KiBJdSfnWDTFiuOkZTlcmeryxvL1J+ybxELz7eDjuj+23kmtXFN/Y2/p9DeS2pzqOLyu9/07YucowDcwm8f3YGrz96nLk8al76X0d4WDFapAZePAgwBPuZO7LE169aUPVIMYqywbXs1QZedSYDYealNnmRLXUnV4GcrrGCdzKjWZ7Smrcit8DfNlbZoH9TIBAKggzLsBOKOnfJ29GfNJmvO2+lYIc8evWbg7aUhJYfm7i/XFrRZyxujVwC5n/f6H8t+9dJlJ+JXSa66FWqnjwMoR2cNBUncJ0L5CjO399ljN5IhTM0HKAYMpm0tP7pm8q6qFTf29gf2UKUqU0XshtA73TK3t+S4Gc2EYSroYmrQ01k="
+        - NODE_ENV=ACC_TEST
+      install:
+        - cd backend;
+          npm install;
+          cd ..;
+          cd frontend;
+          npm install;
+      before_script:
+        - sed -i -e 's/false/true/' files/configs.js;
+        - npx http-server files -c-1 &
+        - cd ..; cd backend; npm start &
+        - cd ..; cd frontend
+      script:
+        - npm run cy_acc_test
+    
+    # Staging
+    - stage: staging build
+      script: skip
+      before_deploy: cd backend
+      deploy:
+        provider: heroku
+        api_key:
+          secure: BvFNCRmAqj4+hs4Lc4/U3GBbeBr7Qore4jv3lUCoIG4dUSEYcf13XTkub1FV/r1oYRQOemxCJpARsn+1bDywc9zcHRux+1AQaLC26DGfdhdsRzKU/W85mLyXrBJSWkGiIjMHdh9U3KcD35duKJpXezVn6j8sshgRJ5OljGRxeIbyzn6/Kmx6RP7eVR/1hOZ2CgXD/oFnyTGa16yzPgIR2E70ebZCHhuIM8JXFRaUkBTLFEScpdWpqRNCfZ8k2ltICgfcwP6RZiu/Nk2MnMj92AQpNw1WpBi8qqpihIgMMbLhU0Yq6z1W90eW/WZ+7Tnu7D6erh8Xhvknb0lfsQq+QCTizyVEMTRxYNDjp5Uu8ag7OvZvGfcN7NvqkvFUPGlbm6TOngOJBVOHNwUoa/BY+Hz9tDAFIhWthaIA1vg/vhapbWP3Kdysr2aAcbyNj5If6Kd9NXxHCo6pr/uV+IjB7jdk6oJ2i8KOez54gpW/jzjiRiQRzburlMmOon5SkFf1STtAXHhCnzipBnpXcLX+vCcvfJcfVQg8ETyKu15eifqBxE5DYHKPIQzTlcceiMSIBG9C7jQXf0fwg+Hbz5drTU8RZTDTQVN9UbdWmOEGUyJ10cowzXUAFo8YrIYOv6byKhBPKHEni7Q1StPl3ZiG/QOxWafsLwlgokC0NJhWJbU=
+        app: fsp-staging
+        on: dev
+
+    # Deployment stage
+    - stage: deploy
+      script: skip
+      before_deploy: cd backend
+      deploy:
+        provider: heroku
+        api_key:
+          secure: BvFNCRmAqj4+hs4Lc4/U3GBbeBr7Qore4jv3lUCoIG4dUSEYcf13XTkub1FV/r1oYRQOemxCJpARsn+1bDywc9zcHRux+1AQaLC26DGfdhdsRzKU/W85mLyXrBJSWkGiIjMHdh9U3KcD35duKJpXezVn6j8sshgRJ5OljGRxeIbyzn6/Kmx6RP7eVR/1hOZ2CgXD/oFnyTGa16yzPgIR2E70ebZCHhuIM8JXFRaUkBTLFEScpdWpqRNCfZ8k2ltICgfcwP6RZiu/Nk2MnMj92AQpNw1WpBi8qqpihIgMMbLhU0Yq6z1W90eW/WZ+7Tnu7D6erh8Xhvknb0lfsQq+QCTizyVEMTRxYNDjp5Uu8ag7OvZvGfcN7NvqkvFUPGlbm6TOngOJBVOHNwUoa/BY+Hz9tDAFIhWthaIA1vg/vhapbWP3Kdysr2aAcbyNj5If6Kd9NXxHCo6pr/uV+IjB7jdk6oJ2i8KOez54gpW/jzjiRiQRzburlMmOon5SkFf1STtAXHhCnzipBnpXcLX+vCcvfJcfVQg8ETyKu15eifqBxE5DYHKPIQzTlcceiMSIBG9C7jQXf0fwg+Hbz5drTU8RZTDTQVN9UbdWmOEGUyJ10cowzXUAFo8YrIYOv6byKhBPKHEni7Q1StPl3ZiG/QOxWafsLwlgokC0NJhWJbU=
+        app: fsp-deploy
+        on: master
+
+    - stage: deploy
+      script: skip
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token:
+          - secure: "p0IRmBu3CuYmlOfR8+gVKeSG8aAWzYoIUlJO5p6Dsjdhes2xN+ScKgc72RKFOh7VxLzv5t5Y+rs6+8vZzWU49WQ7j/F/uC16pqjosFKZFj5bM1sxQNKKhAtpAbo9gHHYRAibHwL4HjM1xfD+5nqXG45hbkdrX/H5SPlnGHoEXxjyfw1+x16qP+Xq+KiKltEyfkLa6xmo0MEiYG+KS8SMwMUVAOT+2LhT/D2ZIQRu68REJ2gEqTIdI/XmOlqddp9DfkEM6X/zNFvbrKB283cLJe/H8Ijf60r3QRaPvM+/XsGJx3L34DUAMmXma+PKkPGm81rcDfasho/g9nKCWXkIIYu48pKaJWfBkjwDQcT3NGflWHE7bCtIZr8VygHMOtwxAyLPsibrkvL2ttNusrm3xHu2CGqRtkELJxAKUATv1pPgmQHAxl5z1lK9UhkILfgUG7FibkU5mgSCtMY43DkMQQMNLKrb0gXVZmz5dvNzSly7fOJ6r5I3nfD04fuNshuNNZS3oj0tsx7RNFmr5TN+yQF+qjeEBotD7pWFI2dfgd0tbH6Ek/jAV/AmRISXsF/wJueKFCGgXe/4qBUA3gllDzkSS6b69duuEs7ONLM5jBi/MvShJqLuU8FiU1fmvZHZNDbhLvelHhE/hb0i751ih/tr81j7IJ3LlRDml1WKr4k="
+        keep_history: true
+        local_dir: frontend/files
+        target_branch: gh-pages
+        on:
+          branch: master
