@@ -122,7 +122,8 @@ describe("Acceptance test for basic dataViewer", () => {
             expect($tr.children()).to.have.length(numDataRows * 7);
         });
     });
-})
+});
+
 
 describe("Acceptance test for advance dataViewer", () => {
     it("Calls the backend with default params and ensures that the backend returns the correct data", () => {
@@ -229,4 +230,35 @@ describe("Acceptance test for advance dataViewer", () => {
             expect($tr.children()).to.have.length(numDataRows * 5);
         });
     });
+});
+
+
+describe("Acceptance test for basic resultViewer", () => {
+    it("Provides some values for computation and checks the returned data", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/basic_results.html`);
+
+        cy.get('#compute_projectId').type('1100000004');
+        cy.get('#compute_startDate').type('2020/01/01');
+        cy.get('#compute_startTime').type('0900');
+        cy.get('#computeBtn').click();
+
+        // Force a waiting time
+        cy.wait(2000);
+
+        // Check that the computed data has a correct taskId
+        cy.get('#taskId_data').should(($th) => {
+            expect($th).to.contain('1000000013');
+        });
+
+        // Check that the computed data has at least the startDate
+        cy.get('#fromDate_data').should(($th) => {
+            expect($th).to.contain('2020/01/01')
+        })
+
+        // Check that the computed data has at least the startTime
+        cy.get('#fromTime_data').should(($th) => {
+            expect($th).to.contain('0900');
+        });
+    })
 })
