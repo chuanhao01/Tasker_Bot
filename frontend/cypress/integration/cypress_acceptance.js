@@ -32,5 +32,74 @@ describe("Acceptance test for basic dataViewer", () => {
             // Check that each row has 7 columns of data ('th')
             expect($tr.children()).to.have.length(70);
         });
-    })
+    });
+
+    it("Filters the data by projectId[=]=1100000002", () => {
+        cy.get('#filterAttribute').select('projectId').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('1100000002');
+            cy.get('#filterBtn').click();
+
+            // Check that all remaining data has projectId = 1100000002
+            cy.get('#projectId_data').should(($th) => {
+                expect($th).to.contain('1100000002');
+            });
+        });
+    });
+
+    it("Filters the data by duration[=]=3", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/index.html`);
+
+        // Clear the filter input field
+        cy.get('#filterInput').clear();
+
+        cy.get('#filterAttribute').select('duration').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('3');
+            cy.get('#filterBtn').click();
+
+            // Check that all remaining data has duration = 3
+            cy.get('#duration_data').should(($th) => {
+                expect($th).to.contain('3');
+            });
+        });
+    });
+
+    it("Filters the data by projectId[=]=1100000002 && duration[=]=3", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/index.html`);
+
+        // Perform a filter with projectId
+        cy.get('#filterAttribute').select('projectId').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('1100000002');
+            cy.get('#filterBtn').click();
+        });
+
+        // Clear the filter input field
+        cy.get('#filterInput').clear();
+
+        // Proceed to perform a filter with duration without refreshing query params
+        cy.get('#filterAttribute').select('duration').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('3');
+            cy.get('#filterBtn').click();
+        });
+
+        // Check that all remaining data has projectId = 1100000002
+        cy.get('#projectId_data').should(($th) => {
+            expect($th).to.contain('1100000002');
+        });
+
+        // Check that all remaining data has duration = 3
+        cy.get('#duration_data').should(($th) => {
+            expect($th).to.contain('3');
+        });
+    });
+
 })
