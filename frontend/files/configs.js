@@ -4,5 +4,5 @@ if(debug){
     baseUrl = 'http://localhost:3000'
 }
 else{
-    baseUrl = 'haha'
+    baseUrl = 'https://fsp-deploy.herokuapp.com'
 }
