@@ -17,6 +17,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 
 const baseUrl = "http://127.0.0.1:8080";
+var numDataRows = 10;
 
 
 describe("Acceptance test for basic dataViewer", () => {
@@ -27,10 +28,10 @@ describe("Acceptance test for basic dataViewer", () => {
 
         cy.get('#basic_tableBody').children('tr').then(($tr) => {
             // Expecting there to be 10 rows of data in each page
-            expect($tr).to.have.length(10); 
+            expect($tr).to.have.length(numDataRows); 
 
             // Check that each row has 7 columns of data ('th')
-            expect($tr.children()).to.have.length(70);
+            expect($tr.children()).to.have.length(numDataRows * 7);
         });
     });
 
@@ -71,7 +72,7 @@ describe("Acceptance test for basic dataViewer", () => {
     it("Filters the data by projectId[=]=1100000002 && duration[=]=3", () => {
         // Visit the page -> refreshing the query params
         cy.visit(`${baseUrl}/index.html`);
-
+        
         // Perform a filter with projectId
         cy.get('#filterAttribute').select('projectId').then(() => {
             // Check filterOperation == 'Equal to'
@@ -102,4 +103,23 @@ describe("Acceptance test for basic dataViewer", () => {
         });
     });
 
+    it("Changes the pageNum to 5", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/index.html`);
+
+        // Changing the pageNum for the purpose of this test
+        numDataRows = 5;
+
+        // Fills in the pageNum input and presses 'enter'
+        cy.get('#input_pageNum').type(`${numDataRows}{enter}`);
+        cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
+
+        // Repeats the same test for the dataViewerTable but with the new pageNum
+        cy.get('#basic_tableBody').children('tr').then(($tr) => {
+            expect($tr).to.have.length(numDataRows); 
+
+            // Check that each row has 7 columns of data ('th')
+            expect($tr.children()).to.have.length(numDataRows * 7);
+        });
+    });
 })
