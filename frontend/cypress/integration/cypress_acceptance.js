@@ -260,5 +260,35 @@ describe("Acceptance test for basic resultViewer", () => {
         cy.get('#fromTime_data').should(($th) => {
             expect($th).to.contain('0900');
         });
-    })
+    });
+
+    it("Provides some values for computation and checks the returned data", () => {
+        // Clear the input fields
+        cy.get('#compute_projectId').clear();
+        cy.get('#compute_startDate').clear();
+        cy.get('#compute_startTime').clear();
+
+        cy.get('#compute_projectId').type('1100000003');
+        cy.get('#compute_startDate').type('2000/01/01');
+        cy.get('#compute_startTime').type('1200');
+        cy.get('#computeBtn').click();
+
+        // Force a waiting time
+        cy.wait(2000);
+
+        // Check that the computed data has a correct taskId
+        cy.get('#taskId_data').should(($th) => {
+            expect($th).to.contain('1000000009');
+        });
+
+        // Check that the computed data has at least the startDate
+        cy.get('#fromDate_data').should(($th) => {
+            expect($th).to.contain('2000/01/01')
+        })
+
+        // Check that the computed data has at least the startTime
+        cy.get('#fromTime_data').should(($th) => {
+            expect($th).to.contain('1200');
+        });
+    });
 })

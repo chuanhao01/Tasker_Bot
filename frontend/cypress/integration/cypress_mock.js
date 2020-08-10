@@ -158,9 +158,9 @@ describe("Integration testing for result viewer - basic", () => {
         });
 
         // Clear the input fields
-        cy.get('#compute_projectId').clear()
-        cy.get('#compute_startDate').clear()
-        cy.get('#compute_startTime').clear()
+        cy.get('#compute_projectId').clear();
+        cy.get('#compute_startDate').clear();
+        cy.get('#compute_startTime').clear();
 
         // Fill in the input fields and compute
         cy.get('#compute_projectId').type(arg_projectId.split('=')[1]);
