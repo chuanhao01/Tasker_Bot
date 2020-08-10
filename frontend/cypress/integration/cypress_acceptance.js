@@ -123,3 +123,110 @@ describe("Acceptance test for basic dataViewer", () => {
         });
     });
 })
+
+describe("Acceptance test for advance dataViewer", () => {
+    it("Calls the backend with default params and ensures that the backend returns the correct data", () => {
+        cy.visit(`${baseUrl}/advanced_data.html`);
+
+        cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
+
+        // Reset numDataRows = 10
+        numDataRows = 10
+
+        cy.get('#advanced_tableBody').children('tr').then(($tr) => {
+            // Expecting there to be 10 rows of data in each page
+            expect($tr).to.have.length(numDataRows); 
+
+            // Check that each row has 7 columns of data ('th')
+            expect($tr.children()).to.have.length(numDataRows * 5);
+        });
+    });
+
+    it("Filters the data by projectId[=]=102", () => {
+        cy.get('#filterAttribute').select('projectId').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('102');
+            cy.get('#filterBtn').click();
+
+            // Check that all remaining data has projectId = 1100000002
+            cy.get('#projectId_data').should(($th) => {
+                expect($th).to.contain('102');
+            });
+        });
+    });
+
+    it("Filters the data by duration[=]=4", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/advanced_data.html`);
+
+        // Clear the filter input field
+        cy.get('#filterInput').clear();
+
+        cy.get('#filterAttribute').select('duration').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('4');
+            cy.get('#filterBtn').click();
+
+            // Check that all remaining data has duration = 3
+            cy.get('#duration_data').should(($th) => {
+                expect($th).to.contain('4');
+            });
+        });
+    });
+
+    it("Filters the data by projectId[=]=102 && duration[=]=4", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/advanced_data.html`);
+        
+        // Perform a filter with projectId
+        cy.get('#filterAttribute').select('projectId').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('102');
+            cy.get('#filterBtn').click();
+        });
+
+        // Clear the filter input field
+        cy.get('#filterInput').clear();
+
+        // Proceed to perform a filter with duration without refreshing query params
+        cy.get('#filterAttribute').select('duration').then(() => {
+            // Check filterOperation == 'Equal to'
+            cy.get('#filterOperation').select('Equal to');
+            cy.get('#filterInput').type('4');
+            cy.get('#filterBtn').click();
+        });
+
+        // Check that all remaining data has projectId = 1100000002
+        cy.get('#projectId_data').should(($th) => {
+            expect($th).to.contain('102');
+        });
+
+        // Check that all remaining data has duration = 3
+        cy.get('#duration_data').should(($th) => {
+            expect($th).to.contain('4');
+        });
+    });
+
+    it("Changes the pageNum to 5", () => {
+        // Visit the page -> refreshing the query params
+        cy.visit(`${baseUrl}/advanced_data.html`);
+
+        // Changing the pageNum for the purpose of this test
+        numDataRows = 5;
+
+        // Fills in the pageNum input and presses 'enter'
+        cy.get('#input_pageNum').type(`${numDataRows}{enter}`);
+        cy.wait(2000); // Force a short waiting time to allow the ajax call to finish
+
+        // Repeats the same test for the dataViewerTable but with the new pageNum
+        cy.get('#advanced_tableBody').children('tr').then(($tr) => {
+            expect($tr).to.have.length(numDataRows); 
+
+            // Check that each row has 7 columns of data ('th')
+            expect($tr.children()).to.have.length(numDataRows * 5);
+        });
+    });
+})
