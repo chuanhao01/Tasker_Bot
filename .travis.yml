@@ -54,7 +54,7 @@ jobs:
         - secure: "BP/zNDrtLn1MXVsWNHd3/qjsXGuXOhay7mSdwZbaNvGusxs/JYxuIAxeKyO8UwJv3tNSDrPqAt1F05r9QFrXMuRDZOOhOwe9JYneXwglk2rhAHEuwTWjM4TA6/JZj67vq7Jy+V5cmXMF2hHM9tBR75DFWlddAv39+wLVLo6W52NTxlsXpEn8tpJiEBXsHE9sgV2w39CbtN8XgqV/+odmhtaO+mHiDN/CFvIAQx61I4bIyyZ5f78Vm8aFrZPDgbt4VWFaeb1j5Pm7RjmR7K2kHTnDNNx0UqQGu/IMBbKYfvrK+pKox2Oci+YYiKBujaltoRSBoJJu7PhacJ/HXjpNkzm2Lxx94posbkRCMDuJXlDNNdep5EcGcgROV6YPLiQty7LUCER/Go+L5KirpuZLo9+1VwKFyESrhbhXE/wtiAT9yhyrUT8YEWSWU2K0/5l+yIdfNjbmuU9VydUq2E+1mGBETvEQBD1Yost9kn8iojlPO4rDPQqir4tif8JIDFcncKDb/heqPF82naJJU4Vg0P0qo0InevbsOoLqTTcWdES0rNHfFkZdGTZZIWiRccUCdWyEvrc9vLK9sMaCtRC73MylBdMxT+zDf9Id1D/nSfipd2IMZS22ZvUVab3+3lNoQ5P0nkdVg2W/9Bsrs8s8wtNfx7EmTpBwjHi7mecJffg="
         - NODE_ENV=INT_TEST
       script:
-        - echo 'pass int'
+        - npm run int
     
     - &node_12_frontend_base
       stage: integration test
@@ -96,7 +96,7 @@ jobs:
       deploy:
         provider: heroku
         api_key:
-          secure: "PFQwUYbOfNjek1PoPCoh5Ro1PaA/vgWgmySafD+QmYqHL5fp+/pRT3UDS4Cx9UmKdSXXgmd4Zo0YN8rS8KxSvLGtaHe6zYqlcNCqkfDQldHFcEy5xd1CGobZArAGYx98+4WQUlpN4Uc70o0LIMHWbaCPUcEFDBZ0w7C6i+AGf8SAgvE9iwvP7rEJ4bvZ2neFqA7HQXr1lBSFocYMo0StFyYiMQEOojbSAEOWJiSqz8J++F3ktQRVEeidLufr+0dC1LRt5wVIpXvMfsBB6EVeq/kg5NZleVuhN6WwfgngMjTI801Cq7KXuOjo4ob6ndyOgGsEx+b/uHRghKT/0AyhXNFDusQdkg1EkCsZP2jkfgRld5E233m96G6wYRkAhZSTAJhWOOzFl1MvMoEc0XH+BUCie/S2ljp4i4XJxPVBxP7Orb5xNhP+foeyvmxSsWzh0I/KyOnbjCw6SfITNNig9griuM4MW9k0xZZFwI6wGYAqtPWD0UhJ74spPzVH4EJQNlLqi7OFkiMENPTYZsOQtiLwvkSZJ3cg5VBor0K31RhvG4vL1bEh4y+HrTVoSc95cUZd1BN8MVkBZdvevUHh6rUN6UF9k+orc+vP+2s1PG0Jjqumj3o4CFz2Bc4ZVZjDCaAtP6KJfLZ1iA/sQN3LHXzN6gbqg79q2fZ86RBZC6U="
+          secure: BvFNCRmAqj4+hs4Lc4/U3GBbeBr7Qore4jv3lUCoIG4dUSEYcf13XTkub1FV/r1oYRQOemxCJpARsn+1bDywc9zcHRux+1AQaLC26DGfdhdsRzKU/W85mLyXrBJSWkGiIjMHdh9U3KcD35duKJpXezVn6j8sshgRJ5OljGRxeIbyzn6/Kmx6RP7eVR/1hOZ2CgXD/oFnyTGa16yzPgIR2E70ebZCHhuIM8JXFRaUkBTLFEScpdWpqRNCfZ8k2ltICgfcwP6RZiu/Nk2MnMj92AQpNw1WpBi8qqpihIgMMbLhU0Yq6z1W90eW/WZ+7Tnu7D6erh8Xhvknb0lfsQq+QCTizyVEMTRxYNDjp5Uu8ag7OvZvGfcN7NvqkvFUPGlbm6TOngOJBVOHNwUoa/BY+Hz9tDAFIhWthaIA1vg/vhapbWP3Kdysr2aAcbyNj5If6Kd9NXxHCo6pr/uV+IjB7jdk6oJ2i8KOez54gpW/jzjiRiQRzburlMmOon5SkFf1STtAXHhCnzipBnpXcLX+vCcvfJcfVQg8ETyKu15eifqBxE5DYHKPIQzTlcceiMSIBG9C7jQXf0fwg+Hbz5drTU8RZTDTQVN9UbdWmOEGUyJ10cowzXUAFo8YrIYOv6byKhBPKHEni7Q1StPl3ZiG/QOxWafsLwlgokC0NJhWJbU=
         app: fsp-staging
         on: dev
 
@@ -107,7 +107,7 @@ jobs:
       deploy:
         provider: heroku
         api_key:
-          secure: "PFQwUYbOfNjek1PoPCoh5Ro1PaA/vgWgmySafD+QmYqHL5fp+/pRT3UDS4Cx9UmKdSXXgmd4Zo0YN8rS8KxSvLGtaHe6zYqlcNCqkfDQldHFcEy5xd1CGobZArAGYx98+4WQUlpN4Uc70o0LIMHWbaCPUcEFDBZ0w7C6i+AGf8SAgvE9iwvP7rEJ4bvZ2neFqA7HQXr1lBSFocYMo0StFyYiMQEOojbSAEOWJiSqz8J++F3ktQRVEeidLufr+0dC1LRt5wVIpXvMfsBB6EVeq/kg5NZleVuhN6WwfgngMjTI801Cq7KXuOjo4ob6ndyOgGsEx+b/uHRghKT/0AyhXNFDusQdkg1EkCsZP2jkfgRld5E233m96G6wYRkAhZSTAJhWOOzFl1MvMoEc0XH+BUCie/S2ljp4i4XJxPVBxP7Orb5xNhP+foeyvmxSsWzh0I/KyOnbjCw6SfITNNig9griuM4MW9k0xZZFwI6wGYAqtPWD0UhJ74spPzVH4EJQNlLqi7OFkiMENPTYZsOQtiLwvkSZJ3cg5VBor0K31RhvG4vL1bEh4y+HrTVoSc95cUZd1BN8MVkBZdvevUHh6rUN6UF9k+orc+vP+2s1PG0Jjqumj3o4CFz2Bc4ZVZjDCaAtP6KJfLZ1iA/sQN3LHXzN6gbqg79q2fZ86RBZC6U="
+          secure: BvFNCRmAqj4+hs4Lc4/U3GBbeBr7Qore4jv3lUCoIG4dUSEYcf13XTkub1FV/r1oYRQOemxCJpARsn+1bDywc9zcHRux+1AQaLC26DGfdhdsRzKU/W85mLyXrBJSWkGiIjMHdh9U3KcD35duKJpXezVn6j8sshgRJ5OljGRxeIbyzn6/Kmx6RP7eVR/1hOZ2CgXD/oFnyTGa16yzPgIR2E70ebZCHhuIM8JXFRaUkBTLFEScpdWpqRNCfZ8k2ltICgfcwP6RZiu/Nk2MnMj92AQpNw1WpBi8qqpihIgMMbLhU0Yq6z1W90eW/WZ+7Tnu7D6erh8Xhvknb0lfsQq+QCTizyVEMTRxYNDjp5Uu8ag7OvZvGfcN7NvqkvFUPGlbm6TOngOJBVOHNwUoa/BY+Hz9tDAFIhWthaIA1vg/vhapbWP3Kdysr2aAcbyNj5If6Kd9NXxHCo6pr/uV+IjB7jdk6oJ2i8KOez54gpW/jzjiRiQRzburlMmOon5SkFf1STtAXHhCnzipBnpXcLX+vCcvfJcfVQg8ETyKu15eifqBxE5DYHKPIQzTlcceiMSIBG9C7jQXf0fwg+Hbz5drTU8RZTDTQVN9UbdWmOEGUyJ10cowzXUAFo8YrIYOv6byKhBPKHEni7Q1StPl3ZiG/QOxWafsLwlgokC0NJhWJbU=
         app: fsp-deploy
         on: master
 
