@@ -4,9 +4,10 @@
   "description": "## Requirements",
   "main": "index.js",
   "scripts": {
-    "unit": "mocha test/unitTests",
+    "unit": "mocha test/unitTests --exit",
     "int": "mocha test/integrationTests --exit",
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "stage": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -21,9 +22,11 @@
     "express-validator": "^6.4.1",
     "mocha": "^7.1.2",
     "moment": "^2.25.1",
-    "nodemon": "^2.0.3",
     "pg": "^8.1.0",
     "rewire": "^5.0.0",
     "validator": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

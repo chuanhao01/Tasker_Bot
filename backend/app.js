@@ -33,6 +33,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 const controllers = require('./controllers/index');
 controllers.init(app);
 
+// Setting up lost route handler
+app.use(function(req, res, next){
+    res.status(404).send({
+        'page': 'not found'
+    });
+});
+
 // Setting up ports
 const PORT  = process.env.PORT || 3000;
 app.listen(PORT, function(){
