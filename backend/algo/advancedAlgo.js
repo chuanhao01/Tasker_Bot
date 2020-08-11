@@ -35,7 +35,9 @@ const advancedAlgo = {
             if(includeFloats){
                 // tasksAllocation = this.customKnapsackRec(tasksDuration, sum/2);
                 // Throws an error if there is a float for now
-                throw Error('Advanced Result should not have floats');
+                const err = Error('Advanced Result should not have floats');
+                err.name = 'ADVRESFLOAT';
+                throw err;
             }
             else{
                 tasksAllocation = this.customKnapsackDPMem(tasksDuration, sum/2);

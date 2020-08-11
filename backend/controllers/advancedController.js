@@ -231,6 +231,13 @@ const advancedController = {
             )
             .catch(
                 function(err){
+                    // Handle algo errors
+                    if(err.name === 'ADVRESFLOAT'){
+                        res.status(500).send({
+                            'error': 'Project contain tasks with float duration',
+                            'code': 500
+                        });
+                    }
                     // For debugging err in api chain
                     return;
                 }
