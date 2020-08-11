@@ -81,5 +81,113 @@ For the first term, this was mainly building towards CA1 and CA2.
          1. Test
          2. Integration
 
+# Block 2 (Week 8-18)  
+This was mainly finishing up the project, adding in all the documentation, and preparing for the submission of the project.  
 
+## Both Chuan Hao and Sherisse tasks
 
+Block 2 task planning 1  
+![Block 2 task planning 1](./assets/block_2_plan_1.png)  
+
+Block 2 task planning 2  
+![Block 2 task planning 2](./assets/block_2_plan_2.png)  
+
+Block 2 task planning 3  
+![Block 2 task planning 3](./assets/block_2_plan_3.png)  
+
+1. Frontend
+   1. Basic Problem
+      1. Result Viewer (Basic Table)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      2. Result Viewer (Table with highcharts)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+   2. Advanced Problem
+      1. Data Viewer (Basic table)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      2. Result Viewer (Basic Table)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+      3. Result Viewer (Table with highcharts)
+         1. Wireframe
+         2. Implementation
+         3. Tests
+         4. Integration
+2. Backend
+   1. Basic Problem
+      1. GET data API
+         1. Algo creation
+            1. Unit Test
+         2. API schema/documentation
+         3. Model Creation
+            1. Unit test
+         4. Parsing data
+            1. Unit testing
+         5. API implemenation
+            1. Unit test
+      2. GET result API
+         1. Algo creation
+            1. Unit Test
+         2. API schema/documentation
+         3. Model Creation
+            1. Unit test
+         4. Parsing data
+            1. Unit testing
+         5. API implemenation
+            1. Unit test
+   2. Advance Problem
+      1. POST Insert API
+         1. Algo creation
+            1. Unit Test
+         2. API schema/documentation
+         3. Model Creation
+            1. Unit test
+         4. Parsing data
+            1. Unit testing
+         5. API implemenation
+            1. Unit test
+      2. GET data API
+         1. Algo creation
+            1. Unit Test
+         2. API schema/documentation
+         3. Model Creation
+            1. Unit test
+         4. Parsing data
+            1. Unit testing
+         5. API implemenation
+            1. Unit test
+      3. GET result API
+         1. Algo creation
+            1. Unit Test
+         2. API schema/documentation
+         3. Model Creation
+            1. Unit test
+         4. Parsing data
+            1. Unit testing
+         5. API implemenation
+            1. Unit test
+3. Integration Test
+   1. Backend Server Integration Test
+      1. Expected API behaviour is tested
+   2. Frontend pages
+      1. Expected APIs are called
+      2. Expected Behaviour
+4. Acceptance Test
+   1. With test env
+      1. Hosted Backend Server
+      2. Hosted Frontend Pages
+   2. Check expected behaviour with preset data
+5. Production Deployment
+   1. Making sure build can be deployed
+      1. Heroku
+      2. Github Pages
