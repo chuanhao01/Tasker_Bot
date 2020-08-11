@@ -32,3 +32,6 @@ Assumming you have set up the `.env` file correctly, you can start the server us
 
 ### Running unit test  
 Again if you have set up the `.env` file correctly, you can run the unit test with `npm run unit`.
+
+### Running integration test  
+Again if you have set up the `.env` file correctly, you can run the unit test with `npm run int`.
