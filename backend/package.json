@@ -4,8 +4,8 @@
   "description": "## Requirements",
   "main": "index.js",
   "scripts": {
-    "unit": "mocha test/unitTests",
-    "int": "mocha test/integrationTests",
+    "unit": "mocha test/unitTests --exit",
+    "int": "mocha test/integrationTests --exit",
     "start": "node app.js",
     "stage": "nodemon app.js"
   },
