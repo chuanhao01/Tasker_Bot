@@ -1,19 +1,25 @@
 # Project Planning
 
-This document helps you identify the smaller tasks and helps you create a rough schedule for you and your partner to follow
+This document contains the estimated planning of the fsp project for out team.
 
-## Tasks
+**How we split the semester of work:**
+For Block 1 (Week 1-6)
+For Block 2 (Week 8-18)
 
-> You can break these tasks into even smaller units or even combine some into bigger units if you think some tasks are trivial enough.
+## Table of contents
+- [Project Planning](#project-planning)
+  - [Table of contents](#table-of-contents)
+- [Block 1 (Week 1-6)](#block-1-week-1-6)
+  - [Member 1 - Chuan Hao](#member-1---chuan-hao)
+  - [Member 2 - Sherisse](#member-2---sherisse)
+  - [Tasks for Block 1](#tasks-for-block-1)
+- [Block 2 (Week 8-18)](#block-2-week-8-18)
+  - [Both Chuan Hao and Sherisse tasks](#both-chuan-hao-and-sherisse-tasks)
 
-> You can follow this template for the advance feature. You can plan it right at the start or you can plan it abit later.
+# Block 1 (Week 1-6)
+For the first term, this was mainly building towards CA1 and CA2.  
 
-> This is just a template, you just need to state **WHO** will do **WHAT** and **WHEN**.
-## Estimate Schedule  
-
-**For Block 1 (Week 1-6)**
-
-### Member 1 - Chuan Hao
+## Member 1 - Chuan Hao
 
 |Week    |Level|Component                                        |Feature                                                                                                                 |Task                                                                                                                                              |Remarks                                                                                                         |
 |--------|-----|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -28,7 +34,7 @@ This document helps you identify the smaller tasks and helps you create a rough 
 |Week 3-5|Basic|Documentation                                    |API, schema, statement, project planning, project worksheet, task                                                       |Added information to relevant documents throughout the weeks when we were done with the feature                                                   |                                                                                                                |
 |Week 6  |Basic|Frontend, backend, database                      |Integration test                                                                                                        |Implementing integration test to make sure the experience and components work toogether.                                                          |After CA1 and CA2                                                                                               |
 
-### Member 2 - Sherisse
+## Member 2 - Sherisse
 
 |Week    |Level|Component                                        |Feature                                                                                                                 |Task                                                                                                                                              |Remarks                                                                                                         |
 |--------|-----|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -46,7 +52,7 @@ This document helps you identify the smaller tasks and helps you create a rough 
 |Week 5  |Basic|Frontend                                         |Unit testing                                                                                                            |Unit testing for rest of GET data API implementation                                                                                              |                                                                                                                |
 |Week 6  |Basic|Frontend, Backend, Database                      |Integration test                                                                                                        |Implementing integration test to make sure the experience and components work toogether.                                                          |After CA1 and CA2                                                                                               |
 
-### Tasks for Block 1  
+## Tasks for Block 1  
 1. Basic problem
    1. Frontend
       1. Data Viewer (Basic table)
