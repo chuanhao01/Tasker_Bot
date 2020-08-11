@@ -61,6 +61,14 @@ Each API should include
     - [Sample Request](#sample-request-4)
     - [Sample Response](#sample-response-4)
     - [Sample Error](#sample-error-4)
+  - [Advanced GET Result API](#advanced-get-result-api)
+    - [Query parameters](#query-parameters-3)
+    - [Errors](#errors-5)
+    - [Response Body](#response-body-5)
+    - [Error body](#error-body-4)
+    - [Sample Request](#sample-request-5)
+    - [Sample Response](#sample-response-5)
+    - [Sample Error](#sample-error-5)
 
 # Custom Datatypes
 | Datatype Name | Description | Example                    | Remarks | 
@@ -571,5 +579,119 @@ Sample body
 {
 	"error": "Server Error",
 	"code": 500
+}
+```
+
+## Advanced GET Result API
+
+This is the API endpoint to get the result for the advance problem statement
+
+| attribute   | value           |
+| ----------- | -------------   |
+| HTTP Method | GET             |
+| Endpoint    | /advance/result |
+
+### Query parameters
+
+| Parameter | Datatype     | Example                   | Optional | Default Behaviour |
+|-----------|--------------|---------------------------|----------|-------------------|
+| projectId | `IDENTIFIER` | `projectId[>=]=123456789` | No       | NIL               |
+
+### Errors  
+
+| HTTP Error Code | Error Description                                              | Remarks |
+|-----------------|----------------------------------------------------------------|---------|
+| 400             | Wrong syntax for query Params                                  | NIL     |
+| 404             | ProjectId not found                                            | NIL     |
+| 500             | Database Error/Server Error/Project contains tasks with floats | NIL     |
+
+### Response Body
+
+For the `result` attribute in the response body:  
+
+| parameter | datatype                           | example              | Remarks                                      |
+|-----------|------------------------------------|----------------------|----------------------------------------------|
+| result    | Array of 2 Arrays containing tasks | `[[task1, ...], [task2, ...]]` | Refer below to description of the attributes |
+
+For the attributes in the each `task`:  
+
+| Parameter | Datatype     | Example | Remarks                                                                                            |
+|-----------|--------------|---------|----------------------------------------------------------------------------------------------------|
+| taskId    | `IDENTIFIER` | 1       | Refer to GET /advance/data  for more information                                                   |
+| projectId | `IDENTIFIER` | 1       | Refer to GET /advance/data for more information                                                    |
+| duration  | `HOURS`      | 1       | Refer to GET /advance/data for more information, only project with int duration will be calculated |
+
+```json
+{
+    "result": [
+        [
+            {
+                "taskId": IDENTIFIER,
+                "projectId": IDENTIFIER,
+                "duration": HOURS
+            },
+            ...
+        ],
+        [
+            {
+                "taskId": IDENTIFIER,
+                "projectId": IDENTIFIER,
+                "duration": HOURS
+            },
+            ...
+        ]
+    ]
+}
+```
+
+### Error body
+
+```json
+{
+	"error": String,
+	"code": Number
+}
+```
+
+### Sample Request
+
+```http
+GET /advance/result?projectId=1234567890
+```
+
+### Sample Response
+
+```json
+{
+    "result": [
+        [
+            {
+                "projectId": 101,
+                "taskId": 102,
+                "duration": 3
+            },
+            {
+                "projectId": 101,
+                "taskId": 103,
+                "duration": 3
+            }
+        ],
+        [
+            {
+                "projectId": 101,
+                "taskId": 101,
+                "duration": 3
+            }
+        ]
+    ]
+}
+```
+
+### Sample Error
+
+```json
+{
+    "error": "Project contain tasks with float duration",
+    "code": 500
 }
 ```
