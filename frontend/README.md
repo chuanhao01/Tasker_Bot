@@ -24,6 +24,8 @@
 ## Notes
 
 -   Problem: Task Allocation
+-   Libraries required:
+    - Cypress
 
 ## How to run the codes
 
