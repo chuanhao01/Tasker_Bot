@@ -1,9 +1,10 @@
 # ST1503 : FULLSTACK WEB DEVELOPMENT PROJECT
 
-Name: Lim Chuan Hao(1922264), Sherisse Tan(1935967)
-Class: DIT/FT/2A/11
-Date: 12/8/2020
-School: Singapore Polytechnic(SP)
+Name: Lim Chuan Hao(1922264), Sherisse Tan(1935967)  
+Class: DIT/FT/2A/11  
+Date: 12/8/2020  
+
+Singapore Polytechnic, School of Computing (SP SOC)  
 
 # Quick Start
 
