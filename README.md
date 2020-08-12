@@ -37,6 +37,9 @@ Special thanks to:
 
 To be added in the future after the project is released
 
+# Updates
+- [x] Project Submission Release (12/8/2020)
+
 # License  
 [MIT](./LICENSE)
 Copyright (c) 2020-present, Lim Chuan Hao and Sherisse Tan
