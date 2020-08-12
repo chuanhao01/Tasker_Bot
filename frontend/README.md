@@ -1,8 +1,6 @@
 # Frontend
 
-### Hosted at 'https://ades-fsp.github.io/fsp-jibaboom-2a11-team_name/'
-
-***
+[Check it out](https://ades-fsp.github.io/fsp-jibaboom-2a11-team_name/)
 
 ## Components / Requirements
 
@@ -27,8 +25,6 @@
         - projectId
     2. Graphical view of distribution of tasks by member
 
-___
-
 ## Notes
 
 -   Problem: Task Allocation
@@ -41,8 +37,6 @@ ___
         - [Advance data viewer Wireframe](../worksheets/wireframes/advance_frontend_data_viewer.md)
         - [Basic result viewer Wireframe](../worksheets/wireframes/basic_frontend_result_viewer.md)
         - [Advance result viewer Wireframe](../worksheets/wireframes/advance_frontend_result_viewer.md)
-
-___
 
 ## How to run the codes
 
