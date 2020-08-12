@@ -11,6 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "cy_int_test": "cypress run --spec 'cypress/integration/cypress_mock.js'",
     "cy_acc_test": "cypress run --spec 'cypress/integration/cypress_acceptance.js'",
+    "cy_start": "cypress open",
     "start": "npx http-server files -c-1"
   },
   "keywords": [],
