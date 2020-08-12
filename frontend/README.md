@@ -1,6 +1,6 @@
 # Frontend
 
-## Requirements
+## Components / Requirements
 
 1. Basic/Advance Data viewer
     1. Pagination
@@ -8,7 +8,9 @@
         2. Next page
         3. Page size
     2. Filtering
-        1. by 2 attributes
+        1. duration
+        2. projectId
+    3. pageNum ( number of records in a page )
 2. Basic Result viewer
     1. Input fields for 3 computation parameters
         - projectId
@@ -21,11 +23,22 @@
         - projectId
     2. Graphical view of distribution of tasks by member
 
+___
+
 ## Notes
 
 -   Problem: Task Allocation
 -   Libraries required:
-    - Cypress
+    - `Cypress`
+- Relevant documents
+    - [Code style](../worksheets/code_style.md)
+    - Wireframes
+        - [Basic data viewer Wireframe](../worksheets/wireframes/basic_frontend_data_viewer.md)
+        - [Advance data viewer Wireframe](../worksheets/wireframes/advance_frontend_data_viewer.md)
+        - [Basic result viewer Wireframe](../worksheets/wireframes/basic_frontend_result_viewer.md)
+        - [Advance result viewer Wireframe](../worksheets/wireframes/advance_frontend_result_viewer.md)
+
+___
 
 ## How to run the codes
 
@@ -44,17 +57,3 @@
     - npm run cy_start
         * Integration testing : Select `cypress_mock.js`
         * Acceptance testing  : Select `cypress_acceptance.js`
-
-###### Data Viewer
-
-![Data-viewer-wireframe](../worksheets/wireframes/justifications/dataViewer.PNG)
-
-###### Result Viewer
-
-Basic :
-
-![Result-viewer-wireframe](../worksheets/wireframes/justifications/basic_resultViewer.PNG)
-
-Advance :
-
-![Result-viewer-wireframe](../worksheets/wireframes/justifications/advance_resultViewer.PNG)
