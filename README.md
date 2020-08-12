@@ -41,5 +41,5 @@ To be added in the future after the project is released
 - **12/8/2020** - FSP Full-Stack Web Application project submission
 
 # License  
-[MIT](./LICENSE)
+[MIT](./LICENSE)  
 Copyright (c) 2020-present, Lim Chuan Hao and Sherisse Tan
