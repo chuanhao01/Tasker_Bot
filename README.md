@@ -38,7 +38,7 @@ Special thanks to:
 To be added in the future after the project is released
 
 # Updates
-- [x] Project Submission Release (12/8/2020)
+- **12/8/2020** - FSP Full-Stack Web Application project submission
 
 # License  
 [MIT](./LICENSE)
