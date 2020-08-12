@@ -31,14 +31,19 @@
 
 ### Webpage (index.html)
 
-1. cd frontend/files (workspaceFolder == fsp-jibaboom-2a11-team_name)
-2. npx http-server -c-1
+1. `cd frontend/files` (workspaceFolder == fsp-jibaboom-2a11-team_name)
+2. `npm start`
 
 ### Cypress automated tests (cypress_mock.js / cypress_acceptance.js)
 
-1. cd frontend
-2.  node_modules\.bin\cypress open, OR 
-    node_modules\.bin\cypress run --spec "cypress/integration/{file_name}" ( To run headless, in cli )
+1. `cd frontend`
+2. CLI
+    - Integration testing : `npm run cy_int_test`
+    - Acceptance testing  : `npm run cy_acc_test`
+3. GUI
+    - npm run cy_start
+        * Integration testing : Select `cypress_mock.js`
+        * Acceptance testing  : Select `cypress_acceptance.js`
 
 ###### Data Viewer
 
