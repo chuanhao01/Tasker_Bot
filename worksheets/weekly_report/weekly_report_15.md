@@ -13,13 +13,19 @@ Sherisse:
     - Acceptance testing
 
 Chuan Hao:
-- 
+- Automatic CI/CD with travis-ci, heroku and github pages
+- Refactored all Backend test cases onto the test sheet
+- Prep submission for CA2
 
 Together:
-- Additional feature : CI/CD
+- Additional feature
+  - Automatic CI/CD with travis-ci, heroku and github pages
+  - Tests cases sheets
 
 ## What do I plan to do next week
 
--   N/A
+Final weekly report before CA2 submission
 
 ## Additional Thoughts
+
+Final weekly report before CA2 submission
