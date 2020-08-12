@@ -1,3 +1,6 @@
 # ST1503 : FULLSTACK WEB DEVELOPMENT PROJECT
 
-Class: DIT/FT/2A/11  
+
+# Contributers
+- [Lim Chuan Hao (Backend)](@chuanhao01)
+- []()
