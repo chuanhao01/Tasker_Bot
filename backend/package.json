@@ -7,7 +7,7 @@
     "unit": "mocha test/unitTests --exit",
     "int": "mocha test/integrationTests --exit",
     "start": "node app.js",
-    "stage": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
