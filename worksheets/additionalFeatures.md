@@ -14,8 +14,13 @@
       - [2.1.6.1. Advantages](#2161-advantages)
       - [2.1.6.2. Disadvantages](#2162-disadvantages)
   - [2.2. Travis CI/CD](#22-travis-cicd)
-    - [2.2.1. Workflow](#221-workflow)
-    - [2.2.2. Importance of having automated CI/CD](#222-importance-of-having-automated-cicd)
+    - [2.2.1. What is something about this feature you can demo?](#221-what-is-something-about-this-feature-you-can-demo)
+    - [2.2.2. What is something about this feature you can talk about? (I.e. cannot be shown with just code/demo)](#222-what-is-something-about-this-feature-you-can-talk-about-ie-cannot-be-shown-with-just-codedemo)
+    - [2.2.3. What are the things you need to do to make this feature work? How much time will you need for each task?](#223-what-are-the-things-you-need-to-do-to-make-this-feature-work-how-much-time-will-you-need-for-each-task)
+    - [2.2.4. Which components will be involved?](#224-which-components-will-be-involved)
+    - [2.2.5. Details of the additional feature](#225-details-of-the-additional-feature)
+    - [2.2.6. Workflow](#226-workflow)
+    - [2.2.7. Importance of having automated CI/CD](#227-importance-of-having-automated-cicd)
 
 # 2. Additional Features
 
@@ -104,14 +109,44 @@ Services used:
 * Travis
 * Heroku
 * Github pages
+* Github
 
-### 2.2.1. Workflow
+### 2.2.1. What is something about this feature you can demo? 
 
-1. Learn to use Github actions, Travis CI and Heroku CI
-2. Test migration and creation of new tests for CI/CD
-3. Continuous improvement and addition to tests as more features are developed
+- Showing the auto build when a PR is done, `docs` &rarr; `dev` &rarr; `master`
+- Showing the auto deployment
 
-### 2.2.2. Importance of having automated CI/CD
+### 2.2.2. What is something about this feature you can talk about? (I.e. cannot be shown with just code/demo) 
+
+- How it saved time on our part to test and ensure no feature breaking changes are introduced into the code
+- Auto deployment
+
+### 2.2.3. What are the things you need to do to make this feature work? How much time will you need for each task? 
+
+- Designing and testing the infrastructure
+
+Total hours required : >4 Hours
+
+### 2.2.4. Which components will be involved? 
+
+- Github Repo
+- Travis CI
+- Heroku 
+- Github Pages
+
+### 2.2.5. Details of the additional feature
+
+### 2.2.6. Workflow
+
+1. Learn to use Travis CI
+2. Test migration of tests to be ran by Travis CI
+3. Set up and test the Travis CI config files
+4. Push code to the repo and check that Travis CI runs
+5. Set up the deployment stages for Travis CI to deploy to Heroku and Github Pages when the build passes
+6. Continuous improvement and addition to tests as more features are developed
+
+### 2.2.7. Importance of having automated CI/CD
 
 1. Overall time save in catching of bugs
 2. Prevents the deployment of broken code
+3. Saved time in deployment
