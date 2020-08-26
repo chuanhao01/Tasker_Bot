@@ -1,5 +1,7 @@
 # ST1503 : FULLSTACK WEB DEVELOPMENT PROJECT
 
+[![Build Status](https://travis-ci.com/chuanhao01/Tasker_Bot.svg?branch=master)](https://travis-ci.com/chuanhao01/Tasker_Bot)
+
 Name: Lim Chuan Hao(1922264), Sherisse Tan(1935967)  
 Class: DIT/FT/2A/11  
 Date: 12/8/2020  
@@ -12,7 +14,7 @@ Refer to the `README.md` in the [backend](./backend/) and [frontend](./frontend/
 
 # Check it out
 Check out the deployed web application
-- [Web App](https://ades-fsp.github.io/fsp-jibaboom-2a11-team_name/)
+- [Web App](chuanhao01.github.io/tasker_bot/)
 - [API Server](https://fsp-deploy.herokuapp.com)
 
 # Dependencies
