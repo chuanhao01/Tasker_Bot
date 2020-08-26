@@ -11,5 +11,9 @@ Quick links for the documentation:
   - Project timeline
 - [Project Worksheet](./project_worksheet.md)
   - General Project set up
+- [Schema](./schema.md)
+  - Schema of the database
+- [Statements](./statements.md)
+  - Example SQL statements used in the Backend
 - [Wireframes](./wireframes)
   - Wireframes of the front-end pages
